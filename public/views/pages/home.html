@@ -1,0 +1,23 @@
+<div id="logUp" class="row" ng-show="!mCtrl.loggedIn">
+    <div class="col-lg-6">
+        <h2 class="text-center">Log In</h2>
+        <form method="post" ng-submit="mCtrl.doLogin()">
+            <label for="emailLog" class="">Email:</label> <input ng-model="mCtrl.loginData.email" type="text" name="email" id="emailLog" required/><br/>
+            <label for="passwordLog">Password:</label> <input ng-model="mCtrl.loginData.password" type="password" name="password" id="passwordLog" required/><br/>
+            <input type="submit" value="submit"/>
+
+        </form>
+    </div>
+    <div class="col-lg-6">
+        <h2 class="text-center">Sign Up</h2>
+        <form method="post" ng-submit="mCtrl.doSignUp()">
+            <label for="firstName" class="">First Name:</label> <input ng-model="mCtrl.signupData.firstName" type="text" name="email" id="firstName" required/><br/>
+            <label for="lastName" class="">Last Name:</label> <input ng-model="mCtrl.signupData.lastName" type="text" name="email" id="lastName" required/><br/>
+            <label for="emailReg" class="">Email:</label> <input ng-model="mCtrl.signupData.email" type="text" name="email" id="emailReg" required/><br/>
+            <label for="passwordReg">Password:</label> <input ng-model="mCtrl.signupData.password" type="password" name="password" id="passwordReg" required/><br/>
+            <label for="passwordRegRep">Repeat Password:</label> <input ng-model="mCtrl.signupData.passwordRep" type="password" name="password" id="passwordRegRep" required/><br/>
+            <input type="submit" value="submit"/>
+        </form>
+        <div class="error" ng-show="mCtrl.error">{{mCtrl.error}}</div>
+    </div>
+</div>

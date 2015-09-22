@@ -8,8 +8,9 @@ function createToken(user){
 
     var token = jsonwebtoken.sign({
         id: user._id,
-        name: user.name,
-        username: user.username
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email
     }, secretKey, {
         expiresInMinute: 1440
     });
@@ -22,8 +23,8 @@ module.exports = function(app, express){
     api.post('/signup', function(req, res){
 
         var user = new User({
-            name: req.body.name,
-            username: req.body.username,
+            firstName: req.body.firstName,
+            lastName: req.body.lastName,
             password: req.body.password,
             email: req.body.email
         });
@@ -32,7 +33,7 @@ module.exports = function(app, express){
                 res.send(err);
                 return;
             }
-            res.json({message: 'User has been created!'})
+            res.json({message: 'User has been created!', success: true})
         });
     });
 
@@ -48,7 +49,7 @@ module.exports = function(app, express){
 
     api.post('/login', function(req, res){
         User.findOne({
-            username: req.body.username
+            email: req.body.email
         }).select('password').exec(function(err, user){
             if(err) throw err;
             if(!user) {
@@ -72,7 +73,6 @@ module.exports = function(app, express){
     api.use(function(req, res, next){
 
         console.log('somebody just came to our app!');
-        console.log(req);
 
         var token = req.body.token || req.headers['x-access-token'] || req.param('token');
 
