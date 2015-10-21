@@ -1,95 +1,93 @@
-angular.module('authService', [])
+MyApp.factory('Auth', ['$http','$q','AuthToken',function($http, $q, AuthToken){
 
-.factory('Auth', function($http, $q, AuthToken){
+    var authFactory = {};
 
-        var authFactory = {};
+    authFactory.login = function(email, password){
 
-        authFactory.login = function(email, password){
+        return $http.post('/api/login', {
+            email: email,
+            password: password
+        })
+            .success(function(data){
+                AuthToken.setToken(data.token);
+                return data;
+        })
+    };
 
-            return $http.post('/api/login', {
-                email: email,
-                password: password
+    authFactory.signUp = function(userGroup, firstName, lastName, email, password){
+
+        return $http.post('/api/signup', {
+            userGroup: userGroup,
+            firstName: firstName,
+            lastName: lastName,
+            email: email,
+            password: password
+        })
+            .success(function(data){
+                return data;
             })
-                .success(function(data){
-                    AuthToken.setToken(data.token);
-                    return data;
-            })
+    };
+
+    authFactory.logout = function(){
+        AuthToken.setToken();
+    };
+
+    authFactory.isLoggedIn = function(){
+        if(AuthToken.getToken()) return true;
+
+        return false;
+    };
+
+    authFactory.getUser = function(token){
+        if(AuthToken.getToken()){
+            return $http({url: '/api/me', method: 'GET', headers:{'x-access-token': token}})
         };
 
-        authFactory.signUp = function(firstName, lastName, email, password){
+        return $q.reject({message: 'User is not logged in'});
+    };
 
-            return $http.post('/api/signup', {
-                firstName: firstName,
-                lastName: lastName,
-                email: email,
-                password: password
-            })
-                .success(function(data){
-                    return data;
-                })
-        };
+    return authFactory;
+}]);
 
-        authFactory.logout = function(){
+MyApp.factory('AuthToken', ['$window', function($window){
 
-            AuthToken.setToken();
-        };
+    var authTokenFactory = {};
 
-        authFactory.isLoggedIn = function(){
-            if(AuthToken.getToken()) return true;
+    authTokenFactory.getToken = function(){
 
-            return false;
-        };
+        return $window.localStorage.getItem('token');
+    };
 
-        authFactory.getUser = function(token){
-            if(AuthToken.getToken()){
-                return $http({url: '/api/me', method: 'GET', headers:{'x-access-token': token}})
-            };
+    authTokenFactory.setToken = function(token) {
+        if (token) {
+            $window.localStorage.setItem('token', token);
+        }else{
+            $window.localStorage.removeItem('token');
+        }
+    };
 
-            return $q.reject({message: 'User is not logged in'});
-        };
+    return authTokenFactory;
+}]);
 
-        return authFactory;
-    })
+MyApp.factory('AuthInterceptor', ['$q','$location','AuthToken',function($q, $location, AuthToken){
 
-.factory('AuthToken', function($window){
+    var interceptorFactory = {};
 
-        var authTokenFactory = {};
+    interceptorFactory.request = function(config){
 
-        authTokenFactory.getToken = function(){
+        var token = AuthToken.getToken();
 
-            return $window.localStorage.getItem('token');
-        };
+        if(token) config.headers['x-access-token'] = token;
 
-        authTokenFactory.setToken = function(token) {
-            if (token) {
-                $window.localStorage.setItem('token', token);
-            }else{
-                $window.localStorage.removeItem('token');
-            }
-        };
+        return config
+    };
 
-        return authTokenFactory;
-    })
+    interceptorFactory.responceError = function(response){
 
-.factory('AuthInterceptor', function($q, $location, AuthToken){
+        if(response.status == 403) $location.path('/login');
 
-        var interceptorFactory = {};
+        return $q.reject(response)
+    };
 
-        interceptorFactory.request = function(config){
-
-            var token = AuthToken.getToken();
-
-            if(token) config.headers['x-access-token'] = token;
-
-            return config
-        };
-
-        interceptorFactory.responceError = function(response){
-
-            if(response.status == 403) $location.path('/login');
-
-            return $q.reject(response)
-        };
-
-        return interceptorFactory;
-    });
+    return interceptorFactory;
+}]);

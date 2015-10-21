@@ -1,0 +1,32 @@
+<div id="logUp">
+    <div class="col-10" id="logIn">
+        <h1 class="text-center">Log In</h1>
+        <form method="post" ng-submit="doLogin()">
+            <label for="emailLog" class="">Email:</label> <input class="rounded" ng-model="loginData.email" type="email" name="email" id="emailLog" required/><div class="clr"></div>
+            <label for="passwordLog">Password:</label> <input class="rounded" ng-model="loginData.password" type="password" name="password" id="passwordLog" required/><div class="clr"></div>
+            <input class="rounded" type="submit" value="SUBMIT"/><div class="clr"></div>
+        </form>
+        <div class="error" ng-show="errors.loginError.length > 0"><span ng-repeat="error in errors.loginError">{{error}}</span></div>
+        <div class="sign">Not Signed Up? <a href="" ng-click="showSignUp()">Create an Account</a></div>
+    </div>
+    <div class="clr"></div>
+    <div class="col-10 hidden" id="signUp">
+        <h1 class="text-center">Create an Account</h1>
+        <form method="post" ng-submit="doSignUp()">
+            <label for="firstName" class="">First Name:</label> <input class="rounded" ng-model="signUpData.firstName" type="text" name="email" id="firstName" required/><div class="clr"></div>
+            <label for="lastName" class="">Last Name:</label> <input class="rounded" ng-model="signUpData.lastName" type="text" name="lastName" id="lastName" required/><div class="clr"></div>
+            <label for="emailReg" class="">Email:</label> <input class="rounded" ng-model="signUpData.email" type="email" name="email" id="emailReg" required/><div class="clr"></div>
+            <label for="passwordReg">Password:</label> <input class="rounded" ng-model="signUpData.password" type="password" name="password" id="passwordReg" required/><div class="clr"></div>
+            <label for="passwordRegRep">Confirm Password:</label> <input class="rounded" ng-model="signUpData.passwordRep" type="password" name="password" id="passwordRegRep" required/><div class="clr"></div>
+            <input class="rounded" type="submit" value="SUBMIT"/><div class="clr"></div>
+        </form>
+        <div class="error" ng-show="errors.signUpError.length > 0"><span ng-repeat="error in errors.signUpError">{{error}}</span></div>
+        <div class="sign"><a href="" ng-click="showSignUp()">Back to Log In</a></div>
+    </div>
+    <div class="clr"></div>
+</div>
+
+<div id="sigSuc" class="rounded text-center hidden">
+    <h1 class="text-center">Success!</h1>
+    <a ng-click="hideSuccess()" class="btn rounded">Go Back And Log In</a>
+</div>

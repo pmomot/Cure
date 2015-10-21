@@ -1,0 +1,234 @@
+<div id="claim" class="rounded text-center">
+    <h1 class="text-left">Create a New {{currentClaimType}} Claim</h1>
+    <section ng-if="currentClaimType!='Discussion'">
+        <form method="post" ng-submit="addClaim()">
+            <div class="col-3 no-padding-left" ng-if="currentClaimType != 'Chemical'">
+                <label for="claimTitle" class="">Claim Title:</label>
+                <input class="rounded" ng-model="currentClaim.claimTitle" type="text" name="claimTitle" id="claimTitle" required/>
+            </div>
+            <div class="col-5 no-padding-left no-padding-right" ng-if="currentClaimType == 'Chemical'">
+                <label for="claimTitle" class="">Claim Title:</label>
+                <input class="rounded" ng-model="currentClaim.claimTitle" type="text" name="claimTitle" id="claimTitle" required/>
+            </div>
+            <div class="col-2" ng-if="tags.length > 0">
+                <label for="claimTag">Add a Tag:</label>
+                <select class="full-select" name="claimTag" id="claimTag" ng-model="currentClaim.claimTag" ng-options="tag for tag in tags"></select>
+            </div>
+            <div class="clr"></div>
+            <div class="col-4">&nbsp;</div>
+            <div class="col-1 no-padding-right">
+                <input class="rounded" type="submit" value="ADD"/>
+            </div>
+            <div class="clr"></div>
+        </form>
+        <div class="line"></div>
+        <div class="col-5 no-padding-left text-left">
+            <div id="tagsFilter" ng-if="tags.length > 0">
+                <div class="tagFilter rounded" ng-click="filterByTag(tag)" ng-repeat="tag in tags">{{tag}}</div>
+                <div class="tagFilter allTags rounded" data-tag="All" ng-click="filterByTag('All')" >All</div>
+            </div>
+            <h2>Pending:</h2>
+            <table id="claimsListTable" cellspacing="0" ng-show="claimList">
+                <thead>
+                <tr>
+                    <th>Title:</th>
+                    <th ng-if="tags.length > 0">Tag:</th>
+                    <th>Author:</th>
+                    <th ng-if="$parent.user.userGroup == 'HR'">Resolve Claim:</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="claim in claimList" data-tag="{{claim.claimTag}}" ng-if="claim.status == 'open'">
+                    <td width="70%">
+                        {{claim.claimTitle}}
+                    </td>
+                    <td ng-if="tags.length > 0" width="18%">
+                        {{claim.claimTag}}
+                    </td>
+                    <td width="12%">
+                        {{claim.fullName}}
+                    </td>
+                    <td ng-if="$parent.user.userGroup == 'HR'" style="text-align: center;">
+                        <div id="acceptClaimModal" ng-click="openModal(claim, 'accept')"></div><div id="declineClaimModal" ng-click="openModal(claim, 'decline')"></div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-5 no-padding-right text-left">
+            <h2>Archive:</h2>
+            <table id="claimsArchiveTable" cellspacing="0" ng-show="claimList">
+                <thead>
+                <tr>
+                    <th ng-if="user.userGroup == 'HR'">Send:</th>
+                    <th>Title:</th>
+                    <th ng-if="tags.length > 0">Tag:</th>
+                    <th>Author:</th>
+                    <th>Status:</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="claim in claimList" data-tag="{{claim.claimTag}}" ng-if="claim.status != 'open'" ng-class="{'green-bg': claim.status == 'accepted', 'red-bg': claim.status == 'declined', 'grey-bg': claim.status == 'resolved'}">
+                    <td width="2%" style="text-align: center;" ng-if="user.userGroup == 'HR'">
+                        <input type="checkbox" ng-disabled="claim.status == 'resolved'" value="{{claim._id}}" ng-true-value="true" ng-false-value="false" ng-model="claim.checked" class="checkbox claimbox">
+                    </td>
+                    <td width="68%">
+                        {{claim.claimTitle}}
+                    </td>
+                    <td ng-if="tags.length > 0" width="10%">
+                        {{claim.claimTag}}
+                    </td>
+                    <td width="10%">
+                        {{claim.fullName}}
+                    </td>
+                    <td width="10%">
+                        {{claim.status}}
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <button class="btn rounded" ng-click="sendClaims()" ng-if="user.userGroup == 'HR'">Send Selected Claims</button>
+        </div>
+        <div class="clr"></div>
+    </section>
+
+    <section ng-if="currentClaimType =='Discussion'">
+        <form method="post" ng-submit="addClaim(true)">
+            <div class="col-3 no-padding-left">
+                <label for="claimTitle" class="">Claim Title:</label>
+                <input class="rounded" ng-model="currentClaim.claimTitle" type="text" name="claimTitle" id="claimTitle" required/>
+            </div>
+            <div class="col-2 no-padding-right">
+                <label for="claimTag">Add a Recipient:</label>
+                <select class="full-select" name="claimTag" id="claimRecipient" ng-model="currentClaim.claimRecipient" ng-options="hr.firstName + ' ' + hr.lastName for hr in hrs"></select>
+            </div>
+            <div class="clr"></div>
+            <div class="col-5 no-padding-right no-padding-left">
+                <label>Add a Comment:</label>
+                <textarea name="claimComment" required id="claimComment" ng-model="currentClaim.claimComment"></textarea>
+            </div>
+            <div class="clr"></div>
+            <div class="col-4">&nbsp;</div>
+            <div class="col-1 no-padding-right">
+                <input class="rounded" type="submit" value="ADD"/>
+            </div>
+            <div class="clr"></div>
+        </form>
+        <div class="col-10 no-padding-left  no-padding-right text-left">
+            <div class="claim-comments-wrapper rounded" ng-repeat="claim in claimList" ng-if="claim.status == 'open'">
+
+                <div class="claim-title">{{claim.claimTitle}}</div>
+                <div class="claim-note">{{claim.claimComment}}</div>
+                <div class="claim-comments-list" ng-if="claim.claimComments.length > 0">
+                    <div class="claim-comments-heading">Comments:</div>
+                    <div class="claim-comments-container">
+                        <div class="claim-comment" ng-repeat="comment in claim.claimComments">
+                            <div class="claim-comment-author"><span class="claim-author">{{comment.author.firstName + " " + comment.author.lastName}}</span> said:</div>
+                            <div class="claim-comment-content">{{comment.content}}</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="claim-add-comment">
+                    <textarea data-id="{{claim._id}}"></textarea>
+                    <input class="rounded claim-add-new-comment-button" type="submit" value="ADD NEW COMMENT" ng-click="addComment(claim)" data-id="{{claim._id}}"/>
+                    <div class="clr"></div>
+                    <input class="rounded claim-resolve" type="submit" value="RESOLVE & REMOVE" ng-click="resolveClaim(claim, 'resolved')" data-id="{{claim._id}}"/>
+                    <div class="clr"></div>
+                </div>
+
+
+
+
+                <!--<table id="claimsListTable" cellspacing="0" ng-show="claimList" width="100%" class="discTable">-->
+                    <!--<thead ng-if="claim.status == 'open'">-->
+                    <!--<tr>-->
+                        <!--<th>Title:</th>-->
+                        <!--<th width="20%">To:</th>-->
+                    <!--</tr>-->
+                    <!--</thead>-->
+                    <!--<tbody>-->
+                        <!--<tr ng-if="claim.status == 'open'">-->
+                            <!--<td>-->
+                                <!--{{claim.claimTitle}}-->
+                            <!--</td>-->
+                            <!--<td width="20%">-->
+                                <!--{{claim.claimRecipient.firstName + " " + claim.claimRecipient.lastName}}-->
+                            <!--</td>-->
+                        <!--</tr>-->
+                        <!--<tr ng-if="claim.status == 'open'">-->
+                            <!--<td colspan="2" class="commentTd">-->
+                                <!--<table width="100%">-->
+                                    <!--<thead>-->
+                                        <!--<tr>-->
+                                            <!--<th>Comments:</th>-->
+                                            <!--<th width="20%">Comment Author:</th>-->
+                                        <!--</tr>-->
+                                    <!--</thead>-->
+                                    <!--<tbody ng-repeat="comment in claim.claimComments">-->
+                                        <!--<tr>-->
+                                            <!--<td>{{comment.content}}</td>-->
+                                            <!--<td width="20%">{{comment.author.firstName + " " + comment.author.lastName}}</td>-->
+                                        <!--</tr>-->
+                                    <!--</tbody>-->
+                                <!--</table>-->
+                            <!--</td>-->
+                        <!--</tr>-->
+                        <!--<tr ng-if="claim.status == 'open'">-->
+                            <!--<td>-->
+                                <!--<textarea class="no-margin" data-id="{{claim._id}}"></textarea>-->
+                            <!--</td>-->
+                            <!--<td>-->
+                                <!--<input class="rounded" type="submit" value="ADD COMMENT" ng-click="addComment(claim)" data-id="{{claim._id}}"/>-->
+                                <!--<div id="acceptClaimModal" ng-click="resolveClaim(claim, 'accepted')"></div>-->
+                                <!--<div id="declineClaimModal" ng-click="resolveClaim(claim, 'declined')"></div>-->
+                            <!--</td>-->
+                        <!--</tr>-->
+                    <!--</tbody>-->
+                <!--</table>-->
+            </div>
+        </div>
+        <div class="clr"></div>
+    </section>
+
+
+<!--modal-->
+    <div id="modal" ng-if="modalOpened">
+        <div class="modal-backdrop" ng-click="closeModal()"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Review and Comment:</h3>
+            </div>
+            <div class="modal-body">
+                <table cellspacing="0">
+                    <thead>
+                    <tr>
+                        <th>Title:</th>
+                        <th ng-if="tags.length > 0">Tag:</th>
+                        <th>Author:</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td width="70%">
+                            {{reviewingClaim.claimTitle}}
+                        </td>
+                        <td ng-if="tags.length > 0" width="18%">
+                            {{reviewingClaim.claimTag}}
+                        </td>
+                        <td width="12%">
+                            {{reviewingClaim.fullName}}
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <label for="reviewingClaimComment">Add a Comment:</label>
+                <input id="reviewingClaimComment" ng-model="reviewingClaim.claimComment" type="text"/>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" ng-if="modalType == 'accept'" type="button" ng-click="closeModal('accept')">Accept Claim</button>
+                <button class="btn btn-primary" ng-if="modalType == 'decline'" type="button" ng-click="closeModal('decline')">Decline Claim</button>
+                <button class="btn btn-warning" type="button" ng-click="closeModal()">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,19 @@
+<div class="col-1">
+    <a ui-sref="home"><img id="img-logo" src="../img/core-logo.png" alt="CoreValue"/></a>
+</div>
+<div class="col-9">
+    <div class="col-2 text-center"><a ui-sref=".purchases" class="nav-a">Purchases</a></div>
+    <div class="col-2 text-center"><a ui-sref=".propositions" class="nav-a">Propositions</a></div>
+    <div class="col-2 text-center"><a ng-if="user.userGroup == 'HR'" ui-sref=".chemicals" class="nav-a">Chemicals</a></div>
+    <div class="col-2 text-center"><a ng-if="user.userGroup == 'HR'" ui-sref=".discussions" class="nav-a">Discussions</a></div>
+    <div class="col-1"></div>
+    <div class="col-1 text-right">
+        <div class="nav-a logout">{{user.firstName}}</div>
+        <ul class="user-ul">
+            <li><a class="nav-a">Profile</a></li>
+            <li><a class="nav-a" ng-click="doLogout()">Log Out</a></li>
+        </ul>
+    </div>
+    <div class="clr"></div>
+</div>
+<div class="clr"></div>

@@ -4,11 +4,11 @@ var mongoose = require('mongoose'),
 var Schema = mongoose.Schema;
 
 var UserSchema = new Schema({
-
+    userGroup: String,
     firstName: String,
     lastName: String,
     password: {type: String, required: true, select: false},
-    email: {type: String, required: true, select: false}
+    email: {type: String, required: true}
 });
 
 UserSchema.pre('save', function(next){

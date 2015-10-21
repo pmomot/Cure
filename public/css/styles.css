@@ -1,47 +1,551 @@
-/* Small devices (tablets, 768px and up) */
-@media (min-width: 768px) {  }
-
-/* Medium devices (desktops, 992px and up) */
-@media (min-width: 992px) {  }
-
-/* Large devices (large desktops, 1200px and up) */
-@media (min-width: 1200px) {
-    .img-centered {
-        max-width: 170px;
-    }
-    .logo-bordered {
-        border-right: 1px solid #000;
-    }
+* {
+    box-sizing: border-box;
+    font-family: GothamProRegular, sans-serif;
+    font-size: 14px;
 }
-html{
-
-}
-body{
-    background: #1f253d;
-    color: #666;
-}
-#nav {
-    border-bottom: 1px solid #000;
-    background: #fcb150;
-}
-#nav .col-lg-2 {
+html {
+    margin: 0;
+    padding: 0;
+    min-width: 1200px;
     height: 100%;
 }
-#nav #img-logo {
-    padding-top: 10px;
-    padding-bottom: 10px;
+body {
+    background: #f0f0f0;
+    color: #262626;
+    margin: 0;
+    padding: 0;
+    min-width: 1200px;
+    height: 100%;
+    position: relative;
 }
-.img-centered {
-    display: inline-block;
-    text-align: center;
+h1 {
+    font-size: 28px;
 }
-a.nav-a {
+input[type='text'],
+input[type='password'],
+input[type='email'],
+textarea, select {
+    background: #f9f9f9;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    border: 1px solid #e6e6e6;
+    color: #656565;
+    outline: none;
+    padding: 5px 10px;
+    font-size: 14px;
+    line-height: 14px;
+
+}
+input[type='text']:active,
+input[type='password']:active,
+input[type='email']:active,
+textarea:active,
+select:active,
+input[type='text']:focus,
+input[type='password']:focus,
+input[type='email']:focus,
+textarea:focus,
+select:focus{
+    border: 1px solid #0a85d7;
+    color: #262626;
+}
+input[type='submit'] {
     color: #fff;
+    background: #0a85d7;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    border: 1px solid #0a72cc;
+    text-align: center;
+    padding: 10px;
+    outline: none;
+    cursor: pointer;
+    font-size: 14px;
+    line-height: 14px;
+}
+input[type='submit']:active {
+    background: #0a72cc;
+}
+input[type="checkbox"]{
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    display: inline-block;
+    width: 20px!important;
+    margin-bottom: 0!important;
+    height: 25px;
+}
+select {
+    width: 200px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-image: url(../img/select_active.png);
+    background-position: right 10px center;
+    background-repeat: no-repeat;
+    background-size: 5%;
+}
+select:hover {
+    cursor: pointer;
+}
+select:active {
+}
+select.full-select {
+    width: 100%;
+}
+.line {
+    width: 100%;
+    margin: 20px 0;
+    background: #999999;
+    height: 1px;
+}
+.col-10 {
+    width: 100%;
+    padding: 0 10px;
+}
+.col-9 {
+    width: 90%;
+    float: left;
+    padding: 0 10px;
+}
+.col-8 {
+    width: 80%;
+    float: left;
+    padding: 0 10px;
+}
+.col-7 {
+    width: 70%;
+    float: left;
+    padding: 0 10px;
+}
+.col-6 {
+    width: 60%;
+    float: left;
+    padding: 0 10px;
+}
+.col-5 {
+    width: 50%;
+    float: left;
+    padding: 0 10px;
+}
+.col-4 {
+    width: 40%;
+    float: left;
+    padding: 0 10px;
+}
+.col-3 {
+    width: 30%;
+    float: left;
+    padding: 0 10px;
+}
+.col-2 {
+    width: 20%;
+    float: left;
+    padding: 0 10px;
+}
+.col-1 {
+    width: 10%;
+    float: left;
+    padding: 0 10px;
+}
+.col-offset-1 {
+    margin-left: 10%;
+}
+.col-offset-2 {
+    margin-left: 20%;
+}
+.clr {
+    clear: both;
+}
+a, a:hover, a:visited {
+    color: #0a85d7;
     text-decoration: none;
 }
-a.nav-a:hover {
-    color: #f00;
+a:hover {
+    text-decoration: underline;
+}
+.rounded {
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+}
+.wrapper {
+    width: 100%;
+    margin: 0 auto;
+    height: 100%;
+    min-width: 1200px;
+}
+.text-center {
+    text-align: center;
+}
+.text-left {
+    text-align: left;
+}
+.text-right {
+    text-align: right;
+}
+.no-padding-left {
+    padding-left: 0;
+}
+.no-padding-right {
+    padding-right: 0;
+}
+.no-margin {
+    margin: 0!important;
+}
+.green-bg {
+    background: #0ad7a0;
+}
+.red-bg {
+    background: #d43f3a;
+}
+.grey-bg {
+    background: #999999;
+}
+.error {
+    color: #cc324b;
+    margin: 10px 0 0 0;
+    border-top: 1px solid #fff;
+}
+.error span {
+    display: block;
+    padding-bottom: 10px;
+}
+.error span:last-child{
+    padding-bottom: 0;
+}
+
+/*navigation styles*/
+#nav {
+    background: #2e2e2e;
+    height: 60px;
+    padding: 0 0 0 40px;
+}
+#nav .col-2, #nav .col-1, #nav .col-9 {
+    height: 100%;
+}
+/*#nav .col-1 {*/
+    /*width: 100%;*/
+/*}*/
+#nav .col-9 .col-2,
+#nav .col-9 .col-1{
+    padding-left: 0;
+    padding-right: 0;
+}
+#nav .col-9 {
+    padding: 0;
+}
+#nav #img-logo {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+}
+#nav .nav-a {
+    color: #ccc;
+    text-decoration: none;
+    display: inline-block;
+    height: 100%;
+    width: 100%;
+    padding-top: 24px;
+}
+#nav .nav-a:hover {
+    color: #fff;
+    background: #333333;
     text-decoration: none;
     cursor: pointer;
 }
+#nav .nav-a.logout {
+    color: #fff;
+    font-size: 12px;
+    text-align: center;
+    line-height: 16px;
+    width: 100%;
+    background: #cc324b;
+    padding: 24px 20px 0;
+}
+#nav .nav-a.logout:hover {
+    text-decoration: none;
+}
+#nav ul.user-ul {
+    overflow: hidden;
+    height: 0;
+    margin: 0;
+    padding: 0;
+    -webkit-transition: height 0.2s ease-out;
+    -moz-transition: height 0.2s ease-out;
+    -o-transition: height 0.2s ease-out;
+    transition: height 0.2s ease-out;
+}
+#nav .nav-a.logout:hover + ul.user-ul {
+    display: block;
+    height: 68px;
+}
+#nav ul.user-ul:hover{
+    display: block;
+    height: 68px;
+}
+#nav ul.user-ul li {
+    list-style: none;
+    background: #2e2e2e;
+    text-align: left;
+}
+#nav ul.user-ul li a.nav-a {
+    padding: 10px 20px;
+    font-size: 12px;
+}
+#nav ul.user-ul li:hover {
+    background: #333333;
+}
+
+
+/*main view container*/
+#mainView {
+    position: relative;
+    height: 100%;
+}
+
+/*login/signup styles*/
+#logUp {
+    background: #fff;
+    width: 450px;
+    margin: 250px auto 0;
+    padding: 20px;
+    position: relative;
+    border: 1px solid #e5e5e5;
+}
+#logUp .border-top {
+    border-top: 2px solid #323333;
+}
+#logUp .hidden,
+#sigSuc.hidden,
+#logUp.hidden{
+    width: 0;
+    height: 0;
+    overflow: hidden;
+    padding: 0;
+    margin: 0;
+}
+#logUp .sign {
+    font-size: 12px;
+    border-top: 1px solid #e5e5e5;
+    margin-top: 10px;
+    padding: 10px 0 0 0;
+}
+#logUp .col-5 {
+    height: 100%;
+    padding: 0 20px 0 0;
+}
+#logUp .col-5:nth-child(2){
+    padding: 0 0 0 20px;
+}
+#logUp h1 {
+    margin-top: 0;
+}
+#logUp label {
+    padding: 0;
+    margin-bottom: 5px;
+    display: block;
+}
+#logUp input {
+    float: right;
+    margin-bottom: 10px;
+    width: 100%;
+}
+#logUp input[type='submit'] {
+    margin-bottom: 0;
+}
+
+/*signup sucess styles*/
+#sigSuc {
+    background: #fff;
+    width: 400px;
+    margin: 250px auto 0;
+    padding: 20px;
+    position: relative;
+}
+#sigSuc h1 {
+    margin: 0 0 10px;
+}
+#sigSuc a {
+    float: none;
+    display: inline-block;
+}
+
+/*claim styles*/
+#claim {
+    margin: 20px 40px;
+    padding: 20px;
+    background: #fff;
+    border: 1px solid #e5e5e5;
+}
+#claim h1 {
+    border-bottom: 1px solid #e5e5e5;
+    padding-bottom: 10px;
+}
+#claim form {
+    text-align: left;
+}
+#claim form .col-2 {
+    padding-right: 0;
+}
+#claim input,
+#claim textarea {
+    width: 100%;
+    margin-bottom: 10px;
+
+}
+#claim input[type='submit'] {
+    margin-bottom: 0;
+}
+#claim textarea {
+    min-height: 100px;
+    max-width: 100%;
+    resize: vertical;
+}
+#claim label {
+    display: block;
+    margin: 0 0 5px;
+}
+#claim input[type='submit'] {
+    padding: 5px 10px;
+}
+#claim td.commentTd {
+    border: none;
+    border-right: 1px solid #2e2e2e;
+    padding: 0;
+}
+
+#claim td.commentTd th,
+#claim td.commentTd td {
+    border-right: none;
+}
+
+#claim .tagFilter {
+    display: inline-block;
+    padding: 5px 10px;
+    text-align: center;
+    background: #0ad7a0;
+    color: #fff;
+    cursor: pointer;
+    margin-right: 10px;
+    font-size: 14px;
+    line-height: 14px;
+    margin-bottom: 10px;
+}
+#claim .tagFilter.allTags {
+    background: #d7a90a;
+}
+#claim table {
+    border-collapse: collapse;
+    line-height: 14px;
+}
+
+#claim table td,
+#claim table th{
+    border: 1px solid #2e2e2e;
+    padding: 5px 10px;
+}
+#claim table thead {
+    background: #2e2e2e;
+    color: #fff;
+}
+/*claims modal window */
+body.modal-open {
+    width: 100%;
+    height: 100%;
+}
+.modal-backdrop {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #000;
+    opacity: 0.5;
+}
+#modal .modal-content {
+    color: #000000;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 600px;
+    margin: 200px 0 0 -300px;
+    padding: 20px;
+    background: #fff;
+}
+#acceptClaimModal, #declineClaimModal {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}
+#acceptClaimModal {
+    background: url(../img/accept_ico.png);
+    margin-right: 10px;
+}
+#declineClaimModal {
+    background: url(../img/cancel_ico.png);
+}
+.claim-comments-wrapper {
+    border: 1px solid #e6e6e6;
+    margin: 20px 0 40px;
+    padding: 10px;
+}
+.claim-comments-wrapper:last-child {
+    margin: 20px 0 0;
+}
+.claim-title {
+    font-size: 20px;
+    line-height: 20px;
+    font-family: GothamProBold;
+    border-bottom: 1px solid #e6e6e6;
+    padding-bottom: 5px;
+}
+.claim-note {
+    padding: 10px 0;
+    border-bottom: 1px solid #e6e6e6;
+}
+.claim-comments-list {
+    padding-left: 100px;
+}
+.claim-comments-heading {
+    font-family: GothamProBold;
+    font-size: 14px;
+    line-height: 14px;
+    padding: 10px 0 8px;
+    border-bottom: 1px solid #e6e6e6;
+}
+.claim-comment-author {
+    padding: 10px 0 2px;
+    display: inline-block;
+    font-size: 12px;
+    line-height: 12px;
+    color: #0a72cc;
+}
+.claim-author {
+    font-family: GothamProItalic;
+    font-size: 12px;
+    line-height: 12px;
+}
+.claim-comment-content {
+    padding: 10px 0;
+    border-bottom: 1px solid #e6e6e6;
+}
+.claim-add-comment {
+    padding-left: 100px;
+    margin: 20px 0 0;
+}
+.claim-add-new-comment-button,
+.claim-resolve {
+    width: 200px!important;
+    float: right;
+    margin-bottom: 10px!important;
+}
+.claim-resolve {
+    margin-bottom: 0!important;
+    background: #25c018!important;
+    border: none!important;
+}
+
 
