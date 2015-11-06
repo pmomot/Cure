@@ -1,4 +1,4 @@
-MyApp.controller('MainController', ['$scope','$rootScope','$state','Auth','$window', function($scope, $rootScope, $state, Auth, $window){
+MyApp.controller('MainController', ['$scope','$rootScope','$state','Auth', function($scope, $rootScope, $state, Auth){
 
     var vm = $scope;
 
@@ -7,15 +7,22 @@ MyApp.controller('MainController', ['$scope','$rootScope','$state','Auth','$wind
         email: /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i,
         password: /^\S{4,}$/
     };
+    vm.changePassData = {
+        currentPass: '',
+        newPass: '',
+        newPassRepeat: ''
+    };
     vm.loginData = {};
     vm.signUpData = {};
     vm.errors = {
         loginError: [],
         signUpError: [],
+        changePassError: [],
         logoutError: []
     };
     vm.user = vm.$parent.user;
     vm.loggedIn = Auth.isLoggedIn();
+
     $rootScope.$on('$stateChangeStart', function(e, toState){
         vm.loggedIn = Auth.isLoggedIn();
         vm.loginData = {};
@@ -23,6 +30,7 @@ MyApp.controller('MainController', ['$scope','$rootScope','$state','Auth','$wind
         vm.errors = {
             loginError: [],
             signUpError: [],
+            changePassError: [],
             logoutError: []
         };
     });
@@ -50,6 +58,42 @@ MyApp.controller('MainController', ['$scope','$rootScope','$state','Auth','$wind
                 }
             }
         );
+    };
+
+    vm.changePass = function(){
+        vm.processing = true;
+        vm.errors.changePassError = [];
+
+        if((vm.changePassData.newPass == vm.changePassData.newPassRepeat) && (vm.changePassData.newPass != '') && (vm.changePassData.newPassRepeat != '')){
+            if(!vm.regExes.password.test(vm.changePassData.newPass) || !vm.regExes.password.test(vm.changePassData.newPassRepeat)){
+                vm.errors.changePassError.push('New password must be at least 4 characters long and not contain spaces.')
+            }else{
+                Auth.changePass(vm.changePassData.currentPass, vm.changePassData.newPass, vm.user.email)
+
+                    .success(function(data){
+                    vm.processing = false;
+                    vm.errors.changePassError = [];
+                    if(data.success){
+                        vm.showSuccess();
+                    }else{
+                        if(data.errmsg){
+                            vm.errors.changePassError.push('You have entered wrong current password.');
+                        }else{
+                            vm.errors.changePassError.push(data.message);
+                        }
+                    }
+                })
+            }
+        }else{
+            vm.errors.changePassError.push('New passwords do not match or are empty.');
+        }
+    };
+
+    vm.changePassPage = function(){
+
+        vm.processing = true;
+
+        $state.go('home.changePass');
     };
 
     vm.doSignUp = function(){
@@ -112,24 +156,31 @@ MyApp.controller('MainController', ['$scope','$rootScope','$state','Auth','$wind
     };
 
     vm.showSuccess = function(){
-        angular.element('#sigSuc, #logUp').toggleClass('hidden');
         vm.loginData = {};
         vm.signUpData = {};
         vm.errors = {
             loginError: [],
             signUpError: [],
+            changePassError: [],
             logoutError: []
         };
+        angular.element('#sigSuc, #logUp').toggleClass('hidden');
     };
 
-    vm.hideSuccess = function(){
-        angular.element('#sigSuc, #logUp').toggleClass('hidden');
-        vm.showSignUp();
+    vm.hideSuccess = function(ifPassChange){
+        if(ifPassChange){
+            vm.doLogout();
+            $state.go('home.login');
+        }else{
+            angular.element('#sigSuc, #logUp').toggleClass('hidden');
+            vm.showSignUp();
+        }
     };
 
     $rootScope.$watch('user', function() {
         vm.user = $rootScope.user;
     });
-
-
+    $rootScope.$watch('currentClaimType', function() {
+        vm.currentClaimType = $rootScope.currentClaimType;
+    });
 }]);

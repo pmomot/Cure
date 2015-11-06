@@ -7,12 +7,26 @@ var MyApp = angular.module('MyApp', ['ui.router'])
             .state('home',{
                 url: '/home',
                 templateUrl: '../views/pages/home.html',
-                controller: 'MainController'
+                controller: 'MainController',
+                data:{
+                    claimType: undefined
+                }
             })
             .state('home.login',{
                 url: '/login',
                 templateUrl: '../views/pages/login.html',
-                controller: 'MainController'
+                controller: 'MainController',
+                data:{
+                    claimType: undefined
+                }
+            })
+            .state('home.changePass',{
+                url: '/changePass',
+                templateUrl: '../views/pages/changePass.html',
+                controller: 'MainController',
+                data:{
+                    claimType: undefined
+                }
             })
             .state('home.purchases',{
                 url: '/purchases',
@@ -78,11 +92,20 @@ var MyApp = angular.module('MyApp', ['ui.router'])
                     $rootScope.user = data.data;
                 }
             );
-            var loginPage = toState.name;
+            var toPage = toState.name;
 
-            if (loginPage != 'home.login' && !Auth.isLoggedIn()) {
+            if ((toPage != 'home.login' && !Auth.isLoggedIn()) || (toPage == 'home.changePass' && !Auth.isLoggedIn())) {
                 event.preventDefault();
                 $state.go('home.login');
+            }
+
+            if ((toPage == 'home') || (toPage == 'home.login' && Auth.isLoggedIn())) {
+                event.preventDefault();
+                $state.go('home.purchases');
+            }
+
+            if (toPage == 'home.changePass'){
+                $rootScope.currentClaimType = undefined;
             }
         });
 

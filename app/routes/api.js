@@ -100,6 +100,40 @@ module.exports = function(app, express){
         }
     });
 
+    api.post('/changePass', function(req, res){
+        User.findOne({
+            email: req.body.email
+        }).select('password').exec(function(err, user){
+            if(err) throw err;
+            if(!user) {
+                res.send({message: 'User does not exist'})
+            } else if(user){
+                var token = createToken(user);
+                var validPassword = user.comparePassword(req.body.currentPass);
+                if(!validPassword){
+                    res.send({
+                        success: false,
+                        message: 'Invalid current password',
+                        token: token
+                    })
+                } else {
+                    user.password = req.body.newPass;
+                    user.save(function(err){
+                        if(err){
+                            res.send(err);
+                            return;
+                        }
+                        res.json({
+                            success: true,
+                            message: "Password has been changed.",
+                            token: token
+                        });
+                    });
+                }
+            }
+        })
+    });
+
     api.route('/addClaim')
         .post(function(req, res){
 
@@ -125,7 +159,6 @@ module.exports = function(app, express){
         })
 
         .get(function(req, res){
-            console.log(req.query.claimType);
             Claim.find({claimType: req.query.claimType}, function(err, claims){
                 if(err){
                     res.send(err);
@@ -183,6 +216,7 @@ module.exports = function(app, express){
     api.post('/sendClaims', function(req, res){
         var calls = [];
         req.body.claims.forEach(function(claim){
+            if(!claim.claimComment){claim.claimComment = 'None.'}
             calls.push(function(callback){
                 var transporter = nodemailer.createTransport(smtpTransport({
                     service: 'Gmail',
@@ -193,23 +227,21 @@ module.exports = function(app, express){
                 }));
 
                 transporter.sendMail({
-                    from: req.body.currentUser.email,
+                    from: 'Malkos HRs',
                     to: claim.authorEmail,
                     subject: 'Your claim has been resolved',
-                    text: 'Hello, ' + claim.fullName +'. Your claim: ' + claim.claimTitle + 'has been ' + claim.status + '.'
+                    html: '<h3>Hello, ' + claim.fullName +'.</h3>' +
+                          '<p>Your <span style="text-transform: lowercase">'+claim.claimType+'</span> claim: "' + claim.claimTitle + '" has been ' + claim.status + '.</p>' +
+                          '<p>Comment: '+claim.claimComment+'</p>'
                 }, function(err1, info){
                     if(err1){
-                        console.log(err1);
                     } else {
                         Claim.findOne({_id: claim._id}).exec(function(err2, claim){
-                                console.log(claim);
                                 if(err2){
-                                    console.log(err2);
                                 }else{
                                     claim.status = 'resolved';
                                     claim.save(function(err3){
                                         if(err3) {
-                                            console.log(err3)
                                         }else{
                                             callback();
                                         }
@@ -228,11 +260,12 @@ module.exports = function(app, express){
                 return console.log(err);
             } else {
                 res.json({message: 'Successfully resolved all claims.', status: 'success'});
-                console.log(result);
             }
         });
     });
 
+
+    // Function is triggered when a discussion is added
     api.post('/sendOneClaim', function(req, res){
 
         var transporter = nodemailer.createTransport(smtpTransport({
@@ -242,33 +275,19 @@ module.exports = function(app, express){
                     pass: "radiohead88"
                 }
             }));
-
+        if(!req.body.claim.claimComment){req.body.claim.claimComment = 'None.'}
             transporter.sendMail({
-                from: req.body.currentUser.email,
+                from: 'Malkos HRs',
                 to: req.body.claim.claimRecipient.email,
-                subject: 'A new claim notification.',
-                text: 'Hello, ' + req.body.claim.claimRecipient.firstName + ' ' + req.body.claim.claimRecipient.lastName + '. Your claim: ' + req.body.claim.claimTitle + 'has been ' + req.body.claim.status + '.'
+                //to: 'vyokhna@gmail.com', //TODO remove this
+                subject: 'New claim notification.',
+                html: '<h3>Hello, ' + req.body.claim.claimRecipient.firstName + ' ' + req.body.claim.claimRecipient.lastName + '.</h3>' +
+                      '<p>Discussion: "' + req.body.claim.claimTitle + '" has been added.</p>'+
+                      '<p>Description: '+req.body.claim.claimComment+'</p>'
             }, function(err1, info){
                 if(err1){
-                    console.log(err1);
                 } else {
-                    res.json({message: 'Successfully resolved all claims.', status: 'success'});
-                    //Claim.findOne({_id: claim._id}).exec(function(err2, claim){
-                    //        console.log(claim);
-                    //        if(err2){
-                    //            console.log(err2);
-                    //        }else{
-                    //            claim.status = 'resolved';
-                    //            claim.save(function(err3){
-                    //                if(err3) {
-                    //                    console.log(err3)
-                    //                }else{
-                    //                    callback();
-                    //                }
-                    //            })
-                    //        }
-                    //    }
-                    //);
+                    res.json({message: 'Successfully sent a claim.', status: 'success'});
                 }
             })
 
@@ -277,9 +296,7 @@ module.exports = function(app, express){
     api.post('/addComment', function(req, res){
 
         Claim.findByIdAndUpdate(req.body.claimId, {$push: {claimComments: req.body.comment}}, {safe: true, upsert: true}, function(err, model) {
-
             if(err){
-                console.log(err);
             }else{
                 var transporter = nodemailer.createTransport(smtpTransport({
                     service: 'Gmail',
@@ -288,15 +305,16 @@ module.exports = function(app, express){
                         pass: "radiohead88"
                     }
                 }));
-
                 transporter.sendMail({
-                    from: 'Malkos',
+                    from: 'Malkos HRs',
                     to: req.body.claimRecipient.email,
-                    subject: 'A new claim notification.',
-                    text: 'Hello, ' + req.body.claimRecipient.firstName + ' ' + req.body.claimRecipient.lastName + '. Your claim: ' + req.body.claimTitle + 'has a new comment: <br/>'
+                    //to: 'vyokhna@gmail.com', // TODO remove this
+                    subject: 'A comment has been added to your discussion.',
+                    html: '<h3>Hello, ' + req.body.claimRecipient.firstName + ' ' + req.body.claimRecipient.lastName + '.</h3>' +
+                          '<p>Your claim: "' + req.body.claimTitle + '" has a new comment: '+ req.body.comment.content+'</p>' +
+                          '<p>From: '+ req.body.comment.author.firstName + ' ' + req.body.comment.author.lastName + '.</p>'
                 }, function(err1, info){
                     if(err1){
-                        console.log(err1);
                     } else {
                         res.json({message: 'Successfully added a comment', status: 'success'});
                     }

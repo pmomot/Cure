@@ -14,6 +14,19 @@ MyApp.factory('Auth', ['$http','$q','AuthToken',function($http, $q, AuthToken){
         })
     };
 
+    authFactory.changePass = function(currentPass, newPass, email){
+        var token = AuthToken.getToken();
+        return $http({url: '/api/changePass', method: 'POST', headers:{'x-access-token': token}, data:{
+            currentPass: currentPass,
+            newPass: newPass,
+            email: email
+        }})
+            .success(function(data){
+                AuthToken.setToken(data.token);
+                return data;
+            })
+    };
+
     authFactory.signUp = function(userGroup, firstName, lastName, email, password){
 
         return $http.post('/api/signup', {
