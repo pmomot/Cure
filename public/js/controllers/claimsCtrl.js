@@ -33,24 +33,19 @@ MyApp.controller('ClaimsController', ['$scope','$rootScope','$state','$window', 
     vm.getClaimsByType = function(processing){
         vm.processing = true;
         ClaimService.getClaimsByType(vm.currentClaimType).success(function(data){
-            if(processing){
-                vm.processing = true;
-            }else{
-                vm.processing = false;
-            }
+            vm.processing = processing;
             vm.tagsAvailability = {};
             vm.claimList = data;
+            console.log(data)
             vm.claimList.clean = true;
             vm.claimList.hasOpen = false;
             vm.claimList.hasUnresolved = false;
             vm.claimList.forEach(function(claim){
-
                 for (var i=0; i<vm.tagsList.length; i++) {
                     if (vm.tagsList[i].match(claim.claimTag) && claim.status == 'open'){
                         vm.tagsAvailability[claim.claimTag] = true;
                     }
                 }
-
                 if (claim.status != 'open'){
                     vm.claimList.clean = false;
                 }
@@ -67,7 +62,6 @@ MyApp.controller('ClaimsController', ['$scope','$rootScope','$state','$window', 
     vm.getHrs = function(){
         ClaimService.getHrs().success(function(data){
             vm.hrs = data;
-            console.log(vm.hrs);
         })
     };
 
@@ -79,16 +73,12 @@ MyApp.controller('ClaimsController', ['$scope','$rootScope','$state','$window', 
         vm.errors.addingError = [];
         var uniqueTitle = true;
         var fullName = vm.user.firstName + ' ' + vm.user.lastName;
-
         vm.claimList.forEach(function(claim) {
-
             if (vm.currentClaim.claimTitle == claim.claimTitle && claim.status == 'open'){
                 alert('claim with such title already exists');
                 uniqueTitle = false;
                 vm.processing = false;
-                return;
             }
-
         });
         if(uniqueTitle) {
             vm.processing = true;
@@ -217,9 +207,19 @@ MyApp.controller('ClaimsController', ['$scope','$rootScope','$state','$window', 
 
     vm.removeLastAddedClass = function(){
         vm.classRemoved = true;
-      $timeout(function(){
-          vm.classRemoved = false;
-      }, 1000);
+        $timeout(function(){
+            vm.classRemoved = false;
+        }, 1000);
+    };
+
+    vm.checkCheckedCheckboxes = function(){
+        var disabled = true;
+        vm.claimList.forEach(function(claim){
+            if(claim.checked){
+                disabled = false;
+            }
+        });
+        return disabled;
     };
 
     vm.getClaimsByType();

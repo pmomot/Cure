@@ -2,11 +2,9 @@ var express = require('express'),
     bodyParser = require('body-parser'),
     morgan = require('morgan'),
     config = require('./config'),
-    mongoose = require('mongoose');
-
-
-var app = express();
-
+    mongoose = require('mongoose'),
+    app = express(),
+    api = require('./app/routes/api')(app, express);
 
 mongoose.connect(config.database, function(err){
     if(err){
@@ -19,11 +17,7 @@ mongoose.connect(config.database, function(err){
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 app.use(morgan('dev'));
-
 app.use(express.static(__dirname + '/public'));
-
-var api = require('./app/routes/api')(app, express);
-
 app.use('/api', api);
 
 app.get('*', function(req, res){

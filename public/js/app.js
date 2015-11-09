@@ -1,9 +1,7 @@
 var MyApp = angular.module('MyApp', ['ui.router'])
 
     .config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider){
-
         $stateProvider
-
             .state('home',{
                 url: '/home',
                 templateUrl: '../views/pages/home.html',
@@ -85,7 +83,6 @@ var MyApp = angular.module('MyApp', ['ui.router'])
     }])
 
     .run(['$rootScope','$state', '$window', 'Auth', function ($rootScope, $state, $window, Auth) {
-
         $rootScope.$on('$stateChangeStart', function (event, toState, toParams) {
             Auth.getUser($window.localStorage.token)
                 .then(function(data){
@@ -93,21 +90,17 @@ var MyApp = angular.module('MyApp', ['ui.router'])
                 }
             );
             var toPage = toState.name;
-
             if ((toPage != 'home.login' && !Auth.isLoggedIn()) || (toPage == 'home.changePass' && !Auth.isLoggedIn())) {
                 event.preventDefault();
                 $state.go('home.login');
             }
-
             if ((toPage == 'home') || (toPage == 'home.login' && Auth.isLoggedIn())) {
                 event.preventDefault();
                 $state.go('home.purchases');
             }
-
             if (toPage == 'home.changePass'){
                 $rootScope.currentClaimType = undefined;
             }
         });
-
     }]);
 

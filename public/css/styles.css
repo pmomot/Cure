@@ -1,41 +1,51 @@
-* {
-    box-sizing: border-box;
+*
+{
     font-family: GothamProRegular, sans-serif;
     font-size: 14px;
+
+    box-sizing: border-box;
 }
-html {
-    margin: 0;
-    padding: 0;
+html
+{
     min-width: 1200px;
     height: 100%;
-}
-body {
-    background: #f0f0f0;
-    color: #262626;
     margin: 0;
     padding: 0;
-    min-width: 1200px;
-    height: 100%;
+}
+body
+{
     position: relative;
+
+    min-width: 1200px;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+
+    color: #262626;
+    background: #f0f0f0;
 }
-h1 {
+h1
+{
     font-size: 28px;
 }
 input[type='text'],
 input[type='password'],
 input[type='email'],
-textarea, select {
-    background: #f9f9f9;
-    -webkit-border-radius: 3px;
-    -moz-border-radius: 3px;
-    border-radius: 3px;
-    border: 1px solid #e6e6e6;
-    color: #656565;
-    outline: none;
-    padding: 5px 10px;
+textarea,
+select
+{
     font-size: 14px;
     line-height: 14px;
 
+    padding: 5px 10px;
+
+    color: #656565;
+    border: 1px solid #e6e6e6;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    outline: none;
+    background: #f9f9f9;
 }
 input[type='text']:active,
 input[type='password']:active,
@@ -46,726 +56,991 @@ input[type='text']:focus,
 input[type='password']:focus,
 input[type='email']:focus,
 textarea:focus,
-select:focus{
-    border: 1px solid #0a85d7;
+select:focus
+{
     color: #262626;
+    border: 1px solid #0a85d7;
 }
-input[type='submit'] {
+input[type='submit']
+{
+    font-size: 14px;
+    line-height: 14px;
+
+    padding: 10px;
+
+    cursor: pointer;
+    text-align: center;
+
     color: #fff;
-    background: #0a85d7;
+    border: 1px solid #0a72cc;
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
     border-radius: 3px;
-    border: 1px solid #0a72cc;
-    text-align: center;
-    padding: 10px;
     outline: none;
-    cursor: pointer;
-    font-size: 14px;
-    line-height: 14px;
+    background: #0a85d7;
 }
-input[type='submit']:active {
+input[type='submit']:active
+{
     background: #0a72cc;
 }
-input[type="checkbox"]{
-    margin: 0;
-    padding: 0;
-    text-align: center;
-    display: inline-block;
-    width: 20px!important;
-    margin-bottom: 0!important;
-    height: 25px;
+input[type='submit']:disabled
+{
+    background: #f0f0f0;
+    cursor: default;
+    border: 1px solid #fff;
 }
-select {
+input[type='checkbox']
+{
+    display: inline-block;
+
+    width: 20px!important;
+    height: 25px;
+    margin: 0;
+    margin-bottom: 0!important;
+    padding: 0;
+
+    text-align: center;
+}
+select
+{
     width: 200px;
+
+    background-image: url(../img/selectBg.png);
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 4%;
+
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
-    background-image: url(../img/selectBg.png);
-    background-position: right 10px center;
-    background-repeat: no-repeat;
-    background-size: 4%;
 }
-select:hover {
+select:hover
+{
     cursor: pointer;
 }
-select:active {
-}
-select.full-select {
+
+select.full-select
+{
     width: 100%;
 }
-.cp {
+.cp
+{
     cursor: pointer;
 }
-.line {
+.line
+{
     width: 100%;
-    margin: 20px 0;
-    background: #999999;
     height: 1px;
+    margin: 20px 0;
+
+    background: #999;
 }
-.col-10 {
+.col-10
+{
     width: 100%;
     padding: 0 10px;
 }
-.col-9 {
+.col-9
+{
+    float: left;
+
     width: 90%;
-    float: left;
     padding: 0 10px;
 }
-.col-8 {
+.col-8
+{
+    float: left;
+
     width: 80%;
-    float: left;
     padding: 0 10px;
 }
-.col-7 {
+.col-7
+{
+    float: left;
+
     width: 70%;
-    float: left;
     padding: 0 10px;
 }
-.col-6 {
+.col-6
+{
+    float: left;
+
     width: 60%;
-    float: left;
     padding: 0 10px;
 }
-.col-5 {
+.col-5
+{
+    float: left;
+
     width: 50%;
-    float: left;
     padding: 0 10px;
 }
-.col-4 {
+.col-4
+{
+    float: left;
+
     width: 40%;
-    float: left;
     padding: 0 10px;
 }
-.col-3 {
+.col-3
+{
+    float: left;
+
     width: 30%;
-    float: left;
     padding: 0 10px;
 }
-.col-2 {
+.col-2
+{
+    float: left;
+
     width: 20%;
-    float: left;
     padding: 0 10px;
 }
-.col-1 {
+.col-1
+{
+    float: left;
+
     width: 10%;
-    float: left;
     padding: 0 10px;
 }
-.col-offset-1 {
+.col-offset-1
+{
     margin-left: 10%;
 }
-.col-offset-2 {
+.col-offset-2
+{
     margin-left: 20%;
 }
-.clr {
+.clr
+{
     clear: both;
 }
-a, a:hover, a:visited {
-    color: #0a85d7;
+a,
+a:hover,
+a:visited
+{
     text-decoration: none;
+
+    color: #0a85d7;
 }
-a:hover {
+a:hover
+{
     text-decoration: underline;
 }
-.rounded {
+.rounded
+{
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
     border-radius: 3px;
 }
-.wrapper {
+.wrapper
+{
     width: 100%;
-    margin: 0 auto;
-    height: 100%;
     min-width: 1200px;
+    height: 100%;
+    margin: 0 auto;
 }
-.text-center {
+.text-center
+{
     text-align: center;
 }
-.text-left {
+.text-left
+{
     text-align: left;
 }
-.text-right {
+.text-right
+{
     text-align: right;
 }
-.hidden {
+.hidden
+{
     display: none;
 }
-.no-padding-left {
+.no-padding-left
+{
     padding-left: 0;
 }
-.no-padding-right {
+.no-padding-right
+{
     padding-right: 0;
 }
-.no-padding-bottom {
+.no-padding-bottom
+{
     padding-bottom: 0!important;
 }
-.no-margin {
+.no-margin
+{
     margin: 0!important;
 }
-.green-bg {
+.green-bg
+{
     background: #0ad7a0;
 }
-.red-bg {
+.red-bg
+{
     background: #d43f3a;
 }
-.grey-bg {
-    background: #999999;
+.grey-bg
+{
+    background: #999;
 }
-.left-bordered {
+.left-bordered
+{
     border-left: 1px solid #e3e3e3;
 }
-.error {
-    color: #cc324b;
+.error
+{
     margin: 10px 0 0 0;
+
+    color: #cc324b;
     border-top: 1px solid #fff;
 }
-.error span {
+.error span
+{
     display: block;
+
     padding-bottom: 10px;
 }
-.error span:last-child{
+.error span:last-child
+{
     padding-bottom: 0;
 }
 
 /*navigation styles*/
-#nav {
-    background: #2e2e2e;
-    height: 60px;
-    padding: 0 0 0 40px;
+#nav
+{
     position: relative;
     z-index: 300;
+
+    height: 60px;
+    padding: 0 0 0 40px;
+
+    background: #2e2e2e;
 }
-#nav .col-2, #nav .col-1, #nav .col-9 {
+#nav .col-2,
+#nav .col-1,
+#nav .col-9
+{
     height: 100%;
 }
 #nav .col-9 .col-2,
-#nav .col-9 .col-1{
-    padding-left: 0;
+#nav .col-9 .col-1
+{
     padding-right: 0;
+    padding-left: 0;
 }
-#nav .col-9 {
+#nav .col-9
+{
     padding: 0;
 }
-.main-head {
+.main-head
+{
     position: relative;
-    border-bottom: 1px solid #e5e5e5;
-    text-align: left;
+
     margin-bottom: 10px;
+
+    text-align: left;
+
+    border-bottom: 1px solid #e5e5e5;
 }
-.main-head .tooltip-sign {
-    background: url(../img/help.png);
+.main-head .tooltip-sign
+{
     position: relative;
     top: -20px;
-    height: 16px;
+
+    display: inline-block;
+
     width: 16px;
+    height: 16px;
+
     cursor: pointer;
-    display: inline-block;
+
+    background: url(../img/help.png);
 }
-.main-head .tooltip-content {
-    background: rgb(243, 249, 253);
-    position: relative;
-    left: 0;
-    top: -24px;
+.main-head .tooltip-content
+{
     line-height: 14px;
-    width: auto;
-    text-align: left;
-    padding: 3px;
+
+    position: relative;
+    top: -24px;
+    left: 0;
+
     display: none;
-    border: 1px solid #808080
+
+    width: auto;
+    padding: 3px;
+
+    text-align: left;
+
+    border: 1px solid #808080;
+    background: rgb(243, 249, 253);
 }
-.main-head .tooltip-sign:hover+.tooltip-content {
+.main-head .tooltip-sign:hover + .tooltip-content
+{
     display: inline-block;
 }
-#nav #img-logo {
+#nav #img-logo
+{
     padding-top: 12px;
     padding-bottom: 12px;
+
     text-align: left;
 }
-#nav .nav-a {
-    color: #ccc;
-    text-decoration: none;
+#nav .nav-a
+{
     display: inline-block;
+
+    width: 100%;
     height: 100%;
-    width: 100%;
     padding-top: 24px;
-}
-#nav .nav-a:hover {
-    color: #fff;
-    background: #333333;
+
     text-decoration: none;
+
+    color: #ccc;
+}
+#nav .nav-a:hover
+{
     cursor: pointer;
+    text-decoration: none;
+
+    color: #fff;
+    background: #333;
 }
-#nav .nav-a.active-nav {
+#nav .nav-a.active-nav
+{
+    color: #fff;
     background: #0a85d7;
-    color: #fff;
 }
-#nav .nav-a.logout {
-    color: #fff;
+#nav .nav-a.logout
+{
     font-size: 12px;
-    text-align: center;
     line-height: 16px;
+
     width: 100%;
-    background: #cc324b;
     padding: 24px 20px 0;
+
+    text-align: center;
+
+    color: #fff;
+    background: #cc324b;
 }
-#nav .nav-a.logout:hover {
+#nav .nav-a.logout:hover
+{
     text-decoration: none;
 }
-#nav ul.user-ul {
+#nav ul.user-ul
+{
     overflow: hidden;
+
     height: 0;
     margin: 0;
     padding: 0;
-    -webkit-transition: height 0.2s ease-out;
-    -moz-transition: height 0.2s ease-out;
-    -o-transition: height 0.2s ease-out;
-    transition: height 0.2s ease-out;
+
+    -webkit-transition: height .2s ease-out;
+    -moz-transition: height .2s ease-out;
+    -o-transition: height .2s ease-out;
+    transition: height .2s ease-out;
 }
 #nav .nav-a.logout:hover + ul.user-ul,
-#nav ul.user-ul:hover{
+#nav ul.user-ul:hover
+{
     display: block;
+
     height: auto;
 }
-#nav ul.user-ul li {
+#nav ul.user-ul li
+{
     line-height: 14px;
-    list-style: none;
-    background: #2e2e2e;
-    text-align: left;
-}
-#nav ul.user-ul li a.nav-a {
-    padding: 10px 20px;
-    font-size: 12px;
-}
-#nav ul.user-ul li:hover {
-    background: #333333;
-}
 
+    list-style: none;
+
+    text-align: left;
+
+    background: #2e2e2e;
+}
+#nav ul.user-ul li a.nav-a
+{
+    font-size: 12px;
+
+    padding: 10px 20px;
+}
+#nav ul.user-ul li:hover
+{
+    background: #333;
+}
 
 /*main view container*/
-#mainView {
+#mainView
+{
     position: relative;
+
     height: 100%;
 }
 
 /*login/signup styles*/
-#logUp {
-    background: #fff;
+#logUp
+{
+    position: relative;
+
     width: 450px;
     margin: 250px auto 0;
     padding: 20px;
-    position: relative;
+
     border: 1px solid #e5e5e5;
+    background: #fff;
 }
-#logUp .border-top {
+#logUp .border-top
+{
     border-top: 2px solid #323333;
 }
 #logUp .hidden,
 #sigSuc.hidden,
-#logUp.hidden{
+#logUp.hidden
+{
+    overflow: hidden;
+
     width: 0;
     height: 0;
-    overflow: hidden;
-    padding: 0;
     margin: 0;
+    padding: 0;
 }
-#logUp .sign {
+#logUp .sign
+{
     font-size: 12px;
-    border-top: 1px solid #e5e5e5;
+
     margin-top: 10px;
     padding: 10px 0 0 0;
+
+    border-top: 1px solid #e5e5e5;
 }
-#logUp .col-5 {
+#logUp .col-5
+{
     height: 100%;
     padding: 0 20px 0 0;
 }
-#logUp .col-5:nth-child(2){
+#logUp .col-5:nth-child(2)
+{
     padding: 0 0 0 20px;
 }
-#logUp h1 {
+#logUp h1
+{
     margin-top: 0;
 }
-#logUp label {
-    padding: 0;
-    margin-bottom: 5px;
+#logUp label
+{
     display: block;
+
+    margin-bottom: 5px;
+    padding: 0;
 }
-#logUp input {
+#logUp input
+{
     float: right;
-    margin-bottom: 10px;
+
     width: 100%;
+    margin-bottom: 10px;
 }
-#logUp input[type='submit'] {
+#logUp input[type='submit']
+{
     margin-bottom: 0;
 }
 
 /*signup sucess styles*/
-#sigSuc {
-    background: #fff;
+#sigSuc
+{
+    position: relative;
+
     width: 400px;
     margin: 250px auto 0;
     padding: 20px;
-    position: relative;
+
+    background: #fff;
 }
-#sigSuc h1 {
+#sigSuc h1
+{
     margin: 0 0 10px;
 }
-#sigSuc a {
-    float: none;
+#sigSuc a
+{
     display: inline-block;
+    float: none;
 }
 
 /*claim styles*/
-#claim {
+#claim
+{
     margin: 20px 40px;
     padding: 20px;
-    background: #fff;
+
     border: 1px solid #e5e5e5;
+    background: #fff;
 }
-#claim h1 {
+#claim h1
+{
     display: inline-block;
 }
-#claim form {
+#claim form
+{
     text-align: left;
 }
 #claim input,
-#claim textarea {
+#claim textarea
+{
     width: 100%;
     margin-bottom: 10px;
-
 }
-#claim input[type='submit'] {
+#claim input[type='submit']
+{
     margin-bottom: 0;
 }
-#claim textarea {
-    min-height: 100px;
+#claim textarea
+{
     max-width: 100%;
+    min-height: 100px;
+
     resize: vertical;
 }
-#claim label {
+#claim label
+{
     display: block;
+
     margin: 0 0 5px;
 }
-#claim input[type='submit'] {
+#claim input[type='submit']
+{
     padding: 5px 10px;
 }
-#claim td.commentTd {
+#claim td.commentTd
+{
+    padding: 0;
+
     border: none;
     border-right: 1px solid #2e2e2e;
-    padding: 0;
 }
 
 #claim td.commentTd th,
-#claim td.commentTd td {
+#claim td.commentTd td
+{
     border-right: none;
 }
 
-#claim .tagFilter {
-    display: inline-block;
-    padding: 5px 10px;
-    text-align: center;
-    background: #0a85d7;
-    color: #fff;
-    cursor: pointer;
-    margin-right: 10px;
+#claim .tagFilter
+{
     font-size: 14px;
     line-height: 14px;
+
+    display: inline-block;
+
+    margin-right: 10px;
     margin-bottom: 10px;
+    padding: 5px 10px;
+
+    cursor: pointer;
+    text-align: center;
+
+    color: #fff;
+    background: #0a85d7;
 }
-#claim .tagFilter.active {
+#claim .tagFilter.active
+{
     background: #25c018!important;
 }
-#claim table {
-    border-collapse: collapse;
+#claim table
+{
     line-height: 14px;
+
+    border-collapse: collapse;
 }
 
 #claim table td,
-#claim table th{
-    border: 1px solid #2e2e2e;
+#claim table th
+{
     padding: 5px 10px;
+
+    border: 1px solid #2e2e2e;
 }
-#claim table thead {
-    background: #2e2e2e;
+#claim table thead
+{
     color: #fff;
+    background: #2e2e2e;
 }
 /*claims modal window */
-body.modal-open {
+body.modal-open
+{
     width: 100%;
     height: 100%;
 }
-.modal-backdrop {
+.modal-backdrop
+{
     position: fixed;
     top: 0;
     left: 0;
+
     width: 100%;
     height: 100%;
+
+    opacity: .3;
     background: #000;
-    opacity: 0.3;
 }
-#modal .modal-content {
-    color: #000000;
+#modal .modal-content
+{
     position: absolute;
     top: 0;
     left: 50%;
+
     width: 600px;
     margin: 200px 0 0 -300px;
     padding: 20px;
+
+    color: #000;
     background: #fff;
 }
-#modal .modal-content.spinning{
-    margin: 0;
-    padding: 0;
-    top: 50%;
-    margin-top: -64px;
-    left: 0;
-    width: 100%;
+#modal .modal-content.spinning
+{
     position: fixed;
-    background: none;
     z-index: 100;
+    top: 50%;
+    left: 0;
+
+    width: 100%;
+    margin: 0;
+    margin-top: -64px;
+    padding: 0;
+
+    background: none;
 }
-.modal-backdrop.spinning {
+.modal-backdrop.spinning
+{
     z-index: 101;
 }
-h3.modal-title {
+h3.modal-title
+{
     font-size: 20px;
     line-height: 20px;
 }
-.comment-table {
+.comment-table
+{
     margin-bottom: 10px;
 }
-.add-comment-title {
+.add-comment-title
+{
     font-size: 16px;
     line-height: 16px;
 }
-.close-btn-primary {
+.close-btn-primary
+{
+    font-size: 14px;
+    line-height: 14px;
+
+    padding: 10px;
+
+    cursor: pointer;
+    text-align: center;
+
     color: #fff;
-    background: #0a85d7;
+    border: 1px solid #0a72cc;
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
     border-radius: 3px;
-    border: 1px solid #0a72cc;
-    text-align: center;
-    padding: 10px;
     outline: none;
-    cursor: pointer;
-    font-size: 14px;
-    line-height: 14px;
+    background: #0a85d7;
 }
-.close-btn-primary.btn-warning {
+.close-btn-primary.btn-warning
+{
+    border: none;
     background: #cc324b;
-    border: none;
 }
-.close-btn-primary.btn-decline {
+.close-btn-primary.btn-decline
+{
+    border: none;
     background: #c2b57c;
-    border: none;
 }
-#acceptClaimModal, #declineClaimModal {
+#acceptClaimModal,
+#declineClaimModal
+{
     display: inline-block;
+
     width: 20px;
     height: 20px;
+
     cursor: pointer;
     vertical-align: middle;
 }
-#acceptClaimModal {
+#acceptClaimModal
+{
     background: url(../img/accept_ico.png);
 }
-#declineClaimModal {
+#declineClaimModal
+{
     background: url(../img/cancel_ico.png);
 }
-.claim-comments-container {
+.claim-comments-container
+{
     background: #f3f9fd;
 }
-.claim-comments-container.smaller {
+.claim-comments-container.smaller
+{
     border: 1px solid #808080;
     border-top: none;
 }
-.claim-comments-wrapper {
-    border: 1px solid #e6e6e6;
+.claim-comments-wrapper
+{
     margin: 20px 0 40px;
     padding: 10px;
-    background: rgba(243,249,253,1);
+
     -webkit-transition: all 1s ease-out;
     -moz-transition: all 1s ease-out;
     -o-transition: all 1s ease-out;
     transition: all 1s ease-out;
+
+    border: 1px solid #e6e6e6;
+    background: rgba(243,249,253,1);
 }
-.claim-comments-wrapper:last-child {
+.claim-comments-wrapper:last-child
+{
     margin: 20px 0 0;
 }
 
-.claim-comments-wrapper.smaller {
-    margin: 0;
-    border: none;
-    border-top: 1px solid #808080;
-    padding: 5px;
+.claim-comments-wrapper.smaller
+{
     font-size: 14px;
     line-height: 14px;
+
+    margin: 0;
+    padding: 5px;
+
+    border: none;
+    border-top: 1px solid #808080;
 }
-.claim-comments-wrapper.smaller.last {
-    background: rgba(243,249,253,1);
+.claim-comments-wrapper.smaller.last
+{
     -webkit-transition: all 1s ease-out;
     -moz-transition: all 1s ease-out;
     -o-transition: all 1s ease-out;
     transition: all 1s ease-out;
+
+    background: rgba(243,249,253,1);
 }
-.claim-comments-wrapper.smaller.last.last-added {
-    background: rgba(37,192,24,0.2);
+.claim-comments-wrapper.smaller.last.last-added
+{
     -webkit-transition: all 2s ease-out;
     -moz-transition: all 2s ease-out;
     -o-transition: all 2s ease-out;
     transition: all 2s ease-out;
+
+    background: rgba(37,192,24,.2);
 }
-.claim-title {
+.claim-title
+{
+    font-family: GothamProBold;
     font-size: 20px;
     line-height: 20px;
-    font-family: GothamProBold;
-    border-bottom: 1px solid #e6e6e6;
+
     padding-bottom: 5px;
+
+    border-bottom: 1px solid #e6e6e6;
 }
-.claim-title.smaller {
-    border-bottom: none;
+.claim-title.smaller
+{
+    font-family: GothamProRegular, sans-serif;
     font-size: 14px;
     line-height: 14px;
-    padding-bottom: 0;
+
     padding-top: 5px;
-    font-family: GothamProRegular, sans-serif;
+    padding-bottom: 0;
+
+    border-bottom: none;
 }
-.claim-note {
+.claim-note
+{
     padding: 10px 0;
+
     border-bottom: 1px solid #e6e6e6;
 }
-.claim-comments-list {
+.claim-comments-list
+{
     padding-left: 100px;
 }
-.claim-comments-heading {
+.claim-comments-heading
+{
     font-family: GothamProBold;
     font-size: 14px;
     line-height: 14px;
+
     padding: 10px 0 8px;
+
     border-bottom: 1px solid #e6e6e6;
 }
-.claim-comment-author {
-    padding: 10px 0 2px;
-    display: inline-block;
+.claim-comment-author
+{
     font-size: 12px;
     line-height: 12px;
+
+    display: inline-block;
+
+    padding: 10px 0 2px;
+
     color: #0a72cc;
 }
-.claim-author {
+.claim-author
+{
     font-family: GothamProItalic;
     font-size: 12px;
     line-height: 12px;
+
     color: #0a72cc;
 }
-.claim-comment-content {
+.claim-comment-content
+{
     padding: 10px 0;
+
     border-bottom: 1px solid #e6e6e6;
 }
-.claim-add-comment {
-    padding-left: 100px;
+.claim-add-comment
+{
     margin: 20px 0 0;
+    padding-left: 100px;
 }
-.claim-comment-input {
+.claim-comment-input
+{
     margin-bottom: 7px!important;
 }
 .claim-add-new-comment-button,
-.claim-resolve {
-    width: 200px!important;
+.claim-resolve
+{
     float: right;
+
+    width: 200px!important;
     margin-bottom: 10px!important;
 }
-.claim-add-new-comment-button.smaller {
+.claim-add-new-comment-button.smaller
+{
     margin-top: 10px;
     margin-bottom: 0!important;
 }
-.claim-resolve {
+.claim-resolve
+{
     margin-bottom: 0!important;
-    background: #25c018!important;
+
     border: none!important;
+    background: #25c018!important;
 }
-.claim-resolve.claim-accept {
+.claim-resolve.claim-accept
+{
     width: 120px!important;
 }
-.claim-resolve.claim-decline {
+.claim-resolve.claim-decline
+{
     width: 120px!important;
-    background: #f2654d!important;
     margin-left: 10px!important;
+
+    background: #f2654d!important;
 }
-.claim-tag {
+.claim-tag
+{
     font-size: 12px;
     line-height: 12px;
-    background: #f3a90a;
-    color: #fff;
-    text-align: center;
+
+    margin-bottom: 10px;
     padding: 5px;
+
+    text-align: center;
+
+    color: #fff;
+    background: #f3a90a;
+}
+.claim-author
+{
     margin-bottom: 10px;
 }
-.claim-author {
-    margin-bottom: 10px;
-}
-.top-div {
-    border-bottom: 1px solid #eeeeee;
+.top-div
+{
     padding-bottom: 5px;
+
+    border-bottom: 1px solid #eee;
 }
-.top-div .claim-author {
+.top-div .claim-author
+{
     line-height: 20px;
 }
 .top-div .claim-tag,
 .top-div .claim-author,
-.top-div .claim-add-comment {
+.top-div .claim-add-comment
+{
     display: inline-block;
+
     margin-bottom: 0;
 }
-.top-div .claim-add-comment {
+.top-div .claim-add-comment
+{
+    position: relative;
+
+    float: right;
+
     margin-top: 0;
     padding-left: 0;
-    float: right;
-    position: relative;
 }
-.top-div .claim-add-comment.smaller .claim-status {
+.top-div .claim-add-comment.smaller .claim-status
+{
     display: inline-block;
 }
-.top-div .claim-checkbox {
-    border-left: 1px solid #e6e6e6;
-    padding-left: 5px;
+.top-div .claim-checkbox
+{
     display: inline-block;
+
     margin-top: 4px;
+    padding-left: 5px;
+
+    border-left: 1px solid #e6e6e6;
 }
-.top-div .claim-checkbox input[type='checkbox'] {
+.top-div .claim-checkbox input[type='checkbox']
+{
     height: auto!important;
 }
-.top-div .claim-checkbox input[type='checkbox'][disabled='disabled'] {
-    background: #333333;
+.top-div .claim-checkbox input[type='checkbox'][disabled='disabled']
+{
+    background: #333;
 }
-.claim-status {
+.claim-status
+{
+    display: inline-block;
+
     margin-top: 4px;
     margin-bottom: 3px;
-    display: inline-block;
     padding: 0 5px 0 7px;
+
     border-left: 1px solid #e6e6e6;
 }
-.claim-info {
+.claim-info
+{
     display: inline-block;
-    margin-top: 4px;
-    background: url(../img/information-icon.png) center center no-repeat;
+
     width: 13px;
-    cursor: pointer;
+    margin-top: 4px;
     margin-right: 4px;
+
+    cursor: pointer;
+
+    background: url(../img/information-icon.png) center center no-repeat;
 }
-.comment-tooltip {
+.comment-tooltip
+{
     position: absolute;
-    width: 300px;
     right: -5px;
     bottom: 26px;
-    background: #fff;
-    border: 1px solid #eee;
-    padding: 5px;
+
     display: none;
+
+    width: 300px;
+    padding: 5px;
+
+    border: 1px solid #eee;
+    background: #fff;
 }
-.author-in {
-    display: inline-block;
+.author-in
+{
     font-size: 12px;
     line-height: 20px;
-}
 
+    display: inline-block;
+}

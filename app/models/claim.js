@@ -1,9 +1,6 @@
-var mongoose = require('mongoose');
-
-var Schema = mongoose.Schema;
-
-var Claim = new Schema({
-
+var mongoose = require('mongoose'),
+    Schema = mongoose.Schema,
+    Claim = new Schema({
     creator: {type: Schema.Types.ObjectId, ref: 'User', require: true},
     fullName: String,
     authorEmail: String,
@@ -15,7 +12,6 @@ var Claim = new Schema({
     claimType: {type: String, require: true},
     claimTag: String,
     status: String
-
 });
 
 module.exports = mongoose.model('Claim', Claim);

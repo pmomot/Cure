@@ -51,7 +51,7 @@
                 <div class="claim-comments-wrapper smaller" ng-if="!claimList.hasOpen">
                     There are no pending claims.
                 </div>
-                <div class="claim-comments-wrapper open smaller" ng-repeat="claim in claimList | orderBy: 'claim.modified':true" ng-class="{'last': $first, 'last-added': classRemoved}" ng-if="claim.status == 'open' && (claim.claimTag == activeTag || activeTag == 'All')">
+                <div class="claim-comments-wrapper open smaller" ng-repeat="claim in claimList | orderBy: '-created'" ng-class="{'last': $first, 'last-added': classRemoved}" ng-if="claim.status == 'open' && (claim.claimTag == activeTag || activeTag == 'All')">
                     <div class="col-10 no-padding-left no-padding-right">
                         <div class="col-10 no-padding-left no-padding-right top-div">
                             <div class="claim-author">{{claim.fullName}}</div><div class="author-in" ng-if="tags.length > 0">&nbsp;in&nbsp;</div><div class="claim-tag rounded" ng-if="tags.length > 0">{{claim.claimTag}}</div>
@@ -75,7 +75,7 @@
                 <div class="claim-comments-wrapper smaller" ng-if="claimList.clean">
                     There are no archived claims.
                 </div>
-                <div class="claim-comments-wrapper smaller" ng-repeat="claim in claimList | orderBy: 'claim.modified':true" ng-if="claim.status != 'open'" data-tag="{{claim.claimTag}}">
+                <div class="claim-comments-wrapper smaller" ng-repeat="claim in claimList | orderBy: 'status'" ng-if="claim.status != 'open'" data-tag="{{claim.claimTag}}">
                     <div class="col-10 no-padding-left no-padding-right">
                         <div class="col-10 no-padding-left no-padding-right top-div">
                             <div class="claim-author">{{claim.fullName}}</div><div class="author-in" ng-if="tags.length > 0">&nbsp;in&nbsp;</div><div class="claim-tag rounded" ng-if="tags.length > 0">{{claim.claimTag}}</div>
@@ -96,7 +96,7 @@
                     <div class="clr"></div>
                 </div>
             </div>
-            <input class="rounded claim-add-new-comment-button smaller" type="submit" value="Send Selected Claims" ng-click="sendClaims()" ng-if="user.userGroup == 'HR' && claimList.hasUnresolved"/>
+            <input ng-disabled="checkCheckedCheckboxes()" class="rounded claim-add-new-comment-button smaller" type="submit" value="Send Selected Claims" ng-click="sendClaims()" ng-if="user.userGroup == 'HR' && claimList.hasUnresolved"/>
         </div>
         <div class="clr"></div>
     </section>
@@ -129,8 +129,7 @@
                 <div class="claim-comments-wrapper rounded" ng-if="!claimList.hasOpen">
                     There are no open discussions.
                 </div>
-                <div class="claim-comments-wrapper rounded" ng-repeat="claim in claimList | orderBy: 'claim.created':true" ng-if="claim.status == 'open'">
-                    {{claim.modified}}
+                <div class="claim-comments-wrapper rounded" ng-repeat="claim in claimList | orderBy: 'created'" ng-if="claim.status == 'open'">
                     <div class="claim-title">{{claim.claimTitle}}</div>
                     <div class="claim-note">{{claim.claimComment}}</div>
                     <div class="claim-comments-list" ng-if="claim.claimComments.length > 0">
