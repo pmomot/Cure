@@ -1,0 +1,18 @@
+<div id="logUp">
+    <div class="col-10" id="logIn">
+        <h1 class="text-center">Change Password</h1>
+        <form method="post" ng-submit="changePass()">
+            <label for="currentPass" class="">Current Password:</label> <input class="rounded" ng-model="changePassData.currentPass" type="password" name="currentPass" id="currentPass" required/><div class="clr"></div>
+            <label for="newPass">New Password:</label> <input class="rounded" ng-model="changePassData.newPass" type="password" name="password" id="newPass" required/><div class="clr"></div>
+            <label for="newPassRepeat">Repeat New Password:</label> <input class="rounded" ng-model="changePassData.newPassRepeat" type="password" name="newPassRepeat" id="newPassRepeat" required/><div class="clr"></div>
+            <input class="rounded" type="submit" value="SUBMIT"/><div class="clr"></div>
+        </form>
+        <div class="error" ng-show="errors.changePassError.length > 0"><span ng-repeat="error in errors.changePassError">{{error}}</span></div>
+    </div>
+    <div class="clr"></div>
+</div>
+
+<div id="sigSuc" class="rounded text-center hidden">
+    <h1 class="text-center">Success!</h1>
+    <a ng-click="hideSuccess(true)" class="btn rounded cp">Go Back And Log In</a>
+</div>
