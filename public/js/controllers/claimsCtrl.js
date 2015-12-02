@@ -36,7 +36,6 @@ MyApp.controller('ClaimsController', ['$scope','$rootScope','$state','$window', 
             vm.processing = processing;
             vm.tagsAvailability = {};
             vm.claimList = data;
-            console.log(data)
             vm.claimList.clean = true;
             vm.claimList.hasOpen = false;
             vm.claimList.hasUnresolved = false;

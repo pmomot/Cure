@@ -41,6 +41,13 @@ module.exports = function(app, express){
         });
     });
 
+    api.get('/currentUser', function(req, res){
+        User.findOne({email: req.body.email}, function(err, user){
+            if (user) return true;
+            return false;
+        })
+    });
+
     api.get('/users', function(req, res){
        User.find({}, function(err, users){
            if(err){
@@ -88,8 +95,19 @@ module.exports = function(app, express){
                         message: 'Failed to authenticate'
                     })
                 } else {
-                    req.decoded = decoded;
-                    next();
+                    console.log(decoded);
+                    User.findOne({_id: decoded.id}, function(err, user){
+                        if (user){
+                            req.decoded = decoded;
+                            next();
+                        }else{
+                            res.status(403).send({
+                                status: 403,
+                                success: false,
+                                message: 'User does not exist'
+                            })
+                        }
+                    })
                 }
             })
         } else {

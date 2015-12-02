@@ -711,7 +711,7 @@ body.modal-open
 }
 .modal-backdrop.spinning
 {
-    z-index: 101;
+    z-index: 401;
 }
 h3.modal-title
 {

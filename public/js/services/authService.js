@@ -1,4 +1,4 @@
-MyApp.factory('Auth', ['$http','$q','AuthToken',function($http, $q, AuthToken){
+MyApp.factory('Auth', ['$http','$q','AuthToken','AuthInterceptor', function($http, $q, AuthToken, AuthInterceptor){
 
     var authFactory = {};
 
@@ -11,7 +11,9 @@ MyApp.factory('Auth', ['$http','$q','AuthToken',function($http, $q, AuthToken){
             .success(function(data){
                 AuthToken.setToken(data.token);
                 return data;
-        })
+        }).error(function(data){
+                AuthInterceptor.responceError(data)
+            })
     };
 
     authFactory.changePass = function(currentPass, newPass, email){
@@ -24,6 +26,8 @@ MyApp.factory('Auth', ['$http','$q','AuthToken',function($http, $q, AuthToken){
             .success(function(data){
                 AuthToken.setToken(data.token);
                 return data;
+            }).error(function(data){
+                AuthInterceptor.responceError(data)
             })
     };
 
@@ -38,6 +42,8 @@ MyApp.factory('Auth', ['$http','$q','AuthToken',function($http, $q, AuthToken){
         })
             .success(function(data){
                 return data;
+            }).error(function(data){
+                AuthInterceptor.responceError(data)
             })
     };
 
@@ -54,7 +60,12 @@ MyApp.factory('Auth', ['$http','$q','AuthToken',function($http, $q, AuthToken){
     authFactory.getUser = function(token){
         if(AuthToken.getToken()){
             return $http({url: '/api/me', method: 'GET', headers:{'x-access-token': token}})
-        };
+                .success(function(data){
+                    return data;
+                }).error(function(data){
+                    AuthInterceptor.responceError(data)
+                })
+        }
 
         return $q.reject({message: 'User is not logged in'});
     };
@@ -82,7 +93,7 @@ MyApp.factory('AuthToken', ['$window', function($window){
     return authTokenFactory;
 }]);
 
-MyApp.factory('AuthInterceptor', ['$q','$location','AuthToken',function($q, $location, AuthToken){
+MyApp.factory('AuthInterceptor', ['$q','$state','AuthToken',function($q, $state, AuthToken){
 
     var interceptorFactory = {};
 
@@ -97,7 +108,10 @@ MyApp.factory('AuthInterceptor', ['$q','$location','AuthToken',function($q, $loc
 
     interceptorFactory.responceError = function(response){
 
-        if(response.status == 403) $location.path('/login');
+        if(response.status == 403) {
+            AuthToken.setToken();
+            $state.go('home.login');
+        }
 
         return $q.reject(response)
     };
