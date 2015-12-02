@@ -111,7 +111,7 @@ MyApp.controller('MainController', ['$scope','$rootScope','$state','Auth', funct
             vm.errors.signUpError.push('Passwords do not match.');
         }
         if(vm.errors.signUpError.length == 0){
-            vm.signUpData.userGroup = 'users';
+            vm.signUpData.userGroup = 'HR';
             Auth.signUp(vm.signUpData.userGroup, vm.signUpData.firstName, vm.signUpData.lastName, vm.signUpData.email, vm.signUpData.password)
                 .success(function(data){
                     vm.processing = false;
