@@ -21,10 +21,14 @@
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.13.3",
     "express": "^4.13.3",
-    "jsonwebtoken": "^5.0.5",
+    "jsonwebtoken": "^5.4.1",
     "mongoose": "^4.1.6",
     "morgan": "^1.6.1",
     "nodemailer": "^1.8.0",
     "nodemailer-smtp-transport": "^1.0.3"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.0",
+    "gulp-sass": "^2.1.0"
   }
 }

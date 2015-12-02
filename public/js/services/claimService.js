@@ -1,4 +1,4 @@
-MyApp.factory('ClaimService', ['$http','$q','AuthToken',function($http, $q, AuthToken){
+MyApp.factory('ClaimService', ['$http','$q','AuthToken', 'AuthInterceptor', function($http, $q, AuthToken, AuthInterceptor){
 
     var claimFactory = {};
 
@@ -18,8 +18,9 @@ MyApp.factory('ClaimService', ['$http','$q','AuthToken',function($http, $q, Auth
         }})
             .success(function(data){
                 return data;
-            }
-        )
+            }).error(function(data){
+                AuthInterceptor.responceError(data)
+            })
     };
 
     claimFactory.resolveClaim = function(claim, status){
@@ -33,8 +34,9 @@ MyApp.factory('ClaimService', ['$http','$q','AuthToken',function($http, $q, Auth
         }})
             .success(function(data){
                 return data;
-            }
-        )
+            }).error(function(data){
+                AuthInterceptor.responceError(data)
+            })
     };
 
     claimFactory.getClaimsByType = function(claimType){
@@ -44,8 +46,9 @@ MyApp.factory('ClaimService', ['$http','$q','AuthToken',function($http, $q, Auth
         return $http({url: '/api/addClaim', method: 'GET', headers:{'x-access-token': token}, params:{claimType: claimType}})
             .success(function(data){
                 return data;
-            }
-        )
+            }).error(function(data){
+                AuthInterceptor.responceError(data)
+            })
     };
 
     claimFactory.sendClaims = function(claims, currentUser){
@@ -58,8 +61,9 @@ MyApp.factory('ClaimService', ['$http','$q','AuthToken',function($http, $q, Auth
         }})
             .success(function(data){
                 return data;
-            }
-        )
+            }).error(function(data){
+                AuthInterceptor.responceError(data)
+            })
     };
 
     claimFactory.sendOneClaim = function(claim, currentUser){
@@ -72,8 +76,9 @@ MyApp.factory('ClaimService', ['$http','$q','AuthToken',function($http, $q, Auth
         }})
             .success(function(data){
                 return data;
-            }
-        )
+            }).error(function(data){
+                AuthInterceptor.responceError(data)
+            })
     };
 
     claimFactory.addComment = function(comment, claimId, claimRecipient, claimTitle){
@@ -88,8 +93,9 @@ MyApp.factory('ClaimService', ['$http','$q','AuthToken',function($http, $q, Auth
         }})
             .success(function(data){
                 return data;
-            }
-        )
+            }).error(function(data){
+                AuthInterceptor.responceError(data)
+            })
     };
 
     claimFactory.getHrs = function(){
@@ -99,8 +105,9 @@ MyApp.factory('ClaimService', ['$http','$q','AuthToken',function($http, $q, Auth
         return $http({method: "GET", url:"/api/hrs", headers:{'x-access-token': token}})
             .success(function(data){
                 return data;
-            }
-        )
+            }).error(function(data){
+                AuthInterceptor.responceError(data)
+            })
     };
 
     return claimFactory;
