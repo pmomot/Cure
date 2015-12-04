@@ -1,4 +1,4 @@
-var MyApp = angular.module('MyApp', ['ui.router'])
+var MyApp = angular.module('MyApp', ['ui.router','isteven-multi-select'])
 
     .config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider){
         $stateProvider

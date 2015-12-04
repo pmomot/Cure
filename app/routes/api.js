@@ -6,6 +6,7 @@ var User = require('../models/user'),
     nodemailer = require('nodemailer'),
     smtpTransport = require('nodemailer-smtp-transport'),
     nAsync = require('async');
+    _ = require('underscore');
 
 function createToken(user){
 
@@ -95,7 +96,6 @@ module.exports = function(app, express){
                         message: 'Failed to authenticate'
                     })
                 } else {
-                    console.log(decoded);
                     User.findOne({_id: decoded.id}, function(err, user){
                         if (user){
                             req.decoded = decoded;
@@ -294,20 +294,34 @@ module.exports = function(app, express){
                 }
             }));
         if(!req.body.claim.claimComment){req.body.claim.claimComment = 'None.'}
-            transporter.sendMail({
-                from: 'Malkos HRs',
-                to: req.body.claim.claimRecipient.email,
-                //to: 'vyokhna@gmail.com', //TODO remove this
-                subject: 'New claim notification.',
-                html: '<h3>Hello, ' + req.body.claim.claimRecipient.firstName + ' ' + req.body.claim.claimRecipient.lastName + '.</h3>' +
-                      '<p>Discussion: "' + req.body.claim.claimTitle + '" has been added.</p>'+
-                      '<p>Description: '+req.body.claim.claimComment+'</p>'
-            }, function(err1, info){
-                if(err1){
-                } else {
-                    res.json({message: 'Successfully sent a claim.', status: 'success'});
-                }
-            })
+
+            var resArr = [];
+            nAsync.each(req.body.claim.claimRecipient, function(item, callback){
+                transporter.sendMail({
+                    from: 'Malkos HRs',
+                    to: item.email,
+                    subject: 'New claim notification.',
+                    html: '<h3>Hello, ' + item.firstName + ' ' + item.lastName + '.</h3>' +
+                    '<p>Discussion: "' + req.body.claim.claimTitle + '" has been added.</p>'+
+                    '<p>Description: '+req.body.claim.claimComment+'</p>'
+                }, function(err1, info){
+                    if(err1){
+                        resArr.push(err1);
+                        callback(err1);
+                    } else {
+                        resArr.push({message: 'Successfully sent a claim to ' + item.firstName + ' ' + item.lastName, status: 'success'});
+                        callback();
+                    }
+                })
+            }, function(err){
+                    if(err) {
+                        console.log(err);
+                    } else {
+                        res.json({response: resArr, status: 'success'})
+                    }
+            }
+        );
+
 
     });
 

@@ -68,6 +68,7 @@ MyApp.controller('ClaimsController', ['$scope','$rootScope','$state','$window', 
      * @param {Bool} sendmail checks if mail sending API is used during method call.
      */
     vm.addClaim = function(sendmail){
+        console.log(vm.currentClaim);
         vm.processing = true;
         vm.errors.addingError = [];
         var uniqueTitle = true;
@@ -121,7 +122,10 @@ MyApp.controller('ClaimsController', ['$scope','$rootScope','$state','$window', 
     vm.addComment = function(claim){
         vm.processing = true;
         var content = angular.element('textarea[data-id='+claim._id+']').val();
-        if (content.length <=0) return;
+        if (content.length <=0) {
+            vm.processing = false;
+            return;
+        }
         var comment = {
             created: new Date().toISOString(),
             content: content,
