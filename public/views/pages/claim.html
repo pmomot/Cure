@@ -2,23 +2,21 @@
     <div class="main-head" ng-if="currentClaimType == 'Purchase'">
         <h1 class="text-left">Purchase Claims</h1>
         <div class="tooltip-sign"></div>
-        <div class="tooltip-content rounded">Blabla bla. Bloblo blo.</div>
+        <div class="tooltip-content rounded">Something you need to be bought.</div>
     </div>
     <div class="main-head" ng-if="currentClaimType == 'Proposition'">
-        <h1 class="text-left">Office Propositions</h1>
+        <h1 class="text-left">Propositions / Claims</h1>
         <div class="tooltip-sign"></div>
-        <div class="tooltip-content rounded">Blabla bla. Ble bleble blo blobloblo.</div>
+        <div class="tooltip-content rounded">All your wishes, comments and complaints.</div>
     </div>
     <div class="main-head" ng-if="currentClaimType == 'Chemical'">
-        <h1 class="text-left">Chemicals</h1>
-        <div class="tooltip-sign"></div>
-        <div class="tooltip-content rounded">Blabla bleblo bloblo blobla. Bloblo blo.</div>
+        <h1 class="text-left">Stuff</h1>
     </div>
     <div class="main-head" ng-if="currentClaimType == 'Discussion'">
         <h1 class="text-left">Discussions</h1>
-        <div class="tooltip-sign"></div>
-        <div class="tooltip-content rounded">Blabla bla.</div>
     </div>
+
+    <!--first 3 tabs-->
     <section ng-if="currentClaimType!='Discussion'">
         <form method="post" ng-submit="addClaim()">
             <div class="col-3 no-padding-left" ng-if="currentClaimType != 'Chemical'">
@@ -101,6 +99,7 @@
         <div class="clr"></div>
     </section>
 
+    <!--discussions tab-->
     <section ng-if="currentClaimType =='Discussion'">
         <form method="post" ng-submit="addClaim(true)">
             <div class="col-3 no-padding-left">
@@ -109,7 +108,7 @@
             </div>
             <div class="col-2">
                 <label for="claimTag">Add a Recipient:</label>
-                <select class="full-select" name="claimTag" id="claimRecipient" ng-model="currentClaim.claimRecipient" ng-options="hr.firstName + ' ' + hr.lastName for hr in hrs"></select>
+                <div class="rounded multiselect" isteven-multi-select input-model="hrs" button-label="firstName lastName" item-label="firstName lastName" tick-property="ticked" output-model="currentClaim.claimRecipient" helper-elements=""></div>
             </div>
             <div class="clr"></div>
             <div class="col-5 no-padding-left">
@@ -129,7 +128,7 @@
                 <div class="claim-comments-wrapper rounded" ng-if="!claimList.hasOpen">
                     There are no open discussions.
                 </div>
-                <div class="claim-comments-wrapper rounded" ng-repeat="claim in claimList | orderBy: 'created'" ng-if="claim.status == 'open'">
+                <div class="claim-comments-wrapper rounded" ng-repeat="claim in claimList | orderBy: '-created'" ng-if="claim.status == 'open'">
                     <div class="claim-title">{{claim.claimTitle}}</div>
                     <div class="claim-note">{{claim.claimComment}}</div>
                     <div class="claim-comments-list" ng-if="claim.claimComments.length > 0">
