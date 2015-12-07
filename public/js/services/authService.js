@@ -70,6 +70,16 @@ MyApp.factory('Auth', ['$http','$q','AuthToken','AuthInterceptor', function($htt
         return $q.reject({message: 'User is not logged in'});
     };
 
+    authFactory.deleteUser = function(userEmail){
+
+        return $http({url: '/api/delete', method: 'POST', data:{email: userEmail}})
+            .success(function(data){
+                return data;
+            }).error(function(data){
+                AuthInterceptor.responceError(data)
+        })
+    };
+
     return authFactory;
 }]);
 
