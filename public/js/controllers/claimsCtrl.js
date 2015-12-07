@@ -70,7 +70,7 @@ MyApp.controller('ClaimsController', ['$scope','$rootScope','$state','$window', 
      */
     vm.addClaim = function(sendmail){
         console.log(vm.currentClaim);
-        if(vm.currentClaim.claimRecipient.length == 0) {
+        if(vm.currentClaim.claimRecipient && vm.currentClaim.claimRecipient.length == 0 && vm.currentClaim.claimType == 'Discussion') {
             alert('Add some recipients, bro!');
             return;
         }
