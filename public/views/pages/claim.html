@@ -18,7 +18,9 @@
 
     <!--first 3 tabs-->
     <section ng-if="currentClaimType!='Discussion'">
-        <button ng-click="deleteUser('qqwertqqq@ukr.net')">asdasda</button>
+        <!--debug button-->
+        <button ng-if="false" ng-click="deleteUser('qqwertqqq@ukr.net')">asdasda</button>
+        <!--debug button-->
         <form method="post" ng-submit="addClaim()">
             <div class="col-3 no-padding-left" ng-if="currentClaimType != 'Chemical'">
                 <label for="claimTitle" class="">Claim Title:</label>
