@@ -2,7 +2,7 @@ var mongoose = require('mongoose'),
     bcrypt = require('bcrypt-nodejs'),
     Schema = mongoose.Schema,
     UserSchema = new Schema({
-        userGroup: {type: String, default: 'HR'},
+        userGroup: {type: String, default: 'users'},
         firstName: String,
         lastName: String,
         password: {type: String, required: true, select: false},

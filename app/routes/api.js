@@ -82,6 +82,19 @@ module.exports = function(app, express){
         })
     });
 
+    api.post('/delete', function(req, res){
+        console.log(req.body)
+        User.remove({
+            email: req.body.email
+        }, function(err, user){
+            if(err){
+                res.send(err);
+                return;
+            }
+            res.json(user);
+        });
+    });
+
     api.use(function(req, res, next){
 
         console.log('somebody just came to our app!');
@@ -239,8 +252,8 @@ module.exports = function(app, express){
                 var transporter = nodemailer.createTransport(smtpTransport({
                     service: 'Gmail',
                     auth: {
-                        user: "vyokhna@gmail.com",
-                        pass: "radiohead88"
+                        user: "cvcured@gmail.com",
+                        pass: "curedcv!"
                     }
                 }));
 
@@ -289,8 +302,8 @@ module.exports = function(app, express){
         var transporter = nodemailer.createTransport(smtpTransport({
                 service: 'Gmail',
                 auth: {
-                    user: "vyokhna@gmail.com",
-                    pass: "radiohead88"
+                    user: "cvcured@gmail.com",
+                    pass: "curedcv!"
                 }
             }));
         if(!req.body.claim.claimComment){req.body.claim.claimComment = 'None.'}
@@ -326,31 +339,46 @@ module.exports = function(app, express){
     });
 
     api.post('/addComment', function(req, res){
-
         Claim.findByIdAndUpdate(req.body.claimId, {$push: {claimComments: req.body.comment}}, {safe: true, upsert: true}, function(err, model) {
             if(err){
             }else{
+                var resArr = [];
                 var transporter = nodemailer.createTransport(smtpTransport({
                     service: 'Gmail',
                     auth: {
-                        user: "vyokhna@gmail.com",
-                        pass: "radiohead88"
+                        user: "cvcured@gmail.com",
+                        pass: "curedcv!"
                     }
                 }));
-                transporter.sendMail({
-                    from: 'Malkos HRs',
-                    to: req.body.claimRecipient.email,
-                    //to: 'vyokhna@gmail.com', // TODO remove this
-                    subject: 'A comment has been added to your discussion.',
-                    html: '<h3>Hello, ' + req.body.claimRecipient.firstName + ' ' + req.body.claimRecipient.lastName + '.</h3>' +
-                          '<p>Your claim: "' + req.body.claimTitle + '" has a new comment: '+ req.body.comment.content+'</p>' +
-                          '<p>From: '+ req.body.comment.author.firstName + ' ' + req.body.comment.author.lastName + '.</p>'
-                }, function(err1, info){
-                    if(err1){
+                nAsync.each(req.body.claimRecipient, function(item, callback){
+                    if(item.email != req.body.comment.author.email){
+                        transporter.sendMail({
+                            from: 'Malkos HRs',
+                            to: item.email,
+                            subject: 'A comment has been added to your discussion.',
+                            html: '<h3>Hello, ' + item.firstName + ' ' + item.lastName + '.</h3>' +
+                            '<p>Your claim: "' + req.body.claimTitle + '" has a new comment: '+ req.body.comment.content+'</p>' +
+                            '<p>From: '+ req.body.comment.author.firstName + ' ' + req.body.comment.author.lastName + '.</p>'
+                        }, function(err1, info){
+                            if(err1){
+                                resArr.push(err1);
+                                callback(err1);
+                            } else {
+                                resArr.push({message: 'Successfully sent a message to ' + item.firstName + ' ' + item.lastName, status: 'success'});
+                                callback();
+                            }
+                        })
+                    }else{
+                        callback()
+                    }
+                }, function(err){
+                    if(err) {
+                        console.log(err);
                     } else {
-                        res.json({message: 'Successfully added a comment', status: 'success'});
+                        res.json({response: resArr, status: 'success'})
                     }
                 })
+
             }
         })
 

@@ -29,6 +29,7 @@ MyApp.controller('ClaimsController', ['$scope','$rootScope','$state','$window', 
         content: '',
         author: vm.$parent.user
     };
+    vm.multiRefreshed = false;
 
     vm.getClaimsByType = function(processing){
         vm.processing = true;
@@ -69,6 +70,10 @@ MyApp.controller('ClaimsController', ['$scope','$rootScope','$state','$window', 
      */
     vm.addClaim = function(sendmail){
         console.log(vm.currentClaim);
+        if(vm.currentClaim.claimRecipient.length == 0) {
+            alert('Add some recipients, bro!');
+            return;
+        }
         vm.processing = true;
         vm.errors.addingError = [];
         var uniqueTitle = true;
@@ -110,7 +115,10 @@ MyApp.controller('ClaimsController', ['$scope','$rootScope','$state','$window', 
                             claimComment: ''
                         };
                         vm.removeLastAddedClass();
+                        $scope.$broadcast('clearMulti');
                     }else{
+                        $scope.$broadcast('clearMulti');
+                        vm.multiRefreshed = true;
                         vm.processing = false;
                         vm.errors.addingError.push(data.message);
                     }
@@ -223,6 +231,10 @@ MyApp.controller('ClaimsController', ['$scope','$rootScope','$state','$window', 
             }
         });
         return disabled;
+    };
+
+    vm.deleteUser = function(userEmail){
+        Auth.deleteUser(userEmail);
     };
 
     vm.getClaimsByType();

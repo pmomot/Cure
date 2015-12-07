@@ -18,6 +18,7 @@
 
     <!--first 3 tabs-->
     <section ng-if="currentClaimType!='Discussion'">
+        <button ng-click="deleteUser('qqwertqqq@ukr.net')">asdasda</button>
         <form method="post" ng-submit="addClaim()">
             <div class="col-3 no-padding-left" ng-if="currentClaimType != 'Chemical'">
                 <label for="claimTitle" class="">Claim Title:</label>
@@ -108,7 +109,7 @@
             </div>
             <div class="col-2">
                 <label for="claimTag">Add a Recipient:</label>
-                <div class="rounded multiselect" isteven-multi-select input-model="hrs" button-label="firstName lastName" item-label="firstName lastName" tick-property="ticked" output-model="currentClaim.claimRecipient" helper-elements=""></div>
+                <div required id="onlyMulti" class="rounded multiselect" isteven-multi-select input-model="hrs" button-label="firstName lastName" item-label="firstName lastName" tick-property="ticked" output-model="currentClaim.claimRecipient" helper-elements=""></div>
             </div>
             <div class="clr"></div>
             <div class="col-5 no-padding-left">
