@@ -47,6 +47,8 @@ angular.module( 'isteven-multi-select', ['ng'] ).directive( 'istevenMultiSelect'
             // settings based on attribute
             isDisabled      : '=',
 
+            refreshed       : '=',
+
             // callbacks
             onClear         : '&',  
             onClose         : '&',
@@ -102,7 +104,7 @@ angular.module( 'isteven-multi-select', ['ng'] ).directive( 'istevenMultiSelect'
 
             // v3.0.0
             // clear button clicked
-            $scope.clearClicked = function( e ) {                
+            $scope.clearClicked = function( e ) {
                 $scope.inputLabel.labelFilter = '';
                 $scope.updateFilter();
                 $scope.select( 'clear', e );                
@@ -1013,7 +1015,11 @@ angular.module( 'isteven-multi-select', ['ng'] ).directive( 'istevenMultiSelect'
             // watch for changes in directive state (disabled or enabled)
             $scope.$watch( 'isDisabled' , function( newVal ) {         
                 $scope.isDisabled = newVal;                               
-            });            
+            });
+
+            $scope.$on('clearMulti', function( event, data ) {
+                $scope.select('NONE', event);
+            });
             
             // this is for touch enabled devices. We don't want to hide checkboxes on scroll. 
             var onTouchStart = function( e ) { 

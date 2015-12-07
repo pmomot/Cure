@@ -62,6 +62,11 @@
 /* button: hover */
 .multiSelect > button:hover {    
 }
+.multiSelect > button:focus {
+    color: #262626;
+    border: 1px solid #e6e6e6;
+    outline: none;
+}
 
 /* button: disabled */
 .multiSelect > button:disabled {
