@@ -72,7 +72,6 @@ MyApp.controller('ClaimsController', ['$scope','$rootScope','$state','$window', 
      * @param {Bool} sendmail checks if mail sending API is used during method call.
      */
     vm.addClaim = function(sendmail){
-        console.log(vm.currentClaim);
         if(vm.currentClaim.claimRecipient && vm.currentClaim.claimRecipient.length == 0 && vm.currentClaim.claimType == 'Discussion') {
             alert('Add some recipients, bro!');
             return;
