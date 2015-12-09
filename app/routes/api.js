@@ -299,41 +299,51 @@ module.exports = function(app, express){
     // Function is triggered when a discussion is added
     api.post('/sendOneClaim', function(req, res){
 
-        var transporter = nodemailer.createTransport(smtpTransport({
+       var currentClaimId;
+        Claim.findOne({claimTitle: req.body.claim.claimTitle}, function(err, claim){
+            if(err){
+                console.log(err);
+                return
+            }
+            currentClaimId = claim._id;
+            var transporter = nodemailer.createTransport(smtpTransport({
                 service: 'Gmail',
                 auth: {
                     user: "cvcured@gmail.com",
                     pass: "curedcv!"
                 }
             }));
-        if(!req.body.claim.claimComment){req.body.claim.claimComment = 'None.'}
+            if(!req.body.claim.claimComment){req.body.claim.claimComment = 'None.'}
 
             var resArr = [];
             nAsync.each(req.body.claim.claimRecipient, function(item, callback){
-                transporter.sendMail({
-                    from: 'Malkos HRs',
-                    to: item.email,
-                    subject: 'New claim notification.',
-                    html: '<h3>Hello, ' + item.firstName + ' ' + item.lastName + '.</h3>' +
-                    '<p>Discussion: "' + req.body.claim.claimTitle + '" has been added.</p>'+
-                    '<p>Description: '+req.body.claim.claimComment+'</p>'
-                }, function(err1, info){
-                    if(err1){
-                        resArr.push(err1);
-                        callback(err1);
-                    } else {
-                        resArr.push({message: 'Successfully sent a claim to ' + item.firstName + ' ' + item.lastName, status: 'success'});
-                        callback();
-                    }
-                })
-            }, function(err){
+                    transporter.sendMail({
+                        from: 'Malkos HRs',
+                        to: item.email,
+                        subject: 'New claim notification.',
+                        html: '<h3>Hello, ' + item.firstName + ' ' + item.lastName + '.</h3>' +
+                        '<p>Discussion: <a href="http://194.44.136.82:3000/#/home/discussions/' + currentClaimId + '">"' + req.body.claim.claimTitle + '"</a> has been added.</p>'+
+                        '<p>Description: '+req.body.claim.claimComment+'</p>'
+                    }, function(err1, info){
+                        if(err1){
+                            resArr.push(err1);
+                            callback(err1);
+                        } else {
+                            resArr.push({message: 'Successfully sent a claim to ' + item.firstName + ' ' + item.lastName, status: 'success'});
+                            callback();
+                        }
+                    })
+                }, function(err){
                     if(err) {
                         console.log(err);
                     } else {
                         res.json({response: resArr, status: 'success'})
                     }
-            }
-        );
+                }
+            );
+        });
+
+
 
 
     });
@@ -357,7 +367,7 @@ module.exports = function(app, express){
                             to: item.email,
                             subject: 'A comment has been added to your discussion.',
                             html: '<h3>Hello, ' + item.firstName + ' ' + item.lastName + '.</h3>' +
-                            '<p>Your claim: "' + req.body.claimTitle + '" has a new comment: '+ req.body.comment.content+'</p>' +
+                            '<p>Your claim: <a href="http://194.44.136.82:3000/#/home/discussions/' + req.body.claimId + '">"' + req.body.claimTitle + '"</a> has a new comment: '+ req.body.comment.content+'</p>' +
                             '<p>From: '+ req.body.comment.author.firstName + ' ' + req.body.comment.author.lastName + '.</p>'
                         }, function(err1, info){
                             if(err1){

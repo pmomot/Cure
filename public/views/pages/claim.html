@@ -131,8 +131,10 @@
                 <div class="claim-comments-wrapper rounded" ng-if="!claimList.hasOpen">
                     There are no open discussions.
                 </div>
-                <div class="claim-comments-wrapper rounded" ng-repeat="claim in claimList | orderBy: '-created'" ng-if="claim.status == 'open'">
-                    <div class="claim-title">{{claim.claimTitle}}</div>
+                <div id="{{claim._id}}" class="claim-comments-wrapper rounded" ng-repeat="claim in claimList | orderBy: '-created'" ng-if="claim.status == 'open'">
+                    <div class="claim-title">{{claim.claimTitle}}
+                        <div class="claim-receivers">assigned to: <span ng-repeat="recipient in claim.claimRecipient">{{recipient.firstName}} {{recipient.lastName}} | </span></div>
+                    </div>
                     <div class="claim-note">{{claim.claimComment}}</div>
                     <div class="claim-comments-list" ng-if="claim.claimComments.length > 0">
                         <div class="claim-comments-heading">Comments:</div>

@@ -62,7 +62,7 @@ var MyApp = angular.module('MyApp', ['ui.router','isteven-multi-select'])
                 controller: 'ClaimsController'
             })
             .state('home.discussions',{
-                url: '/discussions',
+                url: '/discussions/:id',
                 templateUrl: '../views/pages/claim.html',
                 data:{
                     claimType: 'Discussion'

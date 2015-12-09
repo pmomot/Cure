@@ -840,6 +840,10 @@ h3.modal-title
 
     border-bottom: 1px solid #e6e6e6;
 }
+.claim-receivers {
+    float: right;
+    color: #cc324b;
+}
 .claim-title.smaller
 {
     font-family: GothamProRegular, sans-serif;

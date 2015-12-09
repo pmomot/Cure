@@ -1,7 +1,9 @@
-MyApp.controller('ClaimsController', ['$scope','$rootScope','$state','$window', 'Auth', 'ClaimService', 'hrs', '$timeout', function($scope, $rootScope, $state, $window, Auth, ClaimService, hrs, $timeout) {
+MyApp.controller('ClaimsController', ['$scope','$rootScope','$state','$window', 'Auth', 'ClaimService', 'hrs', '$timeout','$stateParams','$location',
+    function($scope, $rootScope, $state, $window, Auth, ClaimService, hrs, $timeout, $stateParams, $location) {
 
     var vm = $scope;
 
+    vm.discussionId = $stateParams.id || undefined;
     vm.hrs = hrs.data;
     vm.currentClaimType = $rootScope.currentClaimType = $state.current.data.claimType;
     vm.tags = $state.current.data.tags || [];
@@ -56,6 +58,7 @@ MyApp.controller('ClaimsController', ['$scope','$rootScope','$state','$window', 
                     vm.claimList.hasUnresolved = true;
                 }
             });
+            if(vm.discussionId) $location.hash(vm.discussionId)
         })
     };
 
