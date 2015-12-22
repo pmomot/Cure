@@ -3,22 +3,22 @@ MyApp.controller('MainController', ['$scope','$rootScope','$state','Auth', funct
     var vm = $scope;
 
     vm.regExes = {
-        name: /^[a-zA-Z\s]+$/,
-        email: /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i,
+        name    : /^[a-zA-Z\s]+$/,
+        email   : /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i,
         password: /^\S{4,}$/
     };
     vm.changePassData = {
-        currentPass: '',
-        newPass: '',
+        currentPass  : '',
+        newPass      : '',
         newPassRepeat: ''
     };
     vm.loginData = {};
     vm.signUpData = {};
     vm.errors = {
-        loginError: [],
-        signUpError: [],
+        loginError     : [],
+        signUpError    : [],
         changePassError: [],
-        logoutError: []
+        logoutError    : []
     };
     vm.user = vm.$parent.user;
     vm.loggedIn = Auth.isLoggedIn();
@@ -28,22 +28,19 @@ MyApp.controller('MainController', ['$scope','$rootScope','$state','Auth', funct
         vm.loginData = {};
         vm.signUpData = {};
         vm.errors = {
-            loginError: [],
-            signUpError: [],
+            loginError     : [],
+            signUpError    : [],
             changePassError: [],
-            logoutError: []
+            logoutError    : []
         };
     });
 
     vm.doLogin = function(){
         vm.processing = true;
         vm.errors.loginError = [];
-
         Auth.login(vm.loginData.email, vm.loginData.password)
-
             .success(function(data){
                 vm.processing = false;
-
                 Auth.getUser(data.token)
                     .then(function(data){
                         vm.user = data.data;
@@ -145,10 +142,10 @@ MyApp.controller('MainController', ['$scope','$rootScope','$state','Auth', funct
         vm.loginData = {};
         vm.signUpData = {};
         vm.errors = {
-            loginError: [],
-            signUpError: [],
+            loginError     : [],
+            signUpError    : [],
             changePassError: [],
-            logoutError: []
+            logoutError    : []
         };
         angular.element('#sigSuc, #logUp').toggleClass('hidden');
     };
