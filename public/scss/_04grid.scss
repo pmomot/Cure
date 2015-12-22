@@ -1,0 +1,51 @@
+.col-10 {
+  @include gridCol(none, 100%);
+}
+
+.col-9 {
+  @include gridCol(left, 90%);
+}
+
+.col-8 {
+  @include gridCol(left, 80%);
+}
+
+.col-7 {
+  @include gridCol(left, 70%);
+}
+
+.col-6 {
+  @include gridCol(left, 60%);
+}
+
+.col-5 {
+  @include gridCol(left, 50%);
+}
+
+.col-4 {
+  @include gridCol(left, 40%);
+}
+
+.col-3 {
+  @include gridCol(left, 30%);
+}
+
+.col-2 {
+  @include gridCol(left, 20%);
+}
+
+.col-1 {
+  @include gridCol(left, 10%);
+}
+
+.col-offset-1 {
+  margin-left: 10%;
+}
+
+.col-offset-2 {
+  margin-left: 20%;
+}
+
+.clr {
+  clear: both;
+}

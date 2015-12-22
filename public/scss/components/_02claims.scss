@@ -1,0 +1,348 @@
+/*claim styles*/
+#claim {
+  margin: 20px 40px;
+  padding: 20px;
+  border: 1px solid $whiteGrey;
+  background: $white;
+
+  h1 {
+    display: inline-block;
+  }
+
+  form {
+    text-align: left;
+  }
+  input,
+  textarea {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+
+  input[type='submit'] {
+    margin-bottom: 0;
+    padding: 5px 10px;
+  }
+
+  textarea {
+    max-width: 100%;
+    min-height: 100px;
+    resize: vertical;
+  }
+
+  label {
+    display: block;
+    margin: 0 0 5px;
+  }
+
+  td.commentTd {
+    padding: 0;
+    border: none;
+    border-right: 1px solid $darkGrey;
+
+    th,td {
+      border-right: none;
+    }
+  }
+
+  .tagFilter {
+    font-size: 14px;
+    line-height: 14px;
+    display: inline-block;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    padding: 5px 10px;
+    cursor: pointer;
+    text-align: center;
+    color: $white;
+    background: $skyBlue;
+
+    &:active {
+      background: $brightGreen!important;
+    }
+  }
+
+  table {
+    line-height: 14px;
+    border-collapse: collapse;
+
+    td,th {
+      padding: 5px 10px;
+      border: 1px solid $darkGrey;
+    }
+
+    thead {
+      color: $white;
+      background: $darkGrey;
+    }
+  }
+
+  .main-head {
+    position: relative;
+    margin-bottom: 10px;
+    text-align: left;
+    border-bottom: 1px solid $whiteGrey;
+
+     .tooltip-sign {
+      position: relative;
+      top: -20px;
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      cursor: pointer;
+      background: url(#{$imgPath}help.png);
+
+      &:hover + .tooltip-content {
+        display: inline-block;
+      }
+    }
+
+     .tooltip-content {
+      line-height: 14px;
+      position: relative;
+      top: -24px;
+      left: 0;
+      display: none;
+      width: auto;
+      padding: 3px;
+      text-align: left;
+      border: 1px solid $grey;
+      background: rgb(243, 249, 253);
+    }
+  }
+
+  .claim-comments-container {
+    background: #f3f9fd;
+
+    &.smaller {
+      border: 1px solid $grey;
+      border-top: none;
+    }
+  }
+
+  .claim-comments-wrapper {
+    margin: 20px 0 40px;
+    padding: 10px;
+    -webkit-transition: all 1s ease-out;
+    -moz-transition: all 1s ease-out;
+    -o-transition: all 1s ease-out;
+    transition: all 1s ease-out;
+    border: 1px solid $whiteGrey;
+    background: rgba(243,249,253,1);
+
+    &:last-child {
+      margin: 20px 0 0;
+    }
+
+    &.smaller {
+      font-size: 14px;
+      line-height: 14px;
+      margin: 0;
+      padding: 5px;
+      border: none;
+      border-top: 1px solid $grey;
+      
+      &.last {
+        -webkit-transition: all 1s ease-out;
+        -moz-transition: all 1s ease-out;
+        -o-transition: all 1s ease-out;
+        transition: all 1s ease-out;
+        background: rgba(243,249,253,1);
+
+        &.last-added {
+          -webkit-transition: all 2s ease-out;
+          -moz-transition: all 2s ease-out;
+          -o-transition: all 2s ease-out;
+          transition: all 2s ease-out;
+          background: rgba(37,192,24,.2);
+        }
+      }
+    }
+  }
+
+  .claim-title {
+    font-family: $GothamProBold;
+    font-size: 20px;
+    line-height: 20px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid $whiteGrey;
+
+    &.smaller {
+      font-family: $GothamProRegular;
+      font-size: 14px;
+      line-height: 14px;
+      padding: 5px 0 0 0;
+      border-bottom: none;
+    }
+  }
+
+  .claim-receivers {
+    float: right;
+    color: $crimson;
+  }
+
+  .claim-note {
+    padding: 10px 0;
+    border-bottom: 1px solid $whiteGrey;
+  }
+
+  .claim-comments-list {
+    padding-left: 100px;
+  }
+
+  .claim-comments-heading {
+    font-family: $GothamProBold;
+    font-size: 14px;
+    line-height: 14px;
+    padding: 10px 0 8px;
+    border-bottom: 1px solid $whiteGrey;
+  }
+
+  .claim-comment-author {
+    font-size: 12px;
+    line-height: 12px;
+    display: inline-block;
+    padding: 10px 0 2px;
+    color: $darkerBlue;
+  }
+
+  .claim-author {
+    font-family: $GothamProItalic;
+    font-size: 12px;
+    line-height: 12px;
+    color: $darkerBlue;
+  }
+
+  .claim-comment-content {
+    padding: 10px 0;
+    border-bottom: 1px solid $whiteGrey;
+  }
+
+  .claim-add-comment {
+    margin: 20px 0 0;
+    padding-left: 100px;
+  }
+
+  .claim-comment-input {
+    margin-bottom: 7px!important;
+  }
+
+  .claim-add-new-comment-button {
+    float: right;
+    width: 200px!important;
+    margin-bottom: 10px!important;
+
+    &.smaller {
+      margin-top: 10px;
+      margin-bottom: 0!important;
+    }
+  }
+
+  .claim-resolve {
+    margin-bottom: 0!important;
+    border: none!important;
+    background: $brightGreen!important;
+    float: right;
+    width: 200px!important;
+
+    &.claim-accept {
+      width: 120px!important;
+    }
+
+    &.claim-decline {
+      width: 120px!important;
+      margin-left: 10px!important;
+      background: $red!important;
+    }
+  }
+
+  .claim-tag {
+    font-size: 12px;
+    line-height: 12px;
+    margin-bottom: 10px;
+    padding: 5px;
+    text-align: center;
+    color: $white;
+    background: $yellow;
+  }
+
+  .claim-author {
+    margin-bottom: 10px;
+  }
+
+  .top-div {
+    padding: 0 0 5px 0;
+    border-bottom: 1px solid $lightGrey;
+
+    .claim-author {
+      line-height: 20px;
+    }
+
+    .claim-tag,
+    .claim-author,
+    .claim-add-comment {
+      display: inline-block;
+      margin-bottom: 0;
+    }
+
+    .claim-add-comment {
+      position: relative;
+      float: right;
+      margin-top: 0;
+      padding-left: 0;
+
+      &.smaller .claim-status {
+        display: inline-block;
+      }
+    }
+
+    .claim-checkbox {
+      display: inline-block;
+      margin-top: 4px;
+      padding-left: 5px;
+      border-left: 1px solid $whiteGrey;
+
+      input[type='checkbox'] {
+        height: auto!important;
+
+        &[disabled='disabled'] {
+          background: $darkGrey;
+        }
+      }
+    }
+
+  }
+
+  .claim-status {
+    display: inline-block;
+    margin-top: 4px;
+    margin-bottom: 3px;
+    padding: 0 5px 0 7px;
+    border-left: 1px solid $whiteGrey;
+  }
+
+  .claim-info {
+    display: inline-block;
+    width: 13px;
+    margin-top: 4px;
+    margin-right: 4px;
+    cursor: pointer;
+    background: url(#{$imgPath}information-icon.png) center center no-repeat;
+  }
+
+  .comment-tooltip {
+    position: absolute;
+    right: -5px;
+    bottom: 26px;
+    display: none;
+    width: 300px;
+    padding: 5px;
+    border: 1px solid $lightGrey;
+    background: $white;
+  }
+
+  .author-in {
+    font-size: 12px;
+    line-height: 20px;
+    display: inline-block;
+  }
+}

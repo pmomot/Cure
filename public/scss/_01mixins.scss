@@ -1,0 +1,19 @@
+//zero margin and padding mixin
+@mixin zeroMarPad() {
+  margin: 0;
+  padding: 0;
+}
+
+//border radius
+@mixin borderRad($px) {
+  -webkit-border-radius: $px;
+  -moz-border-radius: $px;
+  border-radius: $px;
+}
+
+//grid mixin
+@mixin gridCol($float,$width) {
+  float: $float;
+  width: $width;
+  padding: 0 10px;
+}
