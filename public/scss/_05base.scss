@@ -1,0 +1,25 @@
+* {
+  font-family: $GothamProRegular;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+html {
+  min-width: 1200px;
+  height: 100%;
+  @include zeroMarPad();
+}
+
+body {
+  position: relative;
+  min-width: 1200px;
+  height: 100%;
+  color: $darkGrey;
+  background: $lightGrey;
+  @include zeroMarPad();
+}
+
+#mainView {
+  position: relative;
+  height: 100%;
+}

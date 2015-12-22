@@ -1,0 +1,170 @@
+h1 {
+  font-size: 28px;
+}
+
+input[type='text'],
+input[type='password'],
+input[type='email'],
+textarea,
+select {
+  font-size: 14px;
+  line-height: 14px;
+  padding: 5px 10px;
+  color: $mediumGrey;
+  border: 1px solid $whiteGrey;
+  @include borderRad(3px);
+  outline: none;
+  background: $vanilla;
+
+  &:active,
+  &:focus{
+    color: $darkGrey;
+    border: 1px solid $skyBlue;
+  }
+}
+
+input[type='submit'] {
+  font-size: 14px;
+  line-height: 14px;
+  padding: 10px;
+  cursor: pointer;
+  text-align: center;
+  color: $white;
+  border: 1px solid $darkerBlue;
+  @include borderRad(3px);
+  outline: none;
+  background: $skyBlue;
+
+  &:active {
+    background: $darkerBlue;
+  }
+
+  &:disabled {
+    background: $lightGrey;
+    border: 1px solid $white;
+    cursor: default;
+  }
+}
+
+input[type='checkbox'] {
+  display: inline-block;
+  width: 20px!important;
+  height: 25px;
+  @include zeroMarPad();
+  margin-bottom: 0!important;
+  text-align: center;
+}
+
+select {
+  width: 200px;
+  background-image: url(#{$imgPath}selectBg.png);
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 3%;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+
+  &:hover {
+    cursor: pointer;
+  }
+
+  &.full-select {
+    width: 100%;
+  }
+}
+
+.cp {
+  cursor: pointer;
+}
+
+.line {
+  width: 100%;
+  height: 1px;
+  margin: 20px 0;
+  background: $grey;
+}
+
+a{
+  text-decoration: none;
+  color: #0a85d7;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.rounded {
+  @include borderRad(3px);
+
+}
+
+.wrapper {
+  width: 100%;
+  min-width: 1200px;
+  height: 100%;
+  margin: 0 auto;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-left {
+  text-align: left;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.hidden {
+  display: none;
+}
+
+.no-padding-left {
+  padding-left: 0;
+}
+
+.no-padding-right {
+  padding-right: 0;
+}
+
+.no-padding-bottom {
+  padding-bottom: 0!important;
+}
+
+.no-margin {
+  margin: 0!important;
+}
+
+.green-bg {
+  background: $green;
+}
+
+.red-bg {
+  background: $red;
+}
+
+.grey-bg {
+  background: $grey;
+}
+
+.left-bordered {
+  border-left: 1px solid $whiteGrey;
+}
+
+.error {
+  margin: 10px 0 0 0;
+  color: $crimson;
+  border-top: 1px solid $white;
+
+  span {
+    display: block;
+    padding-bottom: 10px;
+
+    &:last-child {
+      padding-bottom: 0;
+    }
+  }
+}
