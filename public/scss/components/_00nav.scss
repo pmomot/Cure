@@ -4,7 +4,7 @@
   z-index: 300;
   height: 60px;
   padding: 0 0 0 40px;
-  background: $darkGrey;
+  background: $black;
 
   .col-1,
   .col-2,
@@ -87,7 +87,7 @@
       line-height: 14px;
       list-style: none;
       text-align: left;
-      background: $mediumGrey;
+      background: $black;
 
       &:hover {
         background: $darkGrey;

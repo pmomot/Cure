@@ -312,7 +312,7 @@ body {
   z-index: 300;
   height: 60px;
   padding: 0 0 0 40px;
-  background: #333333; }
+  background: #000000; }
   #nav .col-1,
   #nav .col-2,
   #nav .col-9 {
@@ -371,7 +371,7 @@ body {
       line-height: 14px;
       list-style: none;
       text-align: left;
-      background: #656565; }
+      background: #000000; }
       #nav ul.user-ul li:hover {
         background: #333333; }
       #nav ul.user-ul li a.nav-a {
@@ -653,7 +653,7 @@ body {
     display: inline-block;
     margin-top: 4px;
     margin-bottom: 3px;
-    padding: 0 5px 0 7px;
+    padding: 0 0 0 7px;
     border-left: 1px solid #e6e6e6; }
   #claim .claim-info {
     display: inline-block;
@@ -664,8 +664,8 @@ body {
     background: url(../../img/information-icon.png) center center no-repeat; }
   #claim .comment-tooltip {
     position: absolute;
-    right: -5px;
-    bottom: 26px;
+    right: -16px;
+    bottom: 27px;
     display: none;
     width: 300px;
     padding: 5px;

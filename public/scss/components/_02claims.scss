@@ -316,7 +316,7 @@
     display: inline-block;
     margin-top: 4px;
     margin-bottom: 3px;
-    padding: 0 5px 0 7px;
+    padding: 0 0 0 7px;
     border-left: 1px solid $whiteGrey;
   }
 
@@ -331,8 +331,8 @@
 
   .comment-tooltip {
     position: absolute;
-    right: -5px;
-    bottom: 26px;
+    right: -16px;
+    bottom: 27px;
     display: none;
     width: 300px;
     padding: 5px;
