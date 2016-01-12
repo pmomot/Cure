@@ -2,7 +2,7 @@ MyApp.factory('ClaimService', ['$http','$q','AuthToken', 'AuthInterceptor', func
 
     var claimFactory = {};
 
-    claimFactory.addClaim = function(creator, fullName, authorEmail, claimTitle, claimType, claimTag, claimRecipient, claimComment){
+    claimFactory.addClaim = function(creator, fullName, authorEmail, claimTitle, claimType, claimTag, claimRecipient, claimComment, anonymous){
 
         var token = AuthToken.getToken();
 
@@ -14,7 +14,8 @@ MyApp.factory('ClaimService', ['$http','$q','AuthToken', 'AuthInterceptor', func
             claimType: claimType,
             claimTag: claimTag,
             claimRecipient: claimRecipient,
-            claimComment: claimComment
+            claimComment: claimComment,
+            anonymous: anonymous
         }})
             .success(function(data){
                 return data;

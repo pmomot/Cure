@@ -58,7 +58,7 @@
                 <div class="claim-comments-wrapper open smaller" ng-repeat="claim in claimList | orderBy: '-created'" ng-class="{'last': $first, 'last-added': classRemoved}" ng-if="claim.status == 'open' && (claim.claimTag == activeTag || activeTag == 'All')">
                     <div class="col-10 no-padding-left no-padding-right">
                         <div class="col-10 no-padding-left no-padding-right top-div">
-                            <div class="claim-author">{{claim.fullName}}</div><div class="author-in" ng-if="tags.length > 0">&nbsp;in&nbsp;</div><div class="claim-tag rounded" ng-if="tags.length > 0">{{claim.claimTag}}</div>
+                            <div class="claim-author"><span ng-if="!claim.anonymous">{{claim.fullName}}</span><span ng-if="claim.anonymous">Anonymous</span></div><div class="author-in" ng-if="tags.length > 0">&nbsp;in&nbsp;</div><div class="claim-tag rounded" ng-if="tags.length > 0">{{claim.claimTag}}</div>
                             <div class="claim-add-comment smaller" ng-if="$parent.user.userGroup == 'HR'">
                                 <div id="acceptClaimModal" ng-click="openModal(claim, 'accept')"></div>
                                 <div id="declineClaimModal" ng-click="openModal(claim, 'decline')"></div>
@@ -82,7 +82,7 @@
                 <div class="claim-comments-wrapper smaller" ng-repeat="claim in claimList | orderBy: 'status'" ng-if="claim.status != 'open'" data-tag="{{claim.claimTag}}">
                     <div class="col-10 no-padding-left no-padding-right">
                         <div class="col-10 no-padding-left no-padding-right top-div">
-                            <div class="claim-author">{{claim.fullName}}</div><div class="author-in" ng-if="tags.length > 0">&nbsp;in&nbsp;</div><div class="claim-tag rounded" ng-if="tags.length > 0">{{claim.claimTag}}</div>
+                            <div class="claim-author"><span ng-if="!claim.anonymous">{{claim.fullName}}</span><span ng-if="claim.anonymous">Anonymous</span></div><div class="author-in" ng-if="tags.length > 0">&nbsp;in&nbsp;</div><div class="claim-tag rounded" ng-if="tags.length > 0">{{claim.claimTag}}</div>
                             <div class="claim-add-comment smaller">
                                 <div class="comment-tooltip rounded" data-id="{{claim._id}}" ng-if="claim.claimComment">{{claim.claimComment}}</div>
                                 <div class="claim-info" ng-mouseover="showTooltip(claim._id)" ng-mouseleave="hideTooltip(claim._id)" ng-if="claim.claimComment">&nbsp;</div>
@@ -186,7 +186,8 @@
                             {{reviewingClaim.claimTag}}
                         </td>
                         <td width="12%">
-                            {{reviewingClaim.fullName}}
+                            <span ng-if="!reviewingClaim.anonymous">{{reviewingClaim.fullName}}</span>
+                            <span ng-if="reviewingClaim.anonymous">Anonymous</span>
                         </td>
                     </tr>
                     </tbody>

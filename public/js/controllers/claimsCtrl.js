@@ -89,7 +89,6 @@ MyApp.controller('ClaimsController', ['$scope','$rootScope','$state','$window', 
             }
         });
         if(uniqueTitle) {
-            if(vm.currentClaim.anonymous)fullName = "Anonymous";
             vm.processing = true;
             ClaimService.addClaim(
                 vm.$parent.user._id,
@@ -99,7 +98,8 @@ MyApp.controller('ClaimsController', ['$scope','$rootScope','$state','$window', 
                 vm.currentClaim.claimType,
                 vm.currentClaim.claimTag,
                 vm.currentClaim.claimRecipient,
-                vm.currentClaim.claimComment)
+                vm.currentClaim.claimComment,
+                vm.currentClaim.anonymous)
                 .success(function (data) {
                     vm.getClaimsByType(sendmail);
                     vm.errors.addingError = [];
@@ -116,7 +116,8 @@ MyApp.controller('ClaimsController', ['$scope','$rootScope','$state','$window', 
                             claimType: vm.currentClaimType,
                             claimTag: vm.tags[0],
                             claimRecipient: vm.hrs ? vm.hrs[0] : undefined,
-                            claimComment: ''
+                            claimComment: '',
+                            anonymous: false
                         };
                         vm.removeLastAddedClass();
                         $scope.$broadcast('clearMulti');

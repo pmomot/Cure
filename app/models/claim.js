@@ -11,7 +11,8 @@ var mongoose = require('mongoose'),
         created: {type: Date, default: Date.now},
         claimType: {type: String, require: true},
         claimTag: String,
-        status: String
+        status: String,
+        anonymous: Boolean
 });
 
 module.exports = mongoose.model('Claim', Claim);

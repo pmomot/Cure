@@ -177,6 +177,7 @@ module.exports = function(app, express){
                 claimTag: req.body.claimTag,
                 claimRecipient: req.body.claimRecipient,
                 claimComment: req.body.claimComment,
+                anonymous: req.body.anonymous,
                 status: "open"
             });
 
