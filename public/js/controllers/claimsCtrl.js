@@ -21,7 +21,8 @@ MyApp.controller('ClaimsController', ['$scope','$rootScope','$state','$window', 
         claimType: vm.currentClaimType,
         claimTag: vm.tags[0],
         claimRecipient: vm.hrs ? vm.hrs[0] : undefined,
-        claimComment: ''
+        claimComment: '',
+        anonymous: false
     };
     vm.claimList = [];
     vm.claimList.clean = true;
@@ -88,6 +89,7 @@ MyApp.controller('ClaimsController', ['$scope','$rootScope','$state','$window', 
             }
         });
         if(uniqueTitle) {
+            if(vm.currentClaim.anonymous)fullName = "Anonymous";
             vm.processing = true;
             ClaimService.addClaim(
                 vm.$parent.user._id,

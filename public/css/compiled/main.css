@@ -675,6 +675,10 @@ body {
     font-size: 12px;
     line-height: 20px;
     display: inline-block; }
+  #claim .anonymous-label {
+    display: inline-block;
+    position: relative;
+    top: -6px; }
 
 /*claims modal window */
 body.modal-open {

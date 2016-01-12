@@ -34,10 +34,13 @@
                 <label for="claimTag">Add a Tag:</label>
                 <select class="full-select" name="claimTag" id="claimTag" ng-model="currentClaim.claimTag" ng-options="tag for tag in tags"></select>
             </div>
-            <div class="clr"></div>
-            <div class="col-4">&nbsp;</div>
             <div class="col-1">
+                <label for="claimTag">&nbsp</label>
                 <input class="rounded" type="submit" value="ADD"/>
+            </div>
+            <div class="col-2" ng-if="currentClaimType == 'Purchase'">
+                <label for="claimTag">&nbsp</label>
+                <input type="checkbox" ng-true-value="true" ng-false-value="false" ng-model="currentClaim.anonymous" class="checkbox claimbox"> <span class="anonymous-label">Add anonymously</span>
             </div>
             <div class="clr"></div>
         </form>
