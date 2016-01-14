@@ -324,7 +324,8 @@ module.exports = function(app, express){
                         to: item.email,
                         subject: 'New claim notification.',
                         html: '<h3>Hello, ' + item.firstName + ' ' + item.lastName + '.</h3>' +
-                        '<p>Discussion: <a href="http://194.44.136.82:3000/#/home/discussions/' + currentClaimId + '">"' + req.body.claim.claimTitle + '"</a> has been added.</p>'+
+                        //'<p>Discussion: <a href="http://194.44.136.82:3000/#/home/discussions/' + currentClaimId + '">"' + req.body.claim.claimTitle + '"</a> has been added.</p>'+
+                        '<p>Discussion: <a href="http://localhost:4000/#/home/discussions/' + currentClaimId + '">"' + req.body.claim.claimTitle + '"</a> has been added.</p>'+
                         '<p>Description: '+req.body.claim.claimComment+'</p>'
                     }, function(err1, info){
                         if(err1){

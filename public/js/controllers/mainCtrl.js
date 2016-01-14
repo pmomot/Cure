@@ -1,4 +1,4 @@
-MyApp.controller('MainController', ['$scope','$rootScope','$state','Auth', function($scope, $rootScope, $state, Auth){
+MyApp.controller('MainController', ['$scope','$rootScope','$state','Auth', '$location', function($scope, $rootScope, $state, Auth, $location){
 
     var vm = $scope;
 
@@ -36,9 +36,10 @@ MyApp.controller('MainController', ['$scope','$rootScope','$state','Auth', funct
     });
 
     vm.doLogin = function(){
+        var discussionId = Auth.discussionId;
         vm.processing = true;
         vm.errors.loginError = [];
-        Auth.login(vm.loginData.email, vm.loginData.password)
+        Auth.login(vm.loginData.email, vm.loginData.password, discussionId)
             .success(function(data){
                 vm.processing = false;
                 Auth.getUser(data.token)
@@ -46,7 +47,11 @@ MyApp.controller('MainController', ['$scope','$rootScope','$state','Auth', funct
                         vm.user = data.data;
                     });
                 if(data.success){
-                    $state.go('home.purchases');
+                    if(discussionId){
+                        $location.path('home/discussions/'+discussionId);
+                    }else{
+                        $state.go('home.purchases');
+                    }
                     vm.loggedIn = Auth.isLoggedIn();
                     vm.errors.loginError = [];
                 }else{

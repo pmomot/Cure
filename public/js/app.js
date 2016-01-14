@@ -94,6 +94,11 @@ var MyApp = angular.module('MyApp', ['ui.router','isteven-multi-select'])
                 event.preventDefault();
                 $state.go('home.login');
             }
+            if (toPage != 'home.login' && !Auth.isLoggedIn() && toParams.id) {
+                Auth.discussionId = toParams.id;
+                event.preventDefault();
+                $state.go('home.login');
+            }
             if ((toPage == 'home') || (toPage == 'home.login' && Auth.isLoggedIn())) {
                 event.preventDefault();
                 $state.go('home.purchases');
