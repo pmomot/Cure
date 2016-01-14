@@ -346,9 +346,16 @@
     display: inline-block;
   }
 
-  .anonymous-label {
-    display: inline-block;
-    position: relative;
-    top: -6px;
+  .anonymous-label, .anonymous-checkbox {
+    vertical-align: middle;
+  }
+
+  .anonymous-checkbox {
+    width: 26px!important;
+    height: 26px;
+  }
+
+  .add-claim-button {
+    height: 26px;
   }
 }
