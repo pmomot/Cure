@@ -16,11 +16,18 @@ select {
   @include borderRad(3px);
   outline: none;
   background: $vanilla;
+  box-shadow:none;
 
   &:active,
-  &:focus{
+  &:focus {
     color: $darkGrey;
     border: 1px solid $skyBlue;
+  }
+
+  &:invalid,
+  &:-moz-submit-invalid,
+  &:-moz-ui-invalid{
+    box-shadow:none;
   }
 }
 

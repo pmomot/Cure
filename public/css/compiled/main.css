@@ -108,6 +108,20 @@ select {
   select:focus {
     color: #333333;
     border: 1px solid #0a85d7; }
+  input[type='text']:invalid, input[type='text']:-moz-submit-invalid, input[type='text']:-moz-ui-invalid,
+  input[type='password']:invalid,
+  input[type='password']:-moz-submit-invalid,
+  input[type='password']:-moz-ui-invalid,
+  input[type='email']:invalid,
+  input[type='email']:-moz-submit-invalid,
+  input[type='email']:-moz-ui-invalid,
+  textarea:invalid,
+  textarea:-moz-submit-invalid,
+  textarea:-moz-ui-invalid,
+  select:invalid,
+  select:-moz-submit-invalid,
+  select:-moz-ui-invalid {
+    box-shadow: none; }
 
 input[type='submit'] {
   font-size: 14px;
