@@ -96,7 +96,8 @@ select {
   -moz-border-radius: 3px;
   border-radius: 3px;
   outline: none;
-  background: #f9f9f9; }
+  background: #f9f9f9;
+  box-shadow: none; }
   input[type='text']:active, input[type='text']:focus,
   input[type='password']:active,
   input[type='password']:focus,
@@ -492,7 +493,7 @@ body {
     text-align: center;
     color: #ffffff;
     background: #0a85d7; }
-    #claim .tagFilter:active {
+    #claim .tagFilter.active {
       background: #25c018 !important; }
   #claim table {
     line-height: 14px;

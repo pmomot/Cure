@@ -56,7 +56,7 @@
     color: $white;
     background: $skyBlue;
 
-    &:active {
+    &.active {
       background: $brightGreen!important;
     }
   }
