@@ -83,16 +83,16 @@ module.exports = function(app, express){
     });
 
     api.post('/delete', function(req, res){
-        console.log(req.body)
-        User.remove({
-            email: req.body.email
-        }, function(err, user){
-            if(err){
-                res.send(err);
-                return;
-            }
-            res.json(user);
-        });
+        //console.log(req.body)
+        //User.remove({
+        //    email: req.body.email
+        //}, function(err, user){
+        //    if(err){
+        //        res.send(err);
+        //        return;
+        //    }
+        //    res.json(user);
+        //});
         //Claim.remove({
         //}, function(err, user){
         //    if(err){
@@ -101,6 +101,15 @@ module.exports = function(app, express){
         //    }
         //    res.json(user);
         //});
+        User.findOneAndUpdate({ email: 'kdrobvyazko@corevalue.net' }, function(err, user) {
+            if (err) throw err;
+
+            user['userGroup'] = "HR";
+
+            // we have the updated user returned to us
+            console.log(user);
+        });
+
     });
 
     api.use(function(req, res, next){
