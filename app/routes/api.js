@@ -84,16 +84,8 @@ module.exports = function(app, express){
 
     api.post('/delete', function(req, res){
         console.log(req.body)
-        //User.remove({
-        //    email: req.body.email
-        //}, function(err, user){
-        //    if(err){
-        //        res.send(err);
-        //        return;
-        //    }
-        //    res.json(user);
-        //});
-        Claim.remove({
+        User.remove({
+            email: req.body.email
         }, function(err, user){
             if(err){
                 res.send(err);
@@ -101,6 +93,14 @@ module.exports = function(app, express){
             }
             res.json(user);
         });
+        //Claim.remove({
+        //}, function(err, user){
+        //    if(err){
+        //        res.send(err);
+        //        return;
+        //    }
+        //    res.json(user);
+        //});
     });
 
     api.use(function(req, res, next){
