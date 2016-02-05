@@ -101,10 +101,10 @@ module.exports = function(app, express){
         //    }
         //    res.json(user);
         //});
-        User.findOneAndUpdate({ email: 'kdrobvyazko@corevalue.net' }, function(err, user) {
+        User.update({ email: 'kdrobvyazko@corevalue.net' },{userGroup: 'HR'},function(err, user) {
             if (err) throw err;
 
-            user['userGroup'] = "HR";
+
 
             // we have the updated user returned to us
             console.log(user);
