@@ -1,60 +1,62 @@
-MyApp.controller('MainController', ['$scope','$rootScope','$state','Auth', '$location', function($scope, $rootScope, $state, Auth, $location){
+MyApp.controller('MainController', ['$scope', '$rootScope', '$state', 'Auth', '$location', function ($scope, $rootScope, $state, Auth, $location) { // eslint-disable-line no-undef
+    'use strict';
 
     var vm = $scope;
 
     vm.regExes = {
-        name    : /^[a-zA-Z\s]+$/,
-        email   : /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i,
+        name: /^[a-zA-Z\s]+$/,
+        email: /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i,
         password: /^\S{4,}$/
     };
     vm.changePassData = {
-        currentPass  : '',
-        newPass      : '',
+        currentPass: '',
+        newPass: '',
         newPassRepeat: ''
     };
     vm.loginData = {};
     vm.signUpData = {};
     vm.errors = {
-        loginError     : [],
-        signUpError    : [],
+        loginError: [],
+        signUpError: [],
         changePassError: [],
-        logoutError    : []
+        logoutError: []
     };
     vm.user = vm.$parent.user;
     vm.loggedIn = Auth.isLoggedIn();
 
-    $rootScope.$on('$stateChangeStart', function(e, toState){
+    $rootScope.$on('$stateChangeStart', function (e, toState) { // eslint-disable-line no-unused-vars
         vm.loggedIn = Auth.isLoggedIn();
         vm.loginData = {};
         vm.signUpData = {};
         vm.errors = {
-            loginError     : [],
-            signUpError    : [],
+            loginError: [],
+            signUpError: [],
             changePassError: [],
-            logoutError    : []
+            logoutError: []
         };
     });
 
-    vm.doLogin = function(){
+    vm.doLogin = function () {
         var discussionId = Auth.discussionId;
+
         vm.processing = true;
         vm.errors.loginError = [];
         Auth.login(vm.loginData.email, vm.loginData.password, discussionId)
-            .success(function(data){
+            .success(function (data) {
                 vm.processing = false;
                 Auth.getUser(data.token)
-                    .then(function(data){
-                        vm.user = data.data;
+                    .then(function (d) {
+                        vm.user = d.data;
                     });
-                if(data.success){
-                    if(discussionId){
-                        $location.path('home/discussions/'+discussionId);
-                    }else{
+                if (data.success) {
+                    if (discussionId) {
+                        $location.path('home/discussions/' + discussionId);
+                    } else {
                         $state.go('home.purchases');
                     }
                     vm.loggedIn = Auth.isLoggedIn();
                     vm.errors.loginError = [];
-                }else{
+                } else {
                     $state.go('home.login');
                     vm.errors.loginError.push(data.message);
                 }
@@ -62,68 +64,69 @@ MyApp.controller('MainController', ['$scope','$rootScope','$state','Auth', '$loc
         );
     };
 
-    vm.changePass = function(){
+    vm.changePass = function () {
         vm.processing = true;
         vm.errors.changePassError = [];
-        if((vm.changePassData.newPass == vm.changePassData.newPassRepeat) && (vm.changePassData.newPass != '') && (vm.changePassData.newPassRepeat != '')){
-            if(!vm.regExes.password.test(vm.changePassData.newPass) || !vm.regExes.password.test(vm.changePassData.newPassRepeat)){
-                vm.errors.changePassError.push('New password must be at least 4 characters long and not contain spaces.')
-            }else{
+        if ((vm.changePassData.newPass === vm.changePassData.newPassRepeat) && (vm.changePassData.newPass !== '') && (vm.changePassData.newPassRepeat !== '')) {
+            if (!vm.regExes.password.test(vm.changePassData.newPass) || !vm.regExes.password.test(vm.changePassData.newPassRepeat)) {
+                vm.errors.changePassError.push('New password must be at least 4 characters long and not contain spaces.');
+            } else {
                 Auth.changePass(vm.changePassData.currentPass, vm.changePassData.newPass, vm.user.email)
-                    .success(function(data){
-                    vm.processing = false;
-                    vm.errors.changePassError = [];
-                    if(data.success){
-                        vm.showSuccess();
-                    }else{
-                        if(data.errmsg){
-                            vm.errors.changePassError.push('You have entered wrong current password.');
-                        }else{
-                            vm.errors.changePassError.push(data.message);
+                    .success(function (data) {
+                        vm.processing = false;
+                        vm.errors.changePassError = [];
+
+                        if (data.success) {
+                            vm.showSuccess();
+                        } else {
+                            if (data.errmsg) {
+                                vm.errors.changePassError.push('You have entered wrong current password.');
+                            } else {
+                                vm.errors.changePassError.push(data.message);
+                            }
                         }
-                    }
-                })
+                    });
             }
-        }else{
+        } else {
             vm.errors.changePassError.push('New passwords do not match or are empty.');
         }
     };
 
-    vm.changePassPage = function(){
+    vm.changePassPage = function () {
         vm.processing = true;
         $state.go('home.changePass');
     };
 
-    vm.doSignUp = function(){
+    vm.doSignUp = function () {
         vm.processing = true;
         vm.errors.signUpError = [];
-        if(!vm.regExes.name.test(vm.signUpData.firstName)){
+        if (!vm.regExes.name.test(vm.signUpData.firstName)) {
             vm.errors.signUpError.push('First name may contain only letters.');
         }
-        if(!vm.regExes.name.test(vm.signUpData.lastName)){
+        if (!vm.regExes.name.test(vm.signUpData.lastName)) {
             vm.errors.signUpError.push('Last name may contain only letters.');
         }
-        if(!vm.regExes.email.test(vm.signUpData.email)){
+        if (!vm.regExes.email.test(vm.signUpData.email)) {
             vm.errors.signUpError.push('Email is invalid.');
         }
-        if(!vm.regExes.password.test(vm.signUpData.password)){
+        if (!vm.regExes.password.test(vm.signUpData.password)) {
             vm.errors.signUpError.push('Password must be at least 4 characters long and not contain spaces.');
         }
-        if(vm.signUpData.password != vm.signUpData.passwordRep){
+        if (vm.signUpData.password !== vm.signUpData.passwordRep) {
             vm.errors.signUpError.push('Passwords do not match.');
         }
-        if(vm.errors.signUpError.length == 0){
+        if (vm.errors.signUpError.length === 0) {
             vm.signUpData.userGroup = 'users';
             Auth.signUp(vm.signUpData.userGroup, vm.signUpData.firstName, vm.signUpData.lastName, vm.signUpData.email, vm.signUpData.password)
-                .success(function(data){
+                .success(function (data) {
                     vm.processing = false;
                     vm.errors.signUpError = [];
-                    if(data.success){
+                    if (data.success) {
                         vm.showSuccess();
-                    }else{
-                        if(data.errmsg){
+                    } else {
+                        if (data.errmsg) {
                             vm.errors.signUpError.push('User with this Email already exists.');
-                        }else{
+                        } else {
                             vm.errors.signUpError.push(data.message);
                         }
                     }
@@ -132,43 +135,43 @@ MyApp.controller('MainController', ['$scope','$rootScope','$state','Auth', '$loc
         }
     };
 
-    vm.doLogout = function(){
+    vm.doLogout = function () {
         vm.processing = true;
         vm.errors.logoutError = '';
         Auth.logout();
         $state.go('home.login');
     };
 
-    vm.showSignUp = function(){
+    vm.showSignUp = function () {
         angular.element('#signUp, #logIn').toggleClass('hidden');
     };
 
-    vm.showSuccess = function(){
+    vm.showSuccess = function () {
         vm.loginData = {};
         vm.signUpData = {};
         vm.errors = {
-            loginError     : [],
-            signUpError    : [],
+            loginError: [],
+            signUpError: [],
             changePassError: [],
-            logoutError    : []
+            logoutError: []
         };
         angular.element('#sigSuc, #logUp').toggleClass('hidden');
     };
 
-    vm.hideSuccess = function(ifPassChange){
-        if(ifPassChange){
+    vm.hideSuccess = function (ifPassChange) {
+        if (ifPassChange) {
             vm.doLogout();
             $state.go('home.login');
-        }else{
+        } else {
             angular.element('#sigSuc, #logUp').toggleClass('hidden');
             vm.showSignUp();
         }
     };
 
-    $rootScope.$watch('user', function() {
+    $rootScope.$watch('user', function () {
         vm.user = $rootScope.user;
     });
-    $rootScope.$watch('currentClaimType', function() {
+    $rootScope.$watch('currentClaimType', function () {
         vm.currentClaimType = $rootScope.currentClaimType;
     });
 }]);

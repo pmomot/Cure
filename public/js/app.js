@@ -1,79 +1,85 @@
-var MyApp = angular.module('MyApp', ['ui.router','isteven-multi-select'])
+var MyApp = angular.module('MyApp', ['ui.router', 'isteven-multi-select']) // eslint-disable-line no-unused-vars
+    .config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $urlRouterProvider) {
+        'use strict';
 
-    .config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider){
         $stateProvider
-            .state('home',{
+            .state('home', {
                 url: '/home',
                 templateUrl: '../views/pages/home.html',
                 controller: 'MainController',
-                data:{
+                data: {
                     claimType: undefined
                 }
             })
-            .state('home.login',{
+            .state('home.login', {
                 url: '/login',
                 templateUrl: '../views/pages/login.html',
                 controller: 'MainController',
-                data:{
+                data: {
                     claimType: undefined
                 }
             })
-            .state('home.changePass',{
+            .state('home.changePass', {
                 url: '/changePass',
                 templateUrl: '../views/pages/changePass.html',
                 controller: 'MainController',
-                data:{
+                data: {
                     claimType: undefined
                 }
             })
-            .state('home.purchases',{
+            .state('home.purchases', {
                 url: '/purchases',
                 templateUrl: '../views/pages/claim.html',
-                data:{
+                data: {
                     claimType: 'Purchase',
                     tags: ['Products', 'Bakery', 'Officeware']
                 },
                 resolve: {
-                    hrs: function(){return []}
+                    hrs: function () {
+                        return [];
+                    }
                 },
                 controller: 'ClaimsController'
             })
-            .state('home.propositions',{
+            .state('home.propositions', {
                 url: '/propositions',
                 templateUrl: '../views/pages/claim.html',
-                data:{
+                data: {
                     claimType: 'Proposition',
                     tags: ['Equipment', 'Furniture', 'Other']
                 },
                 resolve: {
-                    hrs: function(){return []}
+                    hrs: function () {
+                        return [];
+                    }
                 },
                 controller: 'ClaimsController'
             })
-            .state('home.chemicals',{
+            .state('home.chemicals', {
                 url: '/chemicals',
                 templateUrl: '../views/pages/claim.html',
-                data:{
+                data: {
                     claimType: 'Chemical'
                 },
                 resolve: {
-                    hrs: function(){return []}
+                    hrs: function () {
+                        return [];
+                    }
                 },
                 controller: 'ClaimsController'
             })
-            .state('home.discussions',{
+            .state('home.discussions', {
                 url: '/discussions/:id',
                 templateUrl: '../views/pages/claim.html',
-                data:{
+                data: {
                     claimType: 'Discussion'
                 },
                 resolve: {
-                    hrs:
-                        function(ClaimService) {
-                           return ClaimService.getHrs().then(function(data){
-                                 return data
-                            });
-                        }
+                    hrs: function (ClaimService) {
+                        return ClaimService.getHrs().then(function (data) {
+                            return data;
+                        });
+                    }
                 },
                 controller: 'ClaimsController'
             });
@@ -82,30 +88,35 @@ var MyApp = angular.module('MyApp', ['ui.router','isteven-multi-select'])
 
     }])
 
-    .run(['$rootScope','$state', '$window', 'Auth', function ($rootScope, $state, $window, Auth) {
+    .run(['$rootScope', '$state', '$window', 'Auth', function ($rootScope, $state, $window, Auth) {
+        'use strict';
+
         $rootScope.$on('$stateChangeStart', function (event, toState, toParams) {
+            var toPage;
+
             Auth.getUser($window.localStorage.token)
-                .then(function(data){
+                .then(function (data) {
                     $rootScope.user = data.data;
                 }
             );
-            var toPage = toState.name;
-            if ((toPage != 'home.login' && !Auth.isLoggedIn()) || (toPage == 'home.changePass' && !Auth.isLoggedIn())) {
+            // TODO CV simplify ifs
+            toPage = toState.name;
+            if ((toPage !== 'home.login' && !Auth.isLoggedIn()) || (toPage === 'home.changePass' && !Auth.isLoggedIn())) {
                 event.preventDefault();
                 $state.go('home.login');
             }
-            if (toPage != 'home.login' && !Auth.isLoggedIn() && toParams.id) {
+            if (toPage !== 'home.login' && !Auth.isLoggedIn() && toParams.id) {
                 Auth.discussionId = toParams.id;
                 event.preventDefault();
                 $state.go('home.login');
             }
-            if ((toPage == 'home') || (toPage == 'home.login' && Auth.isLoggedIn())) {
+            if ((toPage === 'home') || (toPage === 'home.login' && Auth.isLoggedIn())) {
                 event.preventDefault();
                 $state.go('home.purchases');
             }
-            if (toPage == 'home.changePass'){
+            if (toPage === 'home.changePass') {
                 $rootScope.currentClaimType = undefined;
             }
         });
-    }]);
-
+    }
+    ]);
