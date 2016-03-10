@@ -69,6 +69,7 @@ MyApp.controller('ClaimsController', [ // eslint-disable-line no-undef
             });
         };
 
+        // TODO CV find out if needed (possibly not needed)
         vm.getHrs = function () {
             ClaimService.getHrs().success(function (data) {
                 vm.hrs = data;
@@ -147,11 +148,12 @@ MyApp.controller('ClaimsController', [ // eslint-disable-line no-undef
             var content = angular.element('textarea[data-id=' + claim._id + ']').val(),
                 comment;
 
-            vm.processing = true;
             if (content.length <= 0) {
-                vm.processing = false;
                 return;
             }
+
+            vm.processing = true;
+
             comment = {
                 created: new Date().toISOString(),
                 content: content,
@@ -229,6 +231,7 @@ MyApp.controller('ClaimsController', [ // eslint-disable-line no-undef
             });
         };
 
+        // TODO CV find out if needed (possibly not needed)
         vm.orderByDate = function (item) {
             var parts = item.split('-');
 
@@ -251,10 +254,6 @@ MyApp.controller('ClaimsController', [ // eslint-disable-line no-undef
                 }
             });
             return disabled;
-        };
-
-        vm.deleteUser = function (userEmail) {
-            Auth.deleteUser(userEmail);
         };
 
         vm.getClaimsByType();

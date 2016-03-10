@@ -13,6 +13,6 @@ var mongoose = require('mongoose'),
         claimTag: String,
         status: String,
         anonymous: Boolean
-});
+    });
 
 module.exports = mongoose.model('Claim', Claim);
