@@ -20,7 +20,7 @@ MyApp.factory('Auth', ['$http', '$q', 'AuthToken', 'AuthInterceptor', function (
     authFactory.changePass = function (currentPass, newPass, email) {
         var token = AuthToken.getToken();
 
-        return $http({url: '/api/changePass', method: 'POST', headers: {'x-access-token': token}, data: {
+        return $http({url: '/api/changePassword', method: 'POST', headers: {'x-access-token': token}, data: {
             currentPass: currentPass,
             newPass: newPass,
             email: email

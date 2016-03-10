@@ -9,23 +9,45 @@ var User = require('../models/user'),
     serverAddress = 'http://' + config.ip + ':' + config.port,
     nodemailer = require('nodemailer'),
     smtpTransport = require('nodemailer-smtp-transport'),
-    nAsync = require('async');
+    nAsync = require('async'),
+    userApiCalls = require('./user-api')();
 
 /**
- * Generates token from user params
- * @param {Object} user - userInfo
+ * Helper for verifying user token
  * */
-function createToken (user) {
+function verifyToken (req, res, next) {
     'use strict';
 
-    return jsonWebToken.sign({
-        id: user._id,
-        firstName: user.firstName,
-        lastName: user.lastName,
-        email: user.email
-    }, secretKey, {
-        expiresInMinute: 1440
-    });
+    var token = req.body.token || req.headers['x-access-token'] || req.params('token');
+
+    if (token) {
+        jsonWebToken.verify(token, secretKey, function (err, decoded) {
+            if (err) {
+                res.status(403).send({
+                    success: false,
+                    message: 'Failed to authenticate'
+                });
+            } else {
+                User.findOne({_id: decoded.id}, function (error, user) {
+                    if (user) {
+                        req.decoded = decoded;
+                        next();
+                    } else {
+                        res.status(403).send({
+                            status: 403,
+                            success: false,
+                            message: 'User does not exist'
+                        });
+                    }
+                });
+            }
+        });
+    } else {
+        res.status(403).send({
+            success: false,
+            message: 'No token provided'
+        });
+    }
 }
 
 /**
@@ -67,142 +89,18 @@ function sendClaimEmail (mailParams, callback) {
 module.exports = function (app, express) {
     'use strict';
 
-    var api = express.Router();
+    var api = new express.Router();
 
-    api.post('/signup', function (req, res) {
-        var user = new User({
-            userGroup: req.body.userGroup,
-            firstName: req.body.firstName,
-            lastName: req.body.lastName,
-            password: req.body.password,
-            email: req.body.email
-        });
+    // User section
+    api.post('/signup', userApiCalls.signUp);
+    api.post('/login', userApiCalls.logIn);
+    api.post('/changePassword', userApiCalls.changePassword).use(verifyToken);
+    api.get('/me', userApiCalls.getMe).use(verifyToken);
+    api.get('/hrs', userApiCalls.getHRs).use(verifyToken);
 
-        user.save(function (err) {
-            if (err) {
-                res.send(err);
-                return;
-            }
-            res.json({message: 'User has been created!', success: true});
-        });
-    });
+    // api.use(verifyToken);
 
-    api.get('/currentUser', function (req, res) {
-        User.findOne({email: req.body.email}, function (err, user) {
-            return Boolean(user);
-        });
-    });
-
-    api.get('/users', function (req, res) {
-        User.find({}, function (err, users) {
-            if (err) {
-                res.send(err);
-                return;
-            }
-            res.json(users);
-        });
-    });
-
-    api.post('/login', function (req, res) {
-        User.findOne({
-            email: req.body.email
-        }).select('password').exec(function (err, user) {
-            var token, validPassword;
-
-            if (err) {
-                throw err;
-            }
-            if (!user) {
-                res.send({message: 'User does not exist'});
-            } else if (user) {
-                validPassword = user.comparePassword(req.body.password);
-
-                if (validPassword) {
-                    token = createToken(user);
-                    res.json({
-                        success: true,
-                        message: 'Successfully logged in',
-                        token: token
-                    });
-                } else {
-                    res.send({message: 'Invalid Password'});
-                }
-            }
-        });
-    });
-
-    api.use(function (req, res, next) {
-        var token = req.body.token || req.headers['x-access-token'] || req.param('token');
-
-        if (token) {
-            jsonWebToken.verify(token, secretKey, function (err, decoded) {
-                if (err) {
-                    res.status(403).send({
-                        success: false,
-                        message: 'Failed to authenticate'
-                    });
-                } else {
-                    User.findOne({_id: decoded.id}, function (error, user) {
-                        if (user) {
-                            req.decoded = decoded;
-                            next();
-                        } else {
-                            res.status(403).send({
-                                status: 403,
-                                success: false,
-                                message: 'User does not exist'
-                            });
-                        }
-                    });
-                }
-            });
-        } else {
-            res.status(403).send({
-                success: false,
-                message: 'No token provided'
-            });
-        }
-    });
-
-    api.post('/changePass', function (req, res) {
-        User.findOne({
-            email: req.body.email
-        }).select('password').exec(function (err, user) {
-            var token, validPassword;
-
-            if (err) {
-                throw err;
-            }
-            if (!user) {
-                res.send({message: 'User does not exist'});
-            } else if (user) {
-                token = createToken(user);
-                validPassword = user.comparePassword(req.body.currentPass);
-
-                if (validPassword) {
-                    user.password = req.body.newPass;
-                    user.save(function (error) {
-                        if (error) {
-                            res.send(error);
-                            return;
-                        }
-                        res.json({
-                            success: true,
-                            message: 'Password has been changed.',
-                            token: token
-                        });
-                    });
-                } else {
-                    res.send({
-                        success: false,
-                        message: 'Invalid current password',
-                        token: token
-                    });
-                }
-            }
-        });
-    });
-
+    // Claim section
     api.route('/addClaim')
         .post(function (req, res) {
 
@@ -224,7 +122,7 @@ module.exports = function (app, express) {
                     res.send(err);
                     return;
                 }
-                res.json({message: 'New claim has been created', status: 'success'})
+                res.json({message: 'New claim has been created', status: 'success'});
             });
         })
 
@@ -262,27 +160,6 @@ module.exports = function (app, express) {
         });
     });
 
-    api.get('/me', function (req, res) {
-        User.findOne({
-            _id: req.decoded.id
-        }, function (err, user) {
-            if (err) {
-                res.send(err);
-                return;
-            }
-            res.json(user);
-        });
-    });
-
-    api.get('/hrs', function (req, res) {
-        User.find({userGroup: 'HR'}, function (err, users) {
-            if (err) {
-                res.send(err);
-                return;
-            }
-            res.json(users);
-        });
-    });
 
     api.post('/sendClaims', function (req, res) {
         var calls = [];
