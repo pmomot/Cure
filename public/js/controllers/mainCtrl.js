@@ -1,6 +1,6 @@
-MyApp.controller('MainController', ['$scope', '$rootScope', '$state', 'Auth', '$location', function ($scope, $rootScope, $state, Auth, $location) { // eslint-disable-line no-undef
-    'use strict';
+'use strict';
 
+MyApp.controller('MainController', ['$scope', '$rootScope', '$state', 'Auth', '$location', function ($scope, $rootScope, $state, Auth, $location) { // eslint-disable-line no-undef
     var vm = $scope;
 
     vm.regExes = {

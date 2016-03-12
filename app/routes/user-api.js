@@ -1,6 +1,8 @@
 /**
  * Created by petermomot on 3/10/16.
  */
+'use strict';
+
 var User = require('../models/user'),
     config = require('../../config'),
     secretKey = config.secretKey,
@@ -11,8 +13,6 @@ var User = require('../models/user'),
  * @param {Object} user - userInfo
  * */
 function createToken (user) {
-    'use strict';
-
     return jsonWebToken.sign({
         id: user._id,
         firstName: user.firstName,
@@ -24,7 +24,6 @@ function createToken (user) {
 }
 
 module.exports = function () {
-    'use strict';
 
     /**
      * Sign Up in service
@@ -55,7 +54,6 @@ module.exports = function () {
      * @param {Object} res - response
      * */
     function logIn (req, res) {
-        console.log('login');
         User.findOne({
             email: req.body.email
         }).select('password').exec(function (err, user) {

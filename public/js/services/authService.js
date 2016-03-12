@@ -1,6 +1,6 @@
-MyApp.factory('Auth', ['$http', '$q', 'AuthToken', 'AuthInterceptor', function ($http, $q, AuthToken, AuthInterceptor) { // eslint-disable-line no-undef
-    'use strict';
+'use strict';
 
+MyApp.factory('Auth', ['$http', '$q', 'AuthToken', 'AuthInterceptor', function ($http, $q, AuthToken, AuthInterceptor) { // eslint-disable-line no-undef
     var authFactory = {};
 
     authFactory.login = function (email, password) {
@@ -74,8 +74,6 @@ MyApp.factory('Auth', ['$http', '$q', 'AuthToken', 'AuthInterceptor', function (
 }]);
 
 MyApp.factory('AuthToken', ['$window', function ($window) { // eslint-disable-line no-undef
-    'use strict';
-
     var authTokenFactory = {};
 
     authTokenFactory.getToken = function () {
@@ -95,8 +93,6 @@ MyApp.factory('AuthToken', ['$window', function ($window) { // eslint-disable-li
 }]);
 
 MyApp.factory('AuthInterceptor', ['$q', '$state', 'AuthToken', function ($q, $state, AuthToken) { // eslint-disable-line no-undef
-    'use strict';
-
     var interceptorFactory = {};
 
     interceptorFactory.request = function (config) {

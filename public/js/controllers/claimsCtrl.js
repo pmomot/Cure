@@ -1,8 +1,9 @@
+'use strict';
+
+// TODO CV change alerts to normal popups
 MyApp.controller('ClaimsController', [ // eslint-disable-line no-undef
     '$scope', '$rootScope', '$state', '$window', 'Auth', 'ClaimService', 'hrs', '$timeout', '$stateParams', '$location',
     function ($scope, $rootScope, $state, $window, Auth, ClaimService, hrs, $timeout, $stateParams, $location) {
-        'use strict';
-
         var vm = $scope;
 
         vm.discussionId = $stateParams.id;
@@ -84,7 +85,7 @@ MyApp.controller('ClaimsController', [ // eslint-disable-line no-undef
 
             if (vm.currentClaim.claimRecipient && vm.currentClaim.claimRecipient.length === 0 &&
                 vm.currentClaim.claimType === 'Discussion') {
-                alert('Add some recipients, bro!');
+                // alert('Add some recipients, bro!');
                 return;
             }
             vm.processing = true;
@@ -95,7 +96,7 @@ MyApp.controller('ClaimsController', [ // eslint-disable-line no-undef
 
             vm.claimList.forEach(function (claim) {
                 if (vm.currentClaim.claimTitle === claim.claimTitle && claim.status === 'open') {
-                    alert('claim with such title already exists');
+                    // alert('claim with such title already exists');
                     uniqueTitle = false;
                     vm.processing = false;
                 }
@@ -164,7 +165,8 @@ MyApp.controller('ClaimsController', [ // eslint-disable-line no-undef
                 if (data.status === 'success') {
                     vm.getClaimsByType();
                 } else {
-                    console.log(data);
+                    // TODO CV handle erros properly
+                    // console.log(data);
                 }
             });
         };

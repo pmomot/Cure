@@ -1,7 +1,7 @@
+'use strict';
+
 var MyApp = angular.module('MyApp', ['ui.router', 'isteven-multi-select']) // eslint-disable-line no-unused-vars
     .config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $urlRouterProvider) {
-        'use strict';
-
         $stateProvider
             .state('home', {
                 url: '/home',
@@ -89,8 +89,6 @@ var MyApp = angular.module('MyApp', ['ui.router', 'isteven-multi-select']) // es
     }])
 
     .run(['$rootScope', '$state', '$window', 'Auth', function ($rootScope, $state, $window, Auth) {
-        'use strict';
-
         $rootScope.$on('$stateChangeStart', function (event, toState, toParams) {
             var toPage;
 

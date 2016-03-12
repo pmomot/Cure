@@ -1,6 +1,6 @@
-MyApp.factory('ClaimService', ['$http', '$q', 'AuthToken', 'AuthInterceptor', function ($http, $q, AuthToken, AuthInterceptor) { // eslint-disable-line no-undef
-    'use strict';
+'use strict';
 
+MyApp.factory('ClaimService', ['$http', '$q', 'AuthToken', 'AuthInterceptor', function ($http, $q, AuthToken, AuthInterceptor) { // eslint-disable-line no-undef
     var claimFactory = {};
 
     // TODO CV move params to object
