@@ -1,10 +1,10 @@
+'use strict';
+
 var gulp = require('gulp'),
     sass = require('gulp-sass'),
     eslint = require('gulp-eslint');
 
 gulp.task('styles', function () {
-    'use strict';
-
     gulp.src('public/scss/**/*.scss')
         .pipe(sass().on('error', sass.logError))
         .pipe(gulp.dest('public/css/compiled'));
@@ -12,19 +12,15 @@ gulp.task('styles', function () {
 
 // Watch task
 gulp.task('default', function () {
-    'use strict';
-
     gulp.watch('public/scss/**/*.scss', ['styles']);
 });
 
 gulp.task('lint', function () {
-    'use strict';
-
     // ESLint ignores files with "node_modules" paths.
     // So, it's best to have gulp ignore the directory as well.
     // Also, Be sure to return the stream from the task;
     // Otherwise, the task may end before the stream has finished.
-    return gulp.src(['public/js/**/*.js', 'app/**/*.js', '!node_modules/**'])
+    return gulp.src(['public/js/**/*.js', 'app/**/*.js', 'config.js', 'gulpfile.js', 'index.js', '!node_modules/**'])
         // eslint() attaches the lint output to the "eslint" property
         // of the file object so it can be used by other modules.
         .pipe(eslint())

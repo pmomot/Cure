@@ -39,11 +39,9 @@ MyApp.controller('MainController', ['$scope', '$rootScope', '$state', 'Auth', '$
     vm.doLogin = function () {
         var discussionId = Auth.discussionId;
 
-        vm.processing = true;
         vm.errors.loginError = [];
         Auth.login(vm.loginData.email, vm.loginData.password, discussionId)
             .success(function (data) {
-                vm.processing = false;
                 Auth.getUser(data.token)
                     .then(function (d) {
                         vm.user = d.data;
@@ -65,7 +63,6 @@ MyApp.controller('MainController', ['$scope', '$rootScope', '$state', 'Auth', '$
     };
 
     vm.changePass = function () {
-        vm.processing = true;
         vm.errors.changePassError = [];
         if ((vm.changePassData.newPass === vm.changePassData.newPassRepeat) && (vm.changePassData.newPass !== '') && (vm.changePassData.newPassRepeat !== '')) {
             if (!vm.regExes.password.test(vm.changePassData.newPass) || !vm.regExes.password.test(vm.changePassData.newPassRepeat)) {
@@ -73,7 +70,6 @@ MyApp.controller('MainController', ['$scope', '$rootScope', '$state', 'Auth', '$
             } else {
                 Auth.changePass(vm.changePassData.currentPass, vm.changePassData.newPass, vm.user.email)
                     .success(function (data) {
-                        vm.processing = false;
                         vm.errors.changePassError = [];
 
                         if (data.success) {
@@ -93,12 +89,10 @@ MyApp.controller('MainController', ['$scope', '$rootScope', '$state', 'Auth', '$
     };
 
     vm.changePassPage = function () {
-        vm.processing = true;
         $state.go('home.changePass');
     };
 
     vm.doSignUp = function () {
-        vm.processing = true;
         vm.errors.signUpError = [];
         if (!vm.regExes.name.test(vm.signUpData.firstName)) {
             vm.errors.signUpError.push('First name may contain only letters.');
@@ -119,7 +113,6 @@ MyApp.controller('MainController', ['$scope', '$rootScope', '$state', 'Auth', '$
             vm.signUpData.userGroup = 'users';
             Auth.signUp(vm.signUpData.userGroup, vm.signUpData.firstName, vm.signUpData.lastName, vm.signUpData.email, vm.signUpData.password)
                 .success(function (data) {
-                    vm.processing = false;
                     vm.errors.signUpError = [];
                     if (data.success) {
                         vm.showSuccess();
@@ -136,7 +129,6 @@ MyApp.controller('MainController', ['$scope', '$rootScope', '$state', 'Auth', '$
     };
 
     vm.doLogout = function () {
-        vm.processing = true;
         vm.errors.logoutError = '';
         Auth.logout();
         $state.go('home.login');

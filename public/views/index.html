@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html ng-app="MyApp">
+<html>
 <head lang="en">
     <base href="/purchases">
     <meta charset="UTF-8">
@@ -14,10 +14,12 @@
     <script type="text/javascript" src="js/controllers/claimsCtrl.js"></script>
     <script type="text/javascript" src="js/services/authService.js"></script>
     <script type="text/javascript" src="js/services/claimService.js"></script>
+    <script type="text/javascript" src="js/services/authTokenService.js"></script>
+    <script type="text/javascript" src="js/services/httpInterceptor.js"></script>
     <link rel="stylesheet" href="css/isteven-multi-select.css"/>
     <link rel="stylesheet" href="css/compiled/main.css"/>
 </head>
-<body>
+<body ng-app="MyApp">
     <div class="wrapper" id="wrapper" ui-view>
         <!--here goes the content of the page-->
     </div>

@@ -1,3 +1,5 @@
+'use strict';
+
 module.exports = {
     database: 'mongodb://root:rootRat@ds029297.mongolab.com:29297/malkos-internal-needs',
     // database: 'mongodb://localhost/',

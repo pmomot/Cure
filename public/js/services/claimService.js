@@ -1,94 +1,86 @@
 'use strict';
 
-MyApp.factory('ClaimService', ['$http', '$q', 'AuthToken', 'AuthInterceptor', function ($http, $q, AuthToken, AuthInterceptor) { // eslint-disable-line no-undef
-    var claimFactory = {};
+MyApp.factory('ClaimService', ['$http', function ($http) { // eslint-disable-line no-undef
 
-    // TODO CV move params to object
-    claimFactory.addClaim = function (creator, fullName, authorEmail, claimTitle, claimType, claimTag, claimRecipient, claimComment, anonymous) {
+    /**
+     * Create new claim or discussion
+     * @param {Object} data - claim body
+     * */
+    function addClaim (data) {
 
-        var token = AuthToken.getToken();
-
-        return $http({url: '/api/addClaim', method: 'POST', headers: {'x-access-token': token}, data: {
-            creator: creator,
-            fullName: fullName,
-            authorEmail: authorEmail,
-            claimTitle: claimTitle,
-            claimType: claimType,
-            claimTag: claimTag,
-            claimRecipient: claimRecipient,
-            claimComment: claimComment,
-            anonymous: anonymous
-        }})
-            .success(function (data) {
-                return data;
-            }).error(function (data) {
-                AuthInterceptor.responceError(data);
+        return $http({url: '/api/addClaim', method: 'POST', data: data})
+            .success(function (response) {
+                return response;
             });
-    };
+    }
 
-    claimFactory.resolveClaim = function (claim, status) {
+    /**
+     * Resolve claim with positive or negative status
+     * @param {Object} claim - claim body
+     * @param {String} status - claim status
+     * */
+    function resolveClaim (claim, status) {
 
-        var token = AuthToken.getToken();
-
-        return $http({url: '/api/resolveClaim', method: 'POST', headers: {'x-access-token': token}, data: {
+        return $http({url: '/api/resolveClaim', method: 'POST', data: {
             _id: claim._id,
             status: status || claim.status,
             claimComment: claim.claimComment
         }})
             .success(function (data) {
                 return data;
-            }).error(function (data) {
-                AuthInterceptor.responceError(data);
             });
-    };
+    }
 
-    claimFactory.getClaimsByType = function (claimType) {
+    /**
+     * Get claims from server
+     * @param {String} claimType - type of claim
+     * */
+    function getClaimsByType (claimType) {
 
-        var token = AuthToken.getToken();
-
-        return $http({url: '/api/addClaim', method: 'GET', headers: {'x-access-token': token}, params: {claimType: claimType}})
+        return $http({url: '/api/addClaim', method: 'GET', params: {claimType: claimType}})
             .success(function (data) {
                 return data;
-            }).error(function (data) {
-                AuthInterceptor.responceError(data);
             });
-    };
+    }
 
-    claimFactory.sendClaims = function (claims, currentUser) {
+    /**
+     * Send resolved claims to user by email
+     * @param {Array} claims - list of claims
+     * */
+    function sendClaims (claims) {
 
-        var token = AuthToken.getToken();
-
-        return $http({url: '/api/sendClaims', method: 'POST', headers: {'x-access-token': token}, data: {
-            claims: claims,
-            currentUser: currentUser
+        return $http({url: '/api/sendClaims', method: 'POST', data: {
+            claims: claims
         }})
             .success(function (data) {
                 return data;
-            }).error(function (data) {
-                AuthInterceptor.responceError(data);
             });
-    };
+    }
 
-    claimFactory.sendOneClaim = function (claim, currentUser) {
+    /**
+     * Send email about adding new discussion
+     * @param {Object} claim - discussion body
+     * */
+    function sendOneClaim (claim) {
 
-        var token = AuthToken.getToken();
-
-        return $http({url: '/api/sendOneClaim', method: 'POST', headers: {'x-access-token': token}, data: {
-            claim: claim,
-            currentUser: currentUser
+        return $http({url: '/api/sendOneClaim', method: 'POST', data: {
+            claim: claim
         }})
             .success(function (data) {
                 return data;
-            }).error(function (data) {
-                AuthInterceptor.responceError(data);
             });
-    };
+    }
 
-    claimFactory.addComment = function (comment, claimId, claimRecipient, claimTitle) {
+    /**
+     * Add new comment to discussion
+     * @param {Object} comment - comment body
+     * @param {String} claimId - claim id
+     * @param {Array} claimRecipient - users, that will get emails notifications about comment
+     * @param {String} claimTitle - claim title
+     * */
+    function addComment (comment, claimId, claimRecipient, claimTitle) {
 
-        var token = AuthToken.getToken();
-
-        return $http({url: '/api/addComment', method: 'POST', headers: {'x-access-token': token}, data: {
+        return $http({url: '/api/addComment', method: 'POST', data: {
             claimId: claimId,
             comment: comment,
             claimRecipient: claimRecipient,
@@ -96,22 +88,27 @@ MyApp.factory('ClaimService', ['$http', '$q', 'AuthToken', 'AuthInterceptor', fu
         }})
             .success(function (data) {
                 return data;
-            }).error(function (data) {
-                AuthInterceptor.responceError(data);
             });
-    };
+    }
 
-    claimFactory.getHrs = function () {
+    /**
+     * Get all HRs
+     * */
+    function getHrs () { // TODO CV move to user service
 
-        var token = AuthToken.getToken();
-
-        return $http({method: 'GET', url: '/api/hrs', headers: {'x-access-token': token}})
+        return $http({method: 'GET', url: '/api/hrs'})
             .success(function (data) {
                 return data;
-            }).error(function (data) {
-                AuthInterceptor.responceError(data);
             });
-    };
+    }
 
-    return claimFactory;
+    return {
+        addClaim: addClaim,
+        resolveClaim: resolveClaim,
+        getClaimsByType: getClaimsByType,
+        sendClaims: sendClaims,
+        sendOneClaim: sendOneClaim,
+        addComment: addComment,
+        getHrs: getHrs
+    };
 }]);

@@ -1,6 +1,6 @@
 'use strict';
 
-MyApp.factory('Auth', ['$http', '$q', 'AuthToken', 'AuthInterceptor', function ($http, $q, AuthToken, AuthInterceptor) { // eslint-disable-line no-undef
+MyApp.factory('Auth', ['$http', '$q', 'AuthToken', function ($http, $q, AuthToken) { // eslint-disable-line no-undef
     var authFactory = {};
 
     authFactory.login = function (email, password) {
@@ -12,15 +12,11 @@ MyApp.factory('Auth', ['$http', '$q', 'AuthToken', 'AuthInterceptor', function (
             .success(function (data) {
                 AuthToken.setToken(data.token);
                 return data;
-            }).error(function (data) {
-                AuthInterceptor.responceError(data);
             });
     };
 
     authFactory.changePass = function (currentPass, newPass, email) {
-        var token = AuthToken.getToken();
-
-        return $http({url: '/api/changePassword', method: 'POST', headers: {'x-access-token': token}, data: {
+        return $http({url: '/api/changePassword', method: 'POST', data: {
             currentPass: currentPass,
             newPass: newPass,
             email: email
@@ -28,8 +24,6 @@ MyApp.factory('Auth', ['$http', '$q', 'AuthToken', 'AuthInterceptor', function (
             .success(function (data) {
                 AuthToken.setToken(data.token);
                 return data;
-            }).error(function (data) {
-                AuthInterceptor.responceError(data);
             });
     };
 
@@ -44,8 +38,6 @@ MyApp.factory('Auth', ['$http', '$q', 'AuthToken', 'AuthInterceptor', function (
         })
             .success(function (data) {
                 return data;
-            }).error(function (data) {
-                AuthInterceptor.responceError(data);
             });
     };
 
@@ -57,13 +49,11 @@ MyApp.factory('Auth', ['$http', '$q', 'AuthToken', 'AuthInterceptor', function (
         return Boolean(AuthToken.getToken());
     };
 
-    authFactory.getUser = function (token) {
+    authFactory.getUser = function () {
         if (AuthToken.getToken()) {
-            return $http({url: '/api/me', method: 'GET', headers: {'x-access-token': token}})
+            return $http({url: '/api/me', method: 'GET'})
                 .success(function (data) {
                     return data;
-                }).error(function (data) {
-                    AuthInterceptor.responceError(data);
                 });
         }
 
@@ -73,48 +63,3 @@ MyApp.factory('Auth', ['$http', '$q', 'AuthToken', 'AuthInterceptor', function (
     return authFactory;
 }]);
 
-MyApp.factory('AuthToken', ['$window', function ($window) { // eslint-disable-line no-undef
-    var authTokenFactory = {};
-
-    authTokenFactory.getToken = function () {
-
-        return $window.localStorage.getItem('token');
-    };
-
-    authTokenFactory.setToken = function (token) {
-        if (token) {
-            $window.localStorage.setItem('token', token);
-        } else {
-            $window.localStorage.removeItem('token');
-        }
-    };
-
-    return authTokenFactory;
-}]);
-
-MyApp.factory('AuthInterceptor', ['$q', '$state', 'AuthToken', function ($q, $state, AuthToken) { // eslint-disable-line no-undef
-    var interceptorFactory = {};
-
-    interceptorFactory.request = function (config) {
-
-        var token = AuthToken.getToken();
-
-        if (token) {
-            config.headers['x-access-token'] = token;
-        }
-
-        return config;
-    };
-
-    interceptorFactory.responceError = function (response) {
-
-        if (response.status === 403) {
-            AuthToken.setToken();
-            $state.go('home.login');
-        }
-
-        return $q.reject(response);
-    };
-
-    return interceptorFactory;
-}]);

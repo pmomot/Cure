@@ -1,14 +1,15 @@
 'use strict';
 
 var MyApp = angular.module('MyApp', ['ui.router', 'isteven-multi-select']) // eslint-disable-line no-unused-vars
-    .config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $urlRouterProvider) {
+    .config(['$stateProvider', '$urlRouterProvider', '$httpProvider',
+    function ($stateProvider, $urlRouterProvider, $httpProvider) {
         $stateProvider
             .state('home', {
                 url: '/home',
                 templateUrl: '../views/pages/home.html',
                 controller: 'MainController',
                 data: {
-                    claimType: undefined
+                    claimType: null
                 }
             })
             .state('home.login', {
@@ -16,7 +17,7 @@ var MyApp = angular.module('MyApp', ['ui.router', 'isteven-multi-select']) // es
                 templateUrl: '../views/pages/login.html',
                 controller: 'MainController',
                 data: {
-                    claimType: undefined
+                    claimType: null
                 }
             })
             .state('home.changePass', {
@@ -24,7 +25,7 @@ var MyApp = angular.module('MyApp', ['ui.router', 'isteven-multi-select']) // es
                 templateUrl: '../views/pages/changePass.html',
                 controller: 'MainController',
                 data: {
-                    claimType: undefined
+                    claimType: null
                 }
             })
             .state('home.purchases', {
@@ -86,35 +87,38 @@ var MyApp = angular.module('MyApp', ['ui.router', 'isteven-multi-select']) // es
 
         $urlRouterProvider.otherwise('/home/purchases');
 
+        $httpProvider.interceptors.push('httpInterceptor');
+
     }])
 
-    .run(['$rootScope', '$state', '$window', 'Auth', function ($rootScope, $state, $window, Auth) {
-        $rootScope.$on('$stateChangeStart', function (event, toState, toParams) {
-            var toPage;
+    .run(['$rootScope', '$state', '$window', 'Auth', 'AuthToken', function ($rootScope, $state, $window, Auth, AuthToken) {
+        $rootScope.$on('$stateChangeStart', function (e, toState, toParams) {
+            var toPage = toState.name,
+                isLoggedIn = Auth.isLoggedIn();
 
-            Auth.getUser($window.localStorage.token)
+            Auth.getUser(AuthToken.getToken())
                 .then(function (data) {
                     $rootScope.user = data.data;
                 }
             );
-            // TODO CV simplify ifs
-            toPage = toState.name;
-            if ((toPage !== 'home.login' && !Auth.isLoggedIn()) || (toPage === 'home.changePass' && !Auth.isLoggedIn())) {
-                event.preventDefault();
+
+            if (isLoggedIn) {
+                if (toPage === 'home' || toPage === 'home.login') {
+                    $state.go('home.purchases');
+                } else if (toPage === 'home.changePass') {
+                    $rootScope.currentClaimType = null;
+                }
+
+            } else if (toPage !== 'home.login') {
+                e.preventDefault();
+
+                if (toParams.id) {
+                    Auth.discussionId = toParams.id;
+                }
+
                 $state.go('home.login');
             }
-            if (toPage !== 'home.login' && !Auth.isLoggedIn() && toParams.id) {
-                Auth.discussionId = toParams.id;
-                event.preventDefault();
-                $state.go('home.login');
-            }
-            if ((toPage === 'home') || (toPage === 'home.login' && Auth.isLoggedIn())) {
-                event.preventDefault();
-                $state.go('home.purchases');
-            }
-            if (toPage === 'home.changePass') {
-                $rootScope.currentClaimType = undefined;
-            }
+
         });
     }
     ]);

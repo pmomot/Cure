@@ -12,7 +12,7 @@ var User = require('../models/user'),
  * Helper for verifying user token
  * */
 function verifyToken (req, res, next) {
-    var token = req.body.token || req.headers['x-access-token'] || req.params('token');
+    var token = req.body.token || req.headers['x-access-token'];
 
     if (token) {
         jsonWebToken.verify(token, secretKey, function (err, decoded) {

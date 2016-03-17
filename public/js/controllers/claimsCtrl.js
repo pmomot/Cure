@@ -10,7 +10,6 @@ MyApp.controller('ClaimsController', [ // eslint-disable-line no-undef
         vm.hrs = hrs.data;
         vm.currentClaimType = $rootScope.currentClaimType = $state.current.data.claimType;
         vm.tags = $state.current.data.tags || [];
-        vm.processing = false;
         vm.errors = {
             addingError: []
         };
@@ -37,10 +36,13 @@ MyApp.controller('ClaimsController', [ // eslint-disable-line no-undef
         };
         vm.multiRefreshed = false;
 
-        vm.getClaimsByType = function (processing) {
-            vm.processing = true;
+        /**
+         * Get claims by their type
+         * */
+        function getClaimsByType () {
+
             ClaimService.getClaimsByType(vm.currentClaimType).success(function (data) {
-                vm.processing = processing;
+                // TODO CV refactor this!!!
                 vm.tagsAvailability = {};
                 vm.claimList = data;
                 vm.claimList.clean = true;
@@ -68,27 +70,19 @@ MyApp.controller('ClaimsController', [ // eslint-disable-line no-undef
                     $location.hash(vm.discussionId);
                 }
             });
-        };
-
-        // TODO CV find out if needed (possibly not needed)
-        vm.getHrs = function () {
-            ClaimService.getHrs().success(function (data) {
-                vm.hrs = data;
-            });
-        };
+        }
 
         /**
          * @param {Bool} sendmail checks if mail sending API is used during method call.
          */
         vm.addClaim = function (sendmail) {
-            var uniqueTitle, fullName;
+            var uniqueTitle, fullName, addClaimParams = {};
 
             if (vm.currentClaim.claimRecipient && vm.currentClaim.claimRecipient.length === 0 &&
                 vm.currentClaim.claimType === 'Discussion') {
                 // alert('Add some recipients, bro!');
                 return;
             }
-            vm.processing = true;
             vm.errors.addingError = [];
 
             uniqueTitle = true;
@@ -98,29 +92,24 @@ MyApp.controller('ClaimsController', [ // eslint-disable-line no-undef
                 if (vm.currentClaim.claimTitle === claim.claimTitle && claim.status === 'open') {
                     // alert('claim with such title already exists');
                     uniqueTitle = false;
-                    vm.processing = false;
                 }
             });
             if (uniqueTitle) {
-                vm.processing = true;
-                ClaimService.addClaim(
-                    vm.$parent.user._id,
-                    fullName,
-                    vm.user.email,
-                    vm.currentClaim.claimTitle,
-                    vm.currentClaim.claimType,
-                    vm.currentClaim.claimTag,
-                    vm.currentClaim.claimRecipient,
-                    vm.currentClaim.claimComment,
-                    vm.currentClaim.anonymous)
+                addClaimParams = angular.extend({
+                    creator: vm.$parent.user._id,
+                    fullName: fullName,
+                    authorEmail: vm.user.email
+                }, vm.currentClaim);
+
+                ClaimService.addClaim(addClaimParams)
                     .success(function (data) {
-                        vm.getClaimsByType(sendmail);
+                        getClaimsByType();
                         vm.errors.addingError = [];
                         if (data.status === 'success') {
                             if (sendmail) {
                                 ClaimService.sendOneClaim(vm.currentClaim, vm.$parent.user).success(function (d) {
                                     if (d.status === 'success') {
-                                        vm.getClaimsByType();
+                                        getClaimsByType();
                                     }
                                 });
                             }
@@ -132,12 +121,17 @@ MyApp.controller('ClaimsController', [ // eslint-disable-line no-undef
                                 claimComment: '',
                                 anonymous: false
                             };
-                            vm.removeLastAddedClass();
+
+                            // TODO CV think about this, maybe use no-transition class
+                            vm.classRemoved = true;
+                            $timeout(function () {
+                                vm.classRemoved = false;
+                            }, 1000);
+
                             $scope.$broadcast('clearMulti');
                         } else {
                             $scope.$broadcast('clearMulti');
                             vm.multiRefreshed = true;
-                            vm.processing = false;
                             vm.errors.addingError.push(data.message);
                         }
                     }
@@ -149,11 +143,9 @@ MyApp.controller('ClaimsController', [ // eslint-disable-line no-undef
             var content = angular.element('textarea[data-id=' + claim._id + ']').val(),
                 comment;
 
-            if (content.length <= 0) {
+            if (content.length === 0) {
                 return;
             }
-
-            vm.processing = true;
 
             comment = {
                 created: new Date().toISOString(),
@@ -161,11 +153,10 @@ MyApp.controller('ClaimsController', [ // eslint-disable-line no-undef
                 author: vm.$parent.user
             };
             ClaimService.addComment(comment, claim._id, claim.claimRecipient, claim.claimTitle).success(function (data) {
-                vm.processing = false;
                 if (data.status === 'success') {
-                    vm.getClaimsByType();
+                    getClaimsByType();
                 } else {
-                    // TODO CV handle erros properly
+                    // TODO CV handle errors properly
                     // console.log(data);
                 }
             });
@@ -208,43 +199,25 @@ MyApp.controller('ClaimsController', [ // eslint-disable-line no-undef
         };
 
         vm.resolveClaim = function (claim, status) {
-            vm.processing = true;
             ClaimService.resolveClaim(claim, status).success(function (data) {
-                vm.processing = false;
                 if (data.status === 'success') {
-                    vm.getClaimsByType();
+                    getClaimsByType();
                 }
             });
         };
 
         vm.sendClaims = function () {
-            vm.processing = true;
             vm.claimListToSend = [];
             vm.claimList.forEach(function (claim) {
                 if (claim.checked) {
                     vm.claimListToSend.push(claim);
                 }
             });
-            ClaimService.sendClaims(vm.claimListToSend, vm.$parent.user).success(function (data) {
-                vm.processing = false;
+            ClaimService.sendClaims(vm.claimListToSend).success(function (data) {
                 if (data.status === 'success') {
-                    vm.getClaimsByType();
+                    getClaimsByType();
                 }
             });
-        };
-
-        // TODO CV find out if needed (possibly not needed)
-        vm.orderByDate = function (item) {
-            var parts = item.split('-');
-
-            return new Date(parseInt(parts[2]), parseInt(parts[1]), parseInt(parts[0]));
-        };
-
-        vm.removeLastAddedClass = function () {
-            vm.classRemoved = true;
-            $timeout(function () {
-                vm.classRemoved = false;
-            }, 1000);
         };
 
         vm.checkCheckedCheckboxes = function () {
@@ -258,6 +231,14 @@ MyApp.controller('ClaimsController', [ // eslint-disable-line no-undef
             return disabled;
         };
 
-        vm.getClaimsByType();
+
+        /**
+         * Function runs on controller initialize
+         * */
+        function init () {
+            getClaimsByType();
+        }
+
+        init();
     }
 ]);
