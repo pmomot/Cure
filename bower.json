@@ -1,0 +1,30 @@
+{
+  "name": "ng-Cure",
+  "version": "1.0.0",
+  "homepage": "https://github.com/vyokhna/Cure",
+  "authors": [
+    "Vitaliy Yokhna vyokhna@corevalue.net",
+    "Petro Momot pmomot@corevalue.net"
+  ],
+  "description": "Bower config file",
+  "main": "index.html",
+  "moduleType": [],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "~1.5.1",
+    "angular-mocks": "~1.4.7",
+    "angular-route": "~1.4.7",
+    "isteven-angular-multiselect": "~4.0.0",
+    "angular-toastr": "~1.7.0"
+  },
+  "resolutions": {
+    "angular": "~1.5.x"
+  }
+}

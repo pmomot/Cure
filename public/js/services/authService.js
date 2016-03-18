@@ -1,6 +1,8 @@
 'use strict';
 
-MyApp.factory('Auth', ['$http', '$q', 'AuthToken', function ($http, $q, AuthToken) { // eslint-disable-line no-undef
+angular.module('ClaimPortal.Services').factory('authService', ['$http', '$q', 'authTokenService', function ($http, $q, authTokenService) {
+    // TODO CV refactor this
+
     var authFactory = {};
 
     authFactory.login = function (email, password) {
@@ -10,7 +12,8 @@ MyApp.factory('Auth', ['$http', '$q', 'AuthToken', function ($http, $q, AuthToke
             password: password
         })
             .success(function (data) {
-                AuthToken.setToken(data.token);
+                authTokenService.setToken(data.token);
+
                 return data;
             });
     };
@@ -22,36 +25,26 @@ MyApp.factory('Auth', ['$http', '$q', 'AuthToken', function ($http, $q, AuthToke
             email: email
         }})
             .success(function (data) {
-                AuthToken.setToken(data.token);
+                authTokenService.setToken(data.token);
                 return data;
             });
     };
 
-    authFactory.signUp = function (userGroup, firstName, lastName, email, password) {
+    authFactory.signUp = function (requestData) {
 
-        return $http.post('/api/signup', {
-            userGroup: userGroup,
-            firstName: firstName,
-            lastName: lastName,
-            email: email,
-            password: password
-        })
+        return $http.post('/api/user', requestData)
             .success(function (data) {
                 return data;
             });
     };
 
     authFactory.logout = function () {
-        AuthToken.setToken();
-    };
-
-    authFactory.isLoggedIn = function () {
-        return Boolean(AuthToken.getToken());
+        authTokenService.clearToken();
     };
 
     authFactory.getUser = function () {
-        if (AuthToken.getToken()) {
-            return $http({url: '/api/me', method: 'GET'})
+        if (authTokenService.getToken()) {
+            return $http({url: '/api/user', method: 'GET'})
                 .success(function (data) {
                     return data;
                 });

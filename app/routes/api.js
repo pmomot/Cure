@@ -48,13 +48,16 @@ module.exports = function (app, express) {
     var api = new express.Router();
 
     // User section
-    api.post('/signup', userApiCalls.signUp);
+    api.post('/user', userApiCalls.signUp);
     api.post('/login', userApiCalls.logIn);
-    api.post('/changePassword', userApiCalls.changePassword).use(verifyToken);
-    api.get('/me', userApiCalls.getMe).use(verifyToken);
-    api.get('/hrs', userApiCalls.getHRs).use(verifyToken);
 
     api.use(verifyToken);
+
+    api.get('/user', userApiCalls.getUser);
+    api.post('/changePassword', userApiCalls.changePassword);
+    api.get('/hrs', userApiCalls.getHRs);
+
+
     // Claim section
     // TODO CV change route name
     api.route('/addClaim')

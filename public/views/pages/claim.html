@@ -18,9 +18,6 @@
 
     <!--first 3 tabs-->
     <section ng-if="currentClaimType!='Discussion'">
-        <!--debug button-->
-        <button ng-if="false" ng-click="deleteUser('kdrobvyazko@corevalue.net')">asdasda</button>
-        <!--debug button-->
         <form method="post" ng-submit="addClaim()">
             <div class="col-3 no-padding-left" ng-if="currentClaimType != 'Chemical'">
                 <label for="claimTitle" class="">Claim Title:</label>
@@ -85,7 +82,7 @@
                             <div class="claim-author"><span ng-if="!claim.anonymous">{{claim.fullName}}</span><span ng-if="claim.anonymous">Anonymous</span></div><div class="author-in" ng-if="tags.length > 0">&nbsp;in&nbsp;</div><div class="claim-tag rounded" ng-if="tags.length > 0">{{claim.claimTag}}</div>
                             <div class="claim-add-comment smaller">
                                 <div class="comment-tooltip rounded" data-id="{{claim._id}}" ng-if="claim.claimComment">{{claim.claimComment}}</div>
-                                <div class="claim-info" ng-mouseover="showTooltip(claim._id)" ng-mouseleave="hideTooltip(claim._id)" ng-if="claim.claimComment">&nbsp;</div>
+                                <div class="claim-info" ng-mouseover="showTooltip($event)" ng-mouseleave="hideTooltip($event)" ng-if="claim.claimComment">&nbsp;</div>
                                 <div class="claim-status">{{claim.status}}</div>
                                 <div class="claim-checkbox" ng-if="$parent.user.userGroup == 'HR' && claim.status != 'resolved'">
                                     <input type="checkbox" value="{{claim._id}}" ng-true-value="true" ng-false-value="false" ng-model="claim.checked" class="checkbox claimbox">
@@ -149,7 +146,7 @@
                         </div>
                     </div>
                     <div class="claim-add-comment">
-                        <textarea class="claim-comment-input" data-id="{{claim._id}}"></textarea>
+                        <textarea class="claim-comment-input"></textarea>
                         <input class="rounded claim-add-new-comment-button" type="submit" value="ADD NEW COMMENT" ng-click="addComment(claim)" data-id="{{claim._id}}"/>
                         <div class="clr"></div>
                         <input class="rounded claim-resolve" type="submit" value="RESOLVE & REMOVE" ng-click="resolveClaim(claim, 'resolved')" data-id="{{claim._id}}"/>

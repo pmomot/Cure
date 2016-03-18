@@ -39,6 +39,8 @@ module.exports = function () {
             email: req.body.email
         });
 
+        // TODO CV add email check!
+
         user.save(function (err) {
             if (err) {
                 res.send(err);
@@ -72,7 +74,8 @@ module.exports = function () {
                     res.json({
                         success: true,
                         message: 'Successfully logged in',
-                        token: token
+                        token: token,
+                        user: user
                     });
                 } else {
                     res.send({message: 'Invalid Password'});
@@ -130,7 +133,7 @@ module.exports = function () {
      * @param {Object} req - request
      * @param {Object} res - response
      * */
-    function getMe (req, res) { // TODO CV rewrite this
+    function getUser (req, res) { // TODO CV rewrite this
         User.findOne({
             _id: req.decoded.id
         }, function (err, user) {
@@ -159,9 +162,9 @@ module.exports = function () {
 
     return {
         signUp: signUp,
+        getUser: getUser,
         logIn: logIn,
         changePassword: changePassword,
-        getMe: getMe,
         getHRs: getHRs
     };
 };

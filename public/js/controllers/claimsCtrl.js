@@ -1,9 +1,10 @@
 'use strict';
 
 // TODO CV change alerts to normal popups
-MyApp.controller('ClaimsController', [ // eslint-disable-line no-undef
-    '$scope', '$rootScope', '$state', '$window', 'Auth', 'ClaimService', 'hrs', '$timeout', '$stateParams', '$location',
-    function ($scope, $rootScope, $state, $window, Auth, ClaimService, hrs, $timeout, $stateParams, $location) {
+
+angular.module('ClaimPortal').controller('ClaimsController', [
+    '$scope', '$rootScope', '$state', '$window', 'authService', 'ClaimService', 'hrs', '$timeout', '$stateParams', '$location',
+    function ($scope, $rootScope, $state, $window, authService, ClaimService, hrs, $timeout, $stateParams, $location) {
         var vm = $scope;
 
         vm.discussionId = $stateParams.id;
@@ -140,7 +141,7 @@ MyApp.controller('ClaimsController', [ // eslint-disable-line no-undef
         };
 
         vm.addComment = function (claim) {
-            var content = angular.element('textarea[data-id=' + claim._id + ']').val(),
+            var content = angular.element(document.getElementById(claim._id)).find('textarea').val(),
                 comment;
 
             if (content.length === 0) {
@@ -166,12 +167,12 @@ MyApp.controller('ClaimsController', [ // eslint-disable-line no-undef
             vm.activeTag = tagName;
         };
 
-        vm.showTooltip = function (id) {
-            angular.element('.comment-tooltip[data-id=' + id + ']').css('display', 'block');
+        vm.showTooltip = function ($event) {
+            angular.element($event.target).parent().children().eq(0).css('display', 'block');
         };
 
-        vm.hideTooltip = function (id) {
-            angular.element('.comment-tooltip[data-id=' + id + ']').css('display', 'none');
+        vm.hideTooltip = function ($event) {
+            angular.element($event.target).parent().children().eq(0).css('display', 'none');
         };
 
         vm.openModal = function (item, action) {

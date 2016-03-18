@@ -1,6 +1,6 @@
 'use strict';
 
-MyApp.factory('ClaimService', ['$http', function ($http) { // eslint-disable-line no-undef
+angular.module('ClaimPortal.Services').factory('ClaimService', ['$http', function ($http) {
 
     /**
      * Create new claim or discussion

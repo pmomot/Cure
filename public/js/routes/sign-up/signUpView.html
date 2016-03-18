@@ -1,0 +1,31 @@
+<div id="logUp">
+    <div class="col-10" id="signUp">
+        <h1 class="text-center">Create an Account</h1>
+        <form method="post" ng-submit="vm.sendRequest()">
+            <label for="firstName" class="">First Name:</label>
+            <input class="rounded" ng-model="vm.data.firstName" type="text" name="email" id="firstName" required/>
+            <div class="clr"></div>
+            <label for="lastName" class="">Last Name:</label>
+            <input class="rounded" ng-model="vm.data.lastName" type="text" name="lastName" id="lastName" required/>
+            <div class="clr"></div>
+            <label for="emailReg" class="">Email:</label>
+            <input class="rounded" ng-model="vm.data.email" type="email" name="email" id="emailReg" required/>
+            <div class="clr"></div>
+            <label for="passwordReg">Password:</label>
+            <input class="rounded" ng-model="vm.data.password" type="password" name="password" id="passwordReg" required/>
+            <div class="clr"></div>
+            <label for="passwordRegRep">Confirm Password:</label>
+            <input class="rounded" ng-model="vm.data.passwordRep" type="password" name="password" id="passwordRegRep" required/>
+            <div class="clr"></div>
+            <input class="rounded" type="submit" value="SUBMIT"/>
+            <div class="clr"></div>
+        </form>
+        <div class="error" ng-show="vm.errors.length > 0">
+            <span ng-repeat="error in vm.errors">{{ error }}</span>
+        </div>
+        <div class="sign">
+            <a href="#/user/log-in">Back to Log In</a>
+        </div>
+    </div>
+    <div class="clr"></div>
+</div>

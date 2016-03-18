@@ -11,12 +11,15 @@
     "type": "git",
     "url": "git+https://github.com/vyokhna/malkos-requests-app.git"
   },
-  "author": "vyokhna",
+  "authors": [
+    "Vitaliy Yokhna vyokhna@corevalue.net",
+    "Petro Momot pmomot@corevalue.net"
+  ],
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/vyokhna/malkos-requests-app/issues"
+    "url": "https://github.com/vyokhna/Cure/issues"
   },
-  "homepage": "https://github.com/vyokhna/malkos-requests-app#readme",
+  "homepage": "https://github.com/vyokhna/Cure#readme",
   "dependencies": {
     "async": "^1.5.0",
     "bcrypt-nodejs": "0.0.3",
@@ -30,6 +33,7 @@
     "underscore": "^1.8.3"
   },
   "devDependencies": {
+    "bower": "^1.7.7",
     "gulp": "^3.9.0",
     "gulp-eslint": "^2.0.0",
     "gulp-sass": "^2.1.0"

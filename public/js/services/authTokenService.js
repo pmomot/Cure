@@ -3,7 +3,7 @@
  */
 'use strict';
 
-MyApp.factory('AuthToken', ['$window', function ($window) { // eslint-disable-line no-undef
+angular.module('ClaimPortal.Services').factory('authTokenService', ['$window', function ($window) {
 
     if (!$window.localStorage.getItem('token')) {
         $window.localStorage.setItem('token', '');

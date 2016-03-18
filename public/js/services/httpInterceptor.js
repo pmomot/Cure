@@ -3,8 +3,8 @@
  */
 'use strict';
 
-MyApp.factory('httpInterceptor', ['$rootScope', '$q', '$injector', 'AuthToken', // eslint-disable-line no-undef
-    function ($rootScope, $q, $injector, AuthToken) {
+angular.module('ClaimPortal.Services').factory('httpInterceptor', ['$rootScope', '$q', '$injector', 'authTokenService',
+    function ($rootScope, $q, $injector, authTokenService) {
 
         /**
          * Fires every time response is coming
@@ -17,12 +17,7 @@ MyApp.factory('httpInterceptor', ['$rootScope', '$q', '$injector', 'AuthToken', 
 
         return {
             request: function (config) {
-                var token = AuthToken.getToken();
-
-                if (token) {
-                    config.headers['x-access-token'] = token;
-                }
-
+                config.headers['x-access-token'] = authTokenService.getToken();
                 $rootScope.processing = true;
 
                 return config;
@@ -38,9 +33,9 @@ MyApp.factory('httpInterceptor', ['$rootScope', '$q', '$injector', 'AuthToken', 
                 responseCallback();
 
                 if (rejection.status === 403) {
-                    AuthToken.setToken();
+                    authTokenService.clearToken();
                     // hack to resolve circular dependency
-                    $injector.get('$state').go('home.login');
+                    //$injector.get('$state').go('home.login');
                 }
 
                 return $q.reject(rejection);
