@@ -9,19 +9,19 @@
         .module('ClaimPortal')
         .controller('SignUpController', SignUpController);
 
-    SignUpController.$inject = ['$location', 'toastr', 'REGEX', 'authService', 'authTokenService'];
+    SignUpController.$inject = ['$location', '$window', 'toastr', 'REGEX', 'authService'];
 
     /**
      * User Sign Up Controller
      * */
-    function SignUpController ($location, toastr, REGEX, authService, authTokenService) {
+    function SignUpController ($location, $window, toastr, REGEX, authService) {
         var vm = this;
 
         vm.errors = [];
         vm.data = {};
         vm.sendRequest = sendRequest;
 
-        if (authTokenService.hasToken()) {
+        if ($window.localStorage.getItem('token') === '') { // sign up page can be opened only when not authorized
             $location.path('/');
         }
 

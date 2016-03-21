@@ -329,16 +329,24 @@ body {
   height: 60px;
   padding: 0 0 0 40px;
   background: #000000; }
-  #nav .col-1,
-  #nav .col-2,
-  #nav .col-9 {
+  #nav:after {
+    display: block;
+    content: '';
+    clear: both; }
+  #nav .col {
     height: 100%; }
   #nav .col-9 {
     padding: 0; }
-    #nav .col-9 .col-1,
-    #nav .col-9 .col-2 {
+    #nav .col-9:after {
+      display: block;
+      content: '';
+      clear: both; }
+    #nav .col-9 .col {
       padding-right: 0;
       padding-left: 0; }
+  #nav .hr-nav-items {
+    width: 100%;
+    height: 100%; }
   #nav #img-logo {
     padding-top: 12px;
     padding-bottom: 12px;

@@ -27,8 +27,33 @@
                 controller: 'LogInController',
                 controllerAs: 'vm'
             })
+            .when('/user/change-pass', {
+                templateUrl: 'js/routes/change-pass/changePassView.html',
+                controller: 'ChangePassController',
+                controllerAs: 'vm'
+            })
+            .when('/purchases', {
+                templateUrl: 'js/routes/purchases/purchasesView.html',
+                controller: 'PurchasesController',
+                controllerAs: 'vm'
+            })
+            .when('/propositions', {
+                templateUrl: 'js/routes/propositions/propositionsView.html',
+                controller: 'PurchasesController', // TODO change
+                controllerAs: 'vm'
+            })
+            .when('/stuff', {
+                templateUrl: 'js/routes/stuff/stuffView.html',
+                controller: 'PurchasesController', // TODO change
+                controllerAs: 'vm'
+            })
+            .when('/discussions', {
+                templateUrl: 'js/routes/discussions/discussionsView.html',
+                controller: 'PurchasesController', // TODO change
+                controllerAs: 'vm'
+            })
             .otherwise({
-                redirectTo: '/'
+                redirectTo: '/purchases'
             });
     }
 })();

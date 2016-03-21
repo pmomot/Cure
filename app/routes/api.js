@@ -49,12 +49,12 @@ module.exports = function (app, express) {
 
     // User section
     api.post('/user', userApiCalls.signUp);
-    api.post('/login', userApiCalls.logIn);
+    api.post('/user/log-in', userApiCalls.logIn);
 
     api.use(verifyToken);
 
     api.get('/user', userApiCalls.getUser);
-    api.post('/changePassword', userApiCalls.changePassword);
+    api.post('/user/change-pass', userApiCalls.changePassword);
     api.get('/hrs', userApiCalls.getHRs);
 
 

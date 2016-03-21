@@ -71,12 +71,17 @@ module.exports = function () {
 
                 if (validPassword) {
                     token = createToken(user);
-                    res.json({
-                        success: true,
-                        message: 'Successfully logged in',
-                        token: token,
-                        user: user
+                    User.findOne({
+                        email: req.body.email
+                    }).lean().exec(function (er, u) {
+                        res.json({
+                            success: true,
+                            message: 'Successfully logged in',
+                            token: token,
+                            user: u
+                        });
                     });
+
                 } else {
                     res.send({message: 'Invalid Password'});
                 }

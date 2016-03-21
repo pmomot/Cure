@@ -1,0 +1,22 @@
+<div id="logUp">
+    <div class="col-10" id="logIn">
+        <h1 class="text-center">Change Password</h1>
+        <form method="post" ng-submit="vm.sendRequest()">
+            <label for="currentPass" class="">Current Password:</label>
+            <input class="rounded" ng-model="vm.data.currentPass" type="password" name="currentPass" id="currentPass" required/>
+            <div class="clr"></div>
+            <label for="newPass">New Password:</label>
+            <input class="rounded" ng-model="vm.data.newPass" type="password" name="password" id="newPass" required/>
+            <div class="clr"></div>
+            <label for="newPassRepeat">Repeat New Password:</label>
+            <input class="rounded" ng-model="vm.data.newPassRepeat" type="password" name="newPassRepeat" id="newPassRepeat" required/>
+            <div class="clr"></div>
+            <input class="rounded" type="submit" value="SUBMIT"/>
+            <div class="clr"></div>
+        </form>
+        <div class="error" ng-show="vm.errors.length > 0">
+            <span ng-repeat="error in vm.errors">{{ error }}</span>
+        </div>
+    </div>
+    <div class="clr"></div>
+</div>

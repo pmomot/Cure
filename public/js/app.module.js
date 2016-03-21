@@ -11,8 +11,7 @@
             'isteven-multi-select',
             'ClaimPortal.Services',
             // 'ClaimPortal.Repositories',
-            // 'ClaimPortal.Directives',
-            // 'ClaimPortal.Filters',
+            'ClaimPortal.Directives',
             'ClaimPortal.Constants'
         ])
         .config(['$httpProvider', function ($httpProvider) {
@@ -27,25 +26,25 @@
                 timeOut: 3000
             });
         })
-        .run(['$rootScope', '$location', function ($rootScope, $location) {
+        .run(['$rootScope', '$location', '$window', 'authService', function ($rootScope, $location, $window, authService) {
             // prevent loading any session required page without necessary token
-            //$rootScope.$on('$routeChangeStart', function (event, next) {
-            //    if (!authTokenService.hasToken()) {
-            //        if (next.templateUrl !== 'app/routes/login/loginView.html' &&
-            //            next.templateUrl !== 'app/routes/signup/signupView.html' &&
-            //            next.templateUrl !== 'app/routes/changePasswordView.html') {
-            //
-            //            $location.path('/login');
-            //        }
-            //    }
-            //
-            //});
+            $rootScope.$on('$routeChangeStart', function (event, next) {
+                if ($window.localStorage.getItem('token') === '') {
+                    if (next.templateUrl !== 'js/routes/log-in/logInView.html' &&
+                        next.templateUrl !== 'js/routes/sign-up/signUpView.html') {
+
+                        $location.path('/user/log-in');
+                    }
+                } else if (!authService.hasUserInfo()) {
+                    authService.loadUserInfo();
+                }
+
+            });
         }]);
 
     angular.module('ClaimPortal.Services', []);
     // angular.module('ClaimPortal.Repositories', []);
-    // angular.module('ClaimPortal.Directives', []);
-    // angular.module('ClaimPortal.Filters', []);
+    angular.module('ClaimPortal.Directives', []);
     angular.module('ClaimPortal.Constants', []);
 
 })();

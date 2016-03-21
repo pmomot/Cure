@@ -1,58 +1,113 @@
 'use strict';
 
-angular.module('ClaimPortal.Services').factory('authService', ['$http', '$q', 'authTokenService', function ($http, $q, authTokenService) {
-    // TODO CV refactor this
+(function () {
+    angular
+        .module('ClaimPortal.Services')
+        .factory('authService', authService);
 
-    var authFactory = {};
+    authService.$inject = ['$http', '$q', '$window'];
 
-    authFactory.login = function (email, password) {
+    /**
+     * Authorization processing service
+     * */
+    function authService ($http, $q, $window) {
 
-        return $http.post('/api/login', {
-            email: email,
-            password: password
-        })
-            .success(function (data) {
-                authTokenService.setToken(data.token);
+        var userInfo = {};
 
-                return data;
-            });
-    };
+        if (!$window.localStorage.getItem('token')) {
+            $window.localStorage.setItem('token', '');
+        }
 
-    authFactory.changePass = function (currentPass, newPass, email) {
-        return $http({url: '/api/changePassword', method: 'POST', data: {
-            currentPass: currentPass,
-            newPass: newPass,
-            email: email
-        }})
-            .success(function (data) {
-                authTokenService.setToken(data.token);
-                return data;
-            });
-    };
+        /**
+         * Log in user to portal
+         * */
+        function login (email, password) {
 
-    authFactory.signUp = function (requestData) {
+            return $http.post('/api/user/log-in', {
+                email: email,
+                password: password
+            })
+                .success(function (data) {
+                    $window.localStorage.setItem('token', data.token);
+                    userInfo = data.user;
 
-        return $http.post('/api/user', requestData)
-            .success(function (data) {
-                return data;
-            });
-    };
+                    return data;
+                });
+        }
 
-    authFactory.logout = function () {
-        authTokenService.clearToken();
-    };
+        /**
+         * Log out of portal
+         * */
+        function logout () {
+            $window.localStorage.setItem('token', '');
+        }
 
-    authFactory.getUser = function () {
-        if (authTokenService.getToken()) {
-            return $http({url: '/api/user', method: 'GET'})
+        /**
+         * Create new user
+         * */
+        function signUp (requestData) {
+
+            return $http.post('/api/user', requestData)
                 .success(function (data) {
                     return data;
                 });
         }
 
-        return $q.reject({message: 'User is not logged in'});
-    };
+        /**
+         * Get user data form api
+         * */
+        function loadUserInfo () {
+            if ($window.localStorage.getItem('token') === '') {
+                return $q.reject({message: 'User is not logged in'});
+            } else {
+                return $http({url: '/api/user', method: 'GET'})
+                    .success(function (data) {
+                        userInfo = data;
+                    });
+            }
+        }
 
-    return authFactory;
-}]);
+        /**
+        * Change user password
+        * */
+        function changePass (requestData) {
+            requestData.email = userInfo.email;
 
+            return $http({url: '/api/user/change-pass', method: 'POST', data: requestData})
+                .success(function (data) {
+                    $window.localStorage.setItem('token', data.token);
+                    return data;
+                });
+        }
+
+        // service calls
+        /**
+         * Get current account info
+         * */
+        function getUserInfo () {
+            return userInfo;
+        }
+
+        /**
+         * Verify that service has user info saved
+         * */
+        function hasUserInfo () {
+            return Object.keys(userInfo).length > 0;
+        }
+
+        return {
+            // api calls
+            login: login,
+            logout: logout,
+            signUp: signUp,
+            loadUserInfo: loadUserInfo,
+            changePass: changePass,
+
+            // service calls
+            getUserInfo: getUserInfo,
+            hasUserInfo: hasUserInfo
+
+        };
+    }
+
+})();

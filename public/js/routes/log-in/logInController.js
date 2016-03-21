@@ -9,24 +9,20 @@
         .module('ClaimPortal')
         .controller('LogInController', LogInController);
 
-    LogInController.$inject = ['$location', 'toastr', 'authService', 'authTokenService'];
+    LogInController.$inject = ['$location', 'toastr', 'authService'];
 
     /**
      * User Log In Controller
      * */
-    function LogInController ($location, toastr, authService, authTokenService) {
+    function LogInController ($location, toastr, authService) {
         var vm = this;
 
         vm.errors = [];
         vm.data = {};
         vm.sendRequest = sendRequest;
 
-        if (authTokenService.hasToken()) {
-            $location.path('/');
-        }
-
         /**
-         * Send user sign up request
+         * Send user log in request
          * */
         function sendRequest () {
             vm.errors = [];
@@ -35,15 +31,8 @@
                 .success(function (data) {
                     vm.errors = [];
 
-                    // TODO CV investigate
-                    //authService.getUser(data.token)
-                    //    .then(function (d) {
-                    //        vm.user = d.data;
-                    //    });
-
                     if (data.success) {
                         toastr.success(data.message);
-                        // vm.loggedIn = authTokenService.hasToken(); // TODO CV investigate
                         $location.path('/');
                     } else {
                         if (!data.message) {

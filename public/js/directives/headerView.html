@@ -1,0 +1,35 @@
+<header id="nav">
+    <div class="col col-1">
+        <img id="img-logo" src="../img/core-logo.png" alt="CoreValue"/>
+    </div>
+    <div class="col col-9">
+        <div class="col col-2 text-center nav-div">
+            <a href="#/purchases" class="nav-a" ng-class="{'active-nav': path === 'purchases'}">Purchases</a>
+        </div>
+        <div class="col col-2 text-center nav-div">
+            <a href="#/propositions" class="nav-a" ng-class="{'active-nav': path === 'propositions'}">Propositions</a>
+        </div>
+        <div class="col col-4 text-center nav-div">
+            <div class="hr-nav-items" ng-if="userInfo.userGroup == 'HR'">
+                <div class="col col-5 text-center nav-div">
+                    <a href="#/stuff" class="nav-a" ng-class="{'active-nav': path === 'stuff'}">Stuff</a>
+                </div>
+                <div class="col col-5 text-center nav-div">
+                    <a href="#/discussions" class="nav-a" ng-class="{'active-nav': path === 'discussions'}">Discussions</a>
+                </div>
+            </div>
+        </div>
+        <div class="col col-1"></div>
+        <div class="col col-1 text-right">
+            <div class="nav-a logout">{{ userInfo.firstName }}</div>
+            <ul class="user-ul">
+                <li>
+                    <a class="nav-a" href="#/user/change-pass">Change Pass</a>
+                </li>
+                <li>
+                    <a class="nav-a" ng-click="logout()">Log Out</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</header>

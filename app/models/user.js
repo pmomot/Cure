@@ -11,7 +11,7 @@ var mongoose = require('mongoose'),
     });
 
 UserSchema.pre('save', function (next) {
-    var self = this; // eslint-disable-line no-invalid-this
+    var self = this; // eslint-disable-line
 
     if (!self.isModified('password')) {
         return next();
@@ -26,9 +26,7 @@ UserSchema.pre('save', function (next) {
 });
 
 UserSchema.methods.comparePassword = function (password) {
-    // 'use strict';
-
-    var self = this;
+    var self = this; // eslint-disable-line
 
     return bcrypt.compareSync(password, self.password);
 };

@@ -3,21 +3,28 @@
  */
 'use strict';
 
-angular.module('ClaimPortal.Services').factory('httpInterceptor', ['$rootScope', '$q', '$injector', 'authTokenService',
-    function ($rootScope, $q, $injector, authTokenService) {
+(function () {
+    angular
+        .module('ClaimPortal.Services')
+        .factory('httpInterceptor', httpInterceptor);
+
+    httpInterceptor.$inject = ['$rootScope', '$q', '$window'];
+
+    /**
+     * Service intercepts all api requests and responses
+     * */
+    function httpInterceptor ($rootScope, $q, $window) {
 
         /**
          * Fires every time response is coming
          * */
         function responseCallback () {
             $rootScope.processing = false;
-
-            // TODO CV add message popup
         }
 
         return {
             request: function (config) {
-                config.headers['x-access-token'] = authTokenService.getToken();
+                config.headers['x-access-token'] = $window.localStorage.getItem('token');
                 $rootScope.processing = true;
 
                 return config;
@@ -33,13 +40,11 @@ angular.module('ClaimPortal.Services').factory('httpInterceptor', ['$rootScope',
                 responseCallback();
 
                 if (rejection.status === 403) {
-                    authTokenService.clearToken();
-                    // hack to resolve circular dependency
-                    //$injector.get('$state').go('home.login');
+                    $window.localStorage.setItem('token', '');
                 }
 
                 return $q.reject(rejection);
             }
         };
-    }]
-);
+    }
+})();

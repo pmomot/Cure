@@ -94,17 +94,17 @@
 
             }])
 
-        .run(['$rootScope', '$state', '$window', 'authService', 'authTokenService', function ($rootScope, $state, $window, authService, authTokenService) {
+        .run(['$rootScope', '$state', '$window', 'authService', function ($rootScope, $state, $window, authService) {
             $rootScope.$on('$stateChangeStart', function (e, toState, toParams) {
                 var toPage = toState.name;
 
-                authService.getUser(authTokenService.getToken()) // TODO CV search for getUser
+                authService.getUser($window.localStorage.getItem('token')) // TODO CV search for getUser
                     .then(function (data) {
                         $rootScope.user = data.data;
                     }
                 );
 
-                if (authTokenService.hasToken()) { // user is logged in
+                if ($window.localStorage.getItem('token') !== '') { // user is logged in
                     if (toPage === 'home' || toPage === 'home.login') {
                         $state.go('home.purchases');
                     } else if (toPage === 'home.changePass') {
@@ -112,13 +112,13 @@
                     }
 
                 } else if (toPage !== 'home.login') {
-                    //e.preventDefault();
+                    // e.preventDefault();
 
                     if (toParams.id) {
                         authService.discussionId = toParams.id;
                     }
 
-                    //$state.go('home.login');
+                    // $state.go('home.login');
                 }
 
             });
