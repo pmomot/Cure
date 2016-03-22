@@ -59,8 +59,8 @@ module.exports = function (app, express) {
 
 
     // Claim section
-    // TODO CV change route name
-    api.route('/addClaim')
+    // TODO CV change routes names
+    api.route('/claims')
         .post(claimApiCalls.postClaim)
         .get(claimApiCalls.getClaim);
 

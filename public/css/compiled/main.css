@@ -503,15 +503,6 @@ body {
     background: #0a85d7; }
     #claim .tagFilter.active {
       background: #25c018 !important; }
-  #claim table {
-    line-height: 14px;
-    border-collapse: collapse; }
-    #claim table td, #claim table th {
-      padding: 5px 10px;
-      border: 1px solid #333333; }
-    #claim table thead {
-      color: #ffffff;
-      background: #333333; }
   #claim .main-head {
     position: relative;
     margin-bottom: 10px;
@@ -552,6 +543,10 @@ body {
     transition: all 1s ease-out;
     border: 1px solid #e6e6e6;
     background: #f3f9fd; }
+    #claim .claim-comments-wrapper:after {
+      display: block;
+      content: '';
+      clear: both; }
     #claim .claim-comments-wrapper:last-child {
       margin: 20px 0 0; }
     #claim .claim-comments-wrapper.smaller {
@@ -712,7 +707,7 @@ body.modal-open {
   width: 100%;
   height: 100%; }
 
-#modal .modal-backdrop {
+.modal .modal-backdrop {
   position: fixed;
   top: 0;
   left: 0;
@@ -720,10 +715,10 @@ body.modal-open {
   height: 100%;
   opacity: .3;
   background: #000000; }
-  #modal .modal-backdrop.spinning {
+  .modal .modal-backdrop.spinning {
     z-index: 401; }
 
-#modal .modal-content {
+.modal .modal-content {
   position: absolute;
   top: 0;
   left: 50%;
@@ -732,7 +727,7 @@ body.modal-open {
   padding: 20px;
   color: #000000;
   background: #ffffff; }
-  #modal .modal-content.spinning {
+  .modal .modal-content.spinning {
     position: fixed;
     z-index: 100;
     top: 50%;
@@ -743,18 +738,28 @@ body.modal-open {
     padding: 0;
     background: none; }
 
-#modal h3.modal-title {
+.modal img {
+  display: block;
+  margin: 0 auto; }
+
+.modal h3.modal-title {
   font-size: 20px;
   line-height: 20px; }
 
-#modal .comment-table {
+.modal input, .modal textarea {
+  width: 100%;
   margin-bottom: 10px; }
 
-#modal .add-comment-title {
-  font-size: 16px;
-  line-height: 16px; }
+.modal .comment-table {
+  margin-bottom: 10px; }
 
-#modal .close-btn-primary {
+.modal .add-comment-title {
+  font-size: 16px;
+  line-height: 16px;
+  display: block;
+  margin: 0 0 5px; }
+
+.modal .close-btn-primary {
   font-size: 14px;
   line-height: 14px;
   padding: 10px;
@@ -767,10 +772,20 @@ body.modal-open {
   border-radius: 3px;
   outline: none;
   background: #0a85d7; }
-  #modal .close-btn-primary.btn-warning {
+  .modal .close-btn-primary.btn-warning {
     background: #cc324b; }
-  #modal .close-btn-primary.btn-decline {
+  .modal .close-btn-primary.btn-decline {
     background: #c2b57c; }
+
+.modal table {
+  line-height: 14px;
+  border-collapse: collapse; }
+  .modal table td, .modal table th {
+    padding: 5px 10px;
+    border: 1px solid #333333; }
+  .modal table thead {
+    color: #ffffff;
+    background: #333333; }
 
 #acceptClaimModal,
 #declineClaimModal {

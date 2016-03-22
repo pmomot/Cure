@@ -61,21 +61,6 @@
     }
   }
 
-  table {
-    line-height: 14px;
-    border-collapse: collapse;
-
-    td,th {
-      padding: 5px 10px;
-      border: 1px solid $darkGrey;
-    }
-
-    thead {
-      color: $white;
-      background: $darkGrey;
-    }
-  }
-
   .main-head {
     position: relative;
     margin-bottom: 10px;
@@ -128,6 +113,12 @@
     transition: all 1s ease-out;
     border: 1px solid $whiteGrey;
     background: rgba(243,249,253,1);
+
+    &:after {
+      display: block;
+      content: '';
+      clear: both;
+    }
 
     &:last-child {
       margin: 20px 0 0;

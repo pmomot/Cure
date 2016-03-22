@@ -69,12 +69,19 @@ module.exports = function () {
             status: 'open'
         });
 
-        claim.save(function (err) {
+        // TODO CV make user - related object
+
+        claim.save(function (err, createdClaim) {
             if (err) {
                 res.send(err);
                 return;
             }
-            res.json({message: 'New claim has been created', status: 'success'});
+
+            res.json({
+                message: 'New claim has been created',
+                createdClaim: createdClaim,
+                success: true
+            });
         });
     }
 
@@ -112,11 +119,14 @@ module.exports = function () {
                     if (error) {
                         res.send(error);
                     } else {
-                        res.json({message: 'Successfully resolved a claim.', status: 'success'});
+                        res.json({
+                            message: 'Successfully resolved a claim.',
+                            success: true
+                        });
                     }
                 });
             } else {
-                res.send({message: 'Claim does not exist'});
+                res.send({message: 'Claim does not exist', success: false});
             }
         });
     }

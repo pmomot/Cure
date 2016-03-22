@@ -19,13 +19,19 @@
     <!--<script type="text/javascript" src="js/app.js"></script>-->
     <script type="text/javascript" src="js/app.module.js"></script>
     <script type="text/javascript" src="js/app.routes.js"></script>
-    <!--<script type="text/javascript" src="js/controllers/mainCtrl.js"></script>-->
+
+    <script type="text/javascript" src="js/repositories/claimRepository.js"></script>
+
     <!--<script type="text/javascript" src="js/controllers/claimsCtrl.js"></script>-->
     <script type="text/javascript" src="js/services/authService.js"></script>
     <script type="text/javascript" src="js/services/httpInterceptor.js"></script>
-    <!--<script type="text/javascript" src="js/services/claimService.js"></script>-->
+    <script type="text/javascript" src="js/services/claimService.js"></script>
 
     <script type="text/javascript" src="js/directives/headerDirective.js"></script>
+    <script type="text/javascript" src="js/directives/loadingSpinnerDirective.js"></script>
+    <script type="text/javascript" src="js/directives/openedClaimDirective.js"></script>
+    <script type="text/javascript" src="js/directives/addClaimDirective.js"></script>
+    <script type="text/javascript" src="js/directives/claimModalDirective.js"></script>
 
     <script type="text/javascript" src="js/constants/main.constants.js"></script>
 
@@ -37,6 +43,7 @@
     <link rel="stylesheet" href="css/compiled/main.css"/>
 </head>
 <body ng-app="ClaimPortal">
+    <cl-spinner processing="processing"></cl-spinner>
     <div class="wrapper" id="wrapper" ng-view>
         <!--here goes the content of the page-->
     </div>

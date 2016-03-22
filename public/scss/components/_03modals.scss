@@ -4,7 +4,7 @@ body.modal-open {
   height: 100%;
 }
 
-#modal{
+.modal{
 
   .modal-backdrop {
     position: fixed;
@@ -43,9 +43,19 @@ body.modal-open {
     }
   }
 
+  img {
+    display: block;
+    margin: 0 auto;
+  }
+
   h3.modal-title {
     font-size: 20px;
     line-height: 20px;
+  }
+
+  input, textarea {
+    width: 100%;
+    margin-bottom: 10px;
   }
 
   .comment-table {
@@ -55,6 +65,8 @@ body.modal-open {
   .add-comment-title {
     font-size: 16px;
     line-height: 16px;
+    display: block;
+    margin: 0 0 5px;
   }
 
   .close-btn-primary {
@@ -77,6 +89,21 @@ body.modal-open {
 
     &.btn-decline {
       background: $coffee;
+    }
+  }
+
+  table {
+    line-height: 14px;
+    border-collapse: collapse;
+
+    td,th {
+      padding: 5px 10px;
+      border: 1px solid $darkGrey;
+    }
+
+    thead {
+      color: $white;
+      background: $darkGrey;
     }
   }
 }

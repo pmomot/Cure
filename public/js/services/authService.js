@@ -62,6 +62,7 @@
             } else {
                 return $http({url: '/api/user', method: 'GET'})
                     .success(function (data) {
+                        data.fullName = data.firstName + ' ' + data.lastName;
                         userInfo = data;
                     });
             }

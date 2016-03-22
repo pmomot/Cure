@@ -10,7 +10,7 @@
             'toastr',
             'isteven-multi-select',
             'ClaimPortal.Services',
-            // 'ClaimPortal.Repositories',
+            'ClaimPortal.Repositories',
             'ClaimPortal.Directives',
             'ClaimPortal.Constants'
         ])
@@ -43,7 +43,7 @@
         }]);
 
     angular.module('ClaimPortal.Services', []);
-    // angular.module('ClaimPortal.Repositories', []);
+    angular.module('ClaimPortal.Repositories', []);
     angular.module('ClaimPortal.Directives', []);
     angular.module('ClaimPortal.Constants', []);
 

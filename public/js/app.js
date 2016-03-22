@@ -1,7 +1,6 @@
 'use strict';
 
 (function () {
-    // TODO CV ui.router -> ngRoute
 
     angular.module('ClaimPortal', ['ui.router', 'isteven-multi-select', 'ClaimPortal.Services', 'ClaimPortal.Constants'])
         .config(['$stateProvider', '$urlRouterProvider', '$httpProvider',
