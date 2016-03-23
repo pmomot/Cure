@@ -1,5 +1,5 @@
 // TODO CV add proper error handlers
-// TODO add email sending timeout handler
+// TODO CV add email sending timeout handler
 /**
  * Created by petermomot on 3/11/16.
  */
@@ -41,7 +41,7 @@ function sendClaimEmail (mailParams, callback) {
     }
 
     transporter.sendMail({
-        from: 'Malkos HRs',
+        from: 'CoreValue HRs',
         to: mailParams.recipient,
         subject: mailParams.subject,
         html: html
@@ -69,8 +69,6 @@ module.exports = function () {
             status: 'open'
         });
 
-        // TODO CV make user - related object
-
         claim.save(function (err, createdClaim) {
             if (err) {
                 res.send(err);
@@ -90,8 +88,20 @@ module.exports = function () {
     * @param {Object} req - request
     * @param {Object} res - response
     * */
-    function getClaim (req, res) {
-        Claim.find({claimType: req.query.claimType}, function (err, claims) {
+    function getClaims (req, res) {
+        var q = req.query,
+            todayDate = new Date(), weekDate = new Date(), x;
+
+        x = new Date(weekDate.setTime(todayDate.getTime() - (30 * 24 * 3600000)));
+
+        q.status = {
+            $in: q.status
+        };
+        q.created = {
+            $gt: x.toISOString()
+        };
+
+        Claim.find(q).sort({created: -1}).limit(15).exec(function (err, claims) {
             if (err) {
                 res.send(err);
                 return;
@@ -119,64 +129,34 @@ module.exports = function () {
                     if (error) {
                         res.send(error);
                     } else {
-                        res.json({
-                            message: 'Successfully resolved a claim.',
-                            success: true
-                        });
-                    }
-                });
-            } else {
-                res.send({message: 'Claim does not exist', success: false});
-            }
-        });
-    }
-
-    /**
-    * Send resolved claims to user by email // TODO CV clarify
-    * @param {Object} req - request
-    * @param {Object} res - response
-    * */
-    function sendClaims (req, res) {
-        var calls = [];
-
-        req.body.claims.forEach(function (claim) {
-            if (!claim.claimComment) {
-                claim.claimComment = 'None.';
-            }
-            calls.push(function (callback) {
-                sendClaimEmail({
-                    recipient: claim.authorEmail,
-                    subject: 'Your claim has been resolved',
-                    fullName: claim.fullName,
-                    type: 'change',
-                    textOptions: {
-                        type: claim.claimType,
-                        title: claim.claimTitle,
-                        status: claim.status,
-                        description: claim.claimComment
-                    }
-                }, function (err1) {
-                    if (!err1) {
-                        Claim.findOne({_id: claim._id}).exec(function (err2, foundClaim) {
-                            if (!err2) {
-                                foundClaim.status = 'resolved';
-                                foundClaim.save(function (err3) {
-                                    if (!err3) {
-                                        callback();
-                                    }
+                        if (!claim.claimComment) {
+                            claim.claimComment = 'None.';
+                        }
+                        sendClaimEmail({
+                            recipient: claim.authorEmail,
+                            subject: 'Your claim has been ' + claim.status,
+                            fullName: claim.fullName,
+                            type: 'change',
+                            textOptions: {
+                                type: claim.claimType,
+                                title: claim.claimTitle,
+                                status: claim.status,
+                                description: claim.claimComment
+                            }
+                        }, function (sendError) {
+                            if (sendError) {
+                                res.send(error);
+                            } else {
+                                res.json({
+                                    message: 'Claim has been ' + claim.status,
+                                    success: true
                                 });
                             }
                         });
                     }
                 });
-            });
-        });
-
-        nAsync.parallel(calls, function (err) {
-            if (err) {
-                res.json(err);
             } else {
-                res.json({message: 'Successfully resolved all claims.', status: 'success'});
+                res.send({message: 'Claim does not exist', success: false});
             }
         });
     }
@@ -277,9 +257,8 @@ module.exports = function () {
 
     return {
         postClaim: postClaim,
-        getClaim: getClaim,
+        getClaims: getClaims,
         resolveClaim: resolveClaim,
-        sendClaims: sendClaims,
         sendOneClaim: sendOneClaim,
         addComment: addComment
     };

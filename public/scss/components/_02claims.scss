@@ -286,21 +286,6 @@
       }
     }
 
-    .claim-checkbox {
-      display: inline-block;
-      margin-top: 4px;
-      padding-left: 5px;
-      border-left: 1px solid $whiteGrey;
-
-      input[type='checkbox'] {
-        height: auto!important;
-
-        &[disabled='disabled'] {
-          background: $darkGrey;
-        }
-      }
-    }
-
   }
 
   .claim-status {

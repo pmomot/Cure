@@ -659,15 +659,6 @@ body {
       padding-left: 0; }
       #claim .top-div .claim-add-comment.smaller .claim-status {
         display: inline-block; }
-    #claim .top-div .claim-checkbox {
-      display: inline-block;
-      margin-top: 4px;
-      padding-left: 5px;
-      border-left: 1px solid #e6e6e6; }
-      #claim .top-div .claim-checkbox input[type='checkbox'] {
-        height: auto !important; }
-        #claim .top-div .claim-checkbox input[type='checkbox'][disabled='disabled'] {
-          background: #333333; }
   #claim .claim-status {
     display: inline-block;
     margin-top: 4px;

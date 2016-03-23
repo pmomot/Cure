@@ -13,23 +13,28 @@
     function claimService ($q, claimRepository, toastr, authService) {
 
         var claimsInfo = {
-            list: [],
-            availableTags: [],
-            clean: true,
-            hasOpen: false,
-            hasUnresolved: false
+            opened: [],
+            closed: [],
+            availableTags: []
         };
 
         /**
          * Get claims from server
          * @param {String} claimType - type of claim
+         * @param {Array} status - claim status
+         * @param {Function} callback - what to do with claims
          * */
-        function getClaimsByType (claimType) {
+        function getClaims (claimType, status, callback) {
             var deferred = $q.defer();
 
-            claimRepository.getClaimsByType(claimType)
+            claimRepository.getClaims({
+                claimType: claimType,
+                status: status
+            })
                 .then(function (claims) {
-                    processClaimsData(claims);
+                    if (typeof callback === 'function') {
+                        callback(claims);
+                    }
 
                     deferred.resolve();
                 })
@@ -56,15 +61,16 @@
                 //return;
             //}
 
-            claimsInfo.list.forEach(function (c) {
-                if (c.status === 'open' && newClaim.claimTitle === c.claimTitle) {
+            claimsInfo.opened.forEach(function (c) {
+                if (newClaim.claimTitle === c.claimTitle) {
                     uniqueTitle = false;
                 }
             });
 
             if (!uniqueTitle) {
                 toastr.error("New claim's title is not unique", 'Error');
-                return deferred.reject();
+                deferred.reject();
+                return deferred.promise;
             }
 
             user = authService.getUserInfo();
@@ -77,8 +83,9 @@
                 .then(function (result) {
                     if (result.success === true) {
                         toastr.success(result.message);
-                        claimsInfo.list.push(result.createdClaim);
-                        processClaimsData();
+
+                        fetchClaimsInfo(newClaim.claimType);
+
                         deferred.resolve();
                     } else {
                         deferred.reject(result);
@@ -109,7 +116,7 @@
                     if (result.success === true) {
                         toastr.success(result.message);
 
-                        getClaimsByType(claim.claimType);
+                        fetchClaimsInfo(claim.claimType);
 
                         deferred.resolve();
                     } else {
@@ -123,20 +130,6 @@
             return deferred.promise;
         }
 
-        ///**
-        // * Send resolved claims to user by email
-        // * @param {Array} claims - list of claims
-        // * */
-        //function sendClaims (claims) {
-        //
-        //    return $http({url: '/api/sendClaims', method: 'POST', data: {
-        //        claims: claims
-        //    }})
-        //        .success(function (data) {
-        //            return data;
-        //        });
-        //}
-        //
         ///**
         // * Send email about adding new discussion
         // * @param {Object} claim - discussion body
@@ -183,6 +176,21 @@
         //}
 
         /**
+         * Make two calls - for opened and for other claims
+         * @param {String} claimType - type of claim
+         * */
+        function fetchClaimsInfo (claimType) {
+            getClaims(claimType, ['open'], function (claims) {
+                processOpenedClaims(claims);
+            }).then(function () {
+                getClaims(claimType, ['accepted', 'declined', 'resolved'], function (claims) {
+                    claimsInfo.closed = claims;
+
+                });
+            });
+        }
+
+        /**
          * Provide processed claims data
          * */
         function getClaimsInfo () {
@@ -191,44 +199,28 @@
 
         // helpers
         /**
-         * Get all necessary info from list of claims
+         * Get available tags from list of opened claims
          * */
-        function processClaimsData (claims) {
-            if (!claims) {
-                claims = claimsInfo.list;
-            }
+        function processOpenedClaims (claims) {
             claimsInfo = {
-                list: claims,
-                availableTags: [],
-                clean: true,
-                hasOpen: false,
-                hasUnresolved: false
+                opened: claims,
+                availableTags: []
             };
 
-            claimsInfo.list.forEach(function (c) {
-                if (claimsInfo.availableTags.indexOf(c.claimTag) === -1 && c.status === 'open') {
+            claimsInfo.opened.forEach(function (c) {
+                if (claimsInfo.availableTags.indexOf(c.claimTag) === -1) {
                     claimsInfo.availableTags.push(c.claimTag);
                 }
-
-                if (c.status === 'open') {
-                    claimsInfo.hasOpen = true;
-                } else {
-                    claimsInfo.clean = false;
-                    if (c.status === 'accepted' || c.status === 'declined') {
-                        claimsInfo.hasUnresolved = true;
-                    }
-                }
-
             });
         }
 
         return {
-            getClaimsByType: getClaimsByType,
+            getClaims: getClaims,
             addClaim: addClaim,
             resolveClaim: resolveClaim,
 
+            fetchClaimsInfo: fetchClaimsInfo,
             getClaimsInfo: getClaimsInfo
-            //sendClaims: sendClaims,
             //sendOneClaim: sendOneClaim,
             //addComment: addComment,
             //getHrs: getHrs

@@ -1,5 +1,6 @@
 'use strict';
 // TODO CV decide where we need send email
+// TODO CV move methods to models
 
 var User = require('../models/user'),
     config = require('../../config'),
@@ -62,10 +63,9 @@ module.exports = function (app, express) {
     // TODO CV change routes names
     api.route('/claims')
         .post(claimApiCalls.postClaim)
-        .get(claimApiCalls.getClaim);
+        .get(claimApiCalls.getClaims);
 
     api.post('/resolveClaim', claimApiCalls.resolveClaim);
-    api.post('/sendClaims', claimApiCalls.sendClaims);
     api.post('/sendOneClaim', claimApiCalls.sendOneClaim);
     api.post('/addComment', claimApiCalls.addComment);
 

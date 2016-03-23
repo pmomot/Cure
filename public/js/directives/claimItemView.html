@@ -1,0 +1,28 @@
+<div class="col-10 no-padding-left no-padding-right">
+    <div class="col-10 no-padding-left no-padding-right top-div">
+        <div class="claim-author">
+            <span ng-if="!c.anonymous">{{c.fullName}}</span>
+            <span ng-if="c.anonymous">Anonymous</span>
+        </div>
+        <div class="author-in" ng-if="showTag">&nbsp;in&nbsp;</div>
+        <div class="claim-tag rounded" ng-if="showTag">{{c.claimTag}}</div>
+        <div class="claim-add-comment smaller">
+            <div ng-if="opened">
+                <div id="acceptClaimModal" ng-click="openModal(c, 'accepted')"></div>
+                <div id="declineClaimModal" ng-click="openModal(c, 'declined')"></div>
+            </div>
+            <div ng-if="!opened">
+                <div class="comment-tooltip rounded" data-id="{{c._id}}"
+                     ng-if="c.claimComment">{{c.claimComment}}</div>
+                <div class="claim-info" ng-if="c.claimComment"
+                     ng-mouseover="showTooltip($event)" ng-mouseleave="hideTooltip($event)">&nbsp;</div>
+                <div class="claim-status">{{c.status}}</div>
+            </div>
+            <div class="clr"></div>
+        </div>
+        <div class="clr"></div>
+    </div>
+    <div class="claim-title smaller col-10 no-padding-left no-padding-right"
+         ng-class="{'no-padding-bottom': !isHr()}">{{c.claimTitle}}</div>
+    <div class="clr"></div>
+</div>

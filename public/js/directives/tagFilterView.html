@@ -1,0 +1,7 @@
+<div id="tagsFilter">
+    <div class="tagFilter rounded" ng-click="filterByTag(tag)"
+         ng-class="{'active': activeTag === tag}"
+         ng-repeat="tag in tags">{{ tag }}</div>
+    <div class="tagFilter rounded active" ng-class="{'active': activeTag === 'All'}"
+         ng-click="filterByTag('All')">All</div>
+</div>

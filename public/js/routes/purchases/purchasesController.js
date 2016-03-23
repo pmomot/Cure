@@ -28,17 +28,10 @@
         vm.user = authService.getUserInfo;
         vm.claimsInfo = claimService.getClaimsInfo;
 
-        vm.filterByTag = filterByTag;
         vm.isHr = isHr;
 
-        claimService.getClaimsByType(vm.claimType);
+        claimService.fetchClaimsInfo(vm.claimType);
 
-        /**
-         * Show claims filtered by tag
-         * */
-        function filterByTag (tagName) {
-            vm.activeTag = tagName;
-        }
 
         /**
          * Get if user belongs to HR group
@@ -52,9 +45,6 @@
         //vm.discussionId = $stateParams.id;
         //vm.hrs = hrs.data;
 
-        //vm.modalOpened = false;
-        //vm.modalType = '';
-        //vm.claimListToSend = [];
         //vm.newComment = {
         //    created: Date,
         //    content: '',

@@ -29,6 +29,7 @@
             })
                 .success(function (data) {
                     $window.localStorage.setItem('token', data.token);
+                    data.user.fullName = data.user.firstName + ' ' + data.user.lastName;
                     userInfo = data.user;
 
                     return data;

@@ -14,12 +14,12 @@
 
         /**
          * Get claims from server
-         * @param {String} claimType - type of claim
+         * @param {Object} params - query parameters
          * */
-        function getClaimsByType (claimType) {
+        function getClaims (params) {
             var deferred = $q.defer();
 
-            $http.get('/api/claims', {params: {claimType: claimType}})
+            $http.get('/api/claims', {params: params})
                 .then(function (result) {
                     deferred.resolve(result.data);
                 }, function (errors) {
@@ -63,20 +63,6 @@
             return deferred.promise;
         }
 
-        ///**
-        // * Send resolved claims to user by email
-        // * @param {Array} claims - list of claims
-        // * */
-        //function sendClaims (claims) {
-        //
-        //    return $http({url: '/api/sendClaims', method: 'POST', data: {
-        //        claims: claims
-        //    }})
-        //        .success(function (data) {
-        //            return data;
-        //        });
-        //}
-        //
         ///**
         // * Send email about adding new discussion
         // * @param {Object} claim - discussion body
@@ -123,10 +109,9 @@
         //}
 
         return {
-            getClaimsByType: getClaimsByType,
+            getClaims: getClaims,
             addClaim: addClaim,
             resolveClaim: resolveClaim
-            //sendClaims: sendClaims,
             //sendOneClaim: sendOneClaim,
             //addComment: addComment,
             //getHrs: getHrs

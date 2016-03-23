@@ -10,60 +10,34 @@
 
         <div class="line"></div>
         <div class="col-5 no-padding-left text-left">
-            <div id="tagsFilter" ng-if="vm.claimsInfo().availableTags.length > 0">
-                <div class="tagFilter rounded" ng-click="vm.filterByTag(tag)"
-                     ng-class="{'active': vm.activeTag === tag}"
-                     ng-repeat="tag in vm.claimsInfo().availableTags">{{ tag }}</div>
-                <div class="tagFilter rounded active" ng-class="{'active': vm.activeTag === 'All'}"
-                     ng-click="vm.filterByTag('All')" ng-if="vm.claimsInfo().hasOpen">All</div>
-            </div>
+            <cl-tag-filter ng-if="vm.claimsInfo().opened.length > 0 && vm.claimsInfo().availableTags.length > 1"
+                           tags="vm.claimsInfo().availableTags" active-tag="vm.activeTag"></cl-tag-filter>
             <h2>Pending:</h2>
             <div class="claim-comments-container smaller rounded js-class">
-                <div class="claim-comments-wrapper smaller" ng-if="!vm.claimsInfo().hasOpen">
+                <div class="claim-comments-wrapper smaller" ng-if="vm.claimsInfo().opened.length === 0">
                     There are no pending claims.
                 </div>
                 <div class="claim-comments-wrapper open smaller"
-                     ng-repeat="c in vm.claimsInfo().list | orderBy: '-created'"
-                     ng-class="{'last': $first, 'last-added': classRemoved}"
-                     ng-if="c.status === 'open' && (c.claimTag === vm.activeTag || vm.activeTag === 'All')">
-                    <cl-opened-claim c="c" is-hr="vm.isHr"
+                     ng-repeat="c in vm.claimsInfo().opened"
+                     ng-class="{'last': $first}"
+                     ng-show="c.claimTag === vm.activeTag || vm.activeTag === 'All'">
+                    <cl-claim-item c="c" is-hr="vm.isHr" show-tag="true" opened="true"
                                      modal-claim="vm.modalClaim" modal-action="vm.modalAction"
-                                     modal-show="vm.modalShow"></cl-opened-claim>
+                                     modal-show="vm.modalShow"></cl-claim-item>
                 </div>
             </div>
         </div>
         <div class="col-5 no-padding-right text-left">
             <h2>Archive:</h2>
             <div class="claim-comments-container smaller rounded">
-                <div class="claim-comments-wrapper smaller" ng-if="vm.claimsInfo().clean">
+                <div class="claim-comments-wrapper smaller" ng-if="vm.claimsInfo().closed.length === 0">
                     There are no archived claims.
                 </div>
-                <!--<div class="claim-comments-wrapper smaller" ng-repeat="c in vm.claimList | orderBy: 'status'" ng-if="c.status != 'open'" data-tag="{{c.claimTag}}">-->
-                    <!--<div class="col-10 no-padding-left no-padding-right">-->
-                        <!--<div class="col-10 no-padding-left no-padding-right top-div">-->
-                            <!--<div class="claim-author">-->
-                                <!--<span ng-if="!c.anonymous">{{c.fullName}}</span>-->
-                                <!--<span ng-if="c.anonymous">Anonymous</span></div>-->
-                            <!--<div class="author-in" ng-if="vm.tags.length > 0">&nbsp;in&nbsp;</div>-->
-                            <!--<div class="claim-tag rounded" ng-if="tags.length > 0">{{c.claimTag}}</div>-->
-                            <!--<div class="claim-add-comment smaller">-->
-                                <!--<div class="comment-tooltip rounded" data-id="{{c._id}}" ng-if="c.claimComment">{{c.claimComment}}</div>-->
-                                <!--<div class="claim-info" ng-mouseover="showTooltip($event)" ng-mouseleave="hideTooltip($event)" ng-if="c.claimComment">&nbsp;</div>-->
-                                <!--<div class="claim-status">{{c.status}}</div>-->
-                                <!--<div class="claim-checkbox" ng-if="$parent.user.userGroup == 'HR' && c.status != 'resolved'">-->
-                                    <!--<input type="checkbox" value="{{c._id}}" ng-true-value="true" ng-false-value="false" ng-model="c.checked" class="checkbox claimbox">-->
-                                <!--</div>-->
-                                <!--<div class="clr"></div>-->
-                            <!--</div>-->
-                            <!--<div class="clr"></div>-->
-                        <!--</div>-->
-                        <!--<div class="claim-title smaller col-10 no-padding-left no-padding-right" ng-class="{'no-padding-bottom': $parent.user.userGroup != 'HR'}">{{c.claimTitle}}</div>-->
-                        <!--<div class="clr"></div>-->
-                    <!--</div>-->
-                    <!--<div class="clr"></div>-->
-                <!--</div>-->
+                <div class="claim-comments-wrapper smaller"
+                     ng-repeat="c in vm.claimsInfo().closed">
+                    <cl-claim-item c="c" is-hr="vm.isHr" show-tag="true" opened="false"></cl-claim-item>
+                </div>
             </div>
-            <!--<input ng-disabled="checkCheckedCheckboxes()" class="rounded claim-add-new-comment-button smaller" type="submit" value="Send Selected Claims" ng-click="sendClaims()" ng-if="vm.isHr() && vm.claimsInfo().hasUnresolved"/>-->
         </div>
         <div class="clr"></div>
     </section>
