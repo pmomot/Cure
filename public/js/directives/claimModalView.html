@@ -9,14 +9,14 @@
                 <thead>
                 <tr>
                     <th>Title:</th>
-                    <th ng-if="showTag">Tag:</th>
+                    <th ng-if="c.claimTag">Tag:</th>
                     <th>Author:</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr>
                     <td width="70%">{{ c.claimTitle }}</td>
-                    <td ng-if="showTag" width="18%">{{ c.claimTag }}</td>
+                    <td ng-if="c.claimTag" width="18%">{{ c.claimTag }}</td>
                     <td width="12%">
                         <span ng-if="!c.anonymous">{{ c.fullName }}</span>
                         <span ng-if="c.anonymous">Anonymous</span>
@@ -28,8 +28,10 @@
             <input id="cComment" ng-model="c.claimComment" type="text"/>
         </div>
         <div class="modal-footer">
-            <button class="close-btn-primary" ng-if="modalAction === 'accepted'" type="button" ng-click="close(modalAction)">Accept Claim</button>
-            <button class="close-btn-primary btn-decline" ng-if="modalAction === 'declined'" type="button" ng-click="close(modalAction)">Decline Claim</button>
+            <button class="close-btn-primary" type="button"
+                    ng-if="modalAction === 'accepted'" ng-click="close(modalAction)">Accept Claim</button>
+            <button class="close-btn-primary btn-decline" type="button"
+                    ng-if="modalAction === 'declined'" ng-click="close(modalAction)">Decline Claim</button>
             <button class="close-btn-primary btn-warning" type="button" ng-click="close()">Cancel</button>
         </div>
     </div>

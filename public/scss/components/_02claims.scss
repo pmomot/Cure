@@ -26,7 +26,6 @@
   textarea {
     max-width: 100%;
     min-height: 100px;
-    resize: vertical;
   }
 
   label {
@@ -42,6 +41,12 @@
     th,td {
       border-right: none;
     }
+  }
+
+  section:after {
+    display: block;
+    content: '';
+    clear: both;
   }
 
   .tagFilter {

@@ -1,5 +1,5 @@
 <form method="post" ng-submit="sendRequest()">
-    <div class="col-3 no-padding-left">
+    <div class="no-padding-left" ng-class="{'col-3': claimType !== 'Chemical', 'col-5': claimType === 'Chemical'}">
         <label for="claimTitle" class="">Claim Title:</label>
         <input class="rounded" ng-model="claim.claimTitle" type="text"
                name="claimTitle" id="claimTitle" required/>
@@ -9,15 +9,31 @@
         <select class="full-select" name="claimTag" id="claimTag"
                 ng-model="claim.claimTag" ng-options="tag for tag in tags"></select>
     </div>
+    <div class="col-2" ng-if="claimType === 'Discussion'">
+        <label for="claimTag">Add a Recipient:</label>
+        <!--<div required id="onlyMulti" class="rounded multiselect" isteven-multi-select-->
+             <!--input-model="hrs()" button-label="firstName lastName" item-label="firstName lastName"-->
+             <!--tick-property="ticked" output-model="claim.claimRecipient" helper-elements=""></div>-->
+
+    </div>
     <div class="col-1">
         <label>&nbsp</label>
         <input class="rounded add-claim-button" type="submit" value="ADD"/>
     </div>
-    <div class="col-2">
+    <div class="col-2" ng-if="claimType === 'Purchase'">
         <label>&nbsp</label>
         <label class="anonymous-label">
             <input type="checkbox" ng-true-value="true" ng-false-value="false" ng-model="claim.anonymous"
                    class="checkbox claimbox anonymous-checkbox"> Add anonymously</label>
     </div>
     <div class="clr"></div>
+    <div class="col-5 no-padding-left" ng-if="claimType === 'Discussion'">
+        <label>Add a Comment:</label>
+        <textarea name="claimComment" required id="claimComment" ng-model="claim.claimComment"></textarea>
+    </div>
+    <div class="clr"></div>
+    <!--<div class="col-4">&nbsp;</div>-->
+    <!--<div class="col-1">-->
+    <!--<input class="rounded" type="submit" value="ADD"/>-->
+    <!--</div>-->
 </form>

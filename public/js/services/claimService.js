@@ -54,12 +54,12 @@
                 uniqueTitle = true,
                 data, user;
 
-            // TODO CV look at this on Discussion tab
-            //if (claim.claimRecipient && claim.claimRecipient.length === 0 &&
-            //    claim.claimType === 'Discussion') {
-            //    alert('Add some recipients, bro!');
-                //return;
-            //}
+            if (newClaim.claimRecipient && newClaim.claimRecipient.length === 0 &&
+                newClaim.claimType === 'Discussion') {
+                toastr.error('Please, add some recipients');
+                deferred.reject();
+                return deferred.promise;
+            }
 
             claimsInfo.opened.forEach(function (c) {
                 if (newClaim.claimTitle === c.claimTitle) {
@@ -68,7 +68,7 @@
             });
 
             if (!uniqueTitle) {
-                toastr.error("New claim's title is not unique", 'Error');
+                toastr.error("New claim's title is not unique");
                 deferred.reject();
                 return deferred.promise;
             }
@@ -84,7 +84,9 @@
                     if (result.success === true) {
                         toastr.success(result.message);
 
-                        fetchClaimsInfo(newClaim.claimType);
+                        fetchClaimsInfo({
+                            claimType: newClaim.claimType
+                        });
 
                         deferred.resolve();
                     } else {
@@ -92,6 +94,13 @@
                     }
                 })
                 .catch(function (errors) {
+                    if (!errors) {
+                        errors = {};
+                    }
+                    if (!errors.message) {
+                        errors.message = 'Something went wrong';
+                    }
+                    toastr.error(errors.message);
                     deferred.reject(errors);
                 });
 
@@ -116,77 +125,86 @@
                     if (result.success === true) {
                         toastr.success(result.message);
 
-                        fetchClaimsInfo(claim.claimType);
+                        fetchClaimsInfo({
+                            claimType: claim.claimType
+                        });
 
                         deferred.resolve();
                     } else {
+                        toastr.error(result.message);
                         deferred.reject(result);
                     }
                 })
                 .catch(function (errors) {
+                    if (!errors) {
+                        errors = {};
+                    }
+                    if (!errors.message) {
+                        errors.message = 'Something went wrong';
+                    }
+                    toastr.error(errors.message);
                     deferred.reject(errors);
                 });
 
             return deferred.promise;
         }
 
-        ///**
-        // * Send email about adding new discussion
-        // * @param {Object} claim - discussion body
-        // * */
-        //function sendOneClaim (claim) {
-        //
-        //    return $http({url: '/api/sendOneClaim', method: 'POST', data: {
-        //        claim: claim
-        //    }})
-        //        .success(function (data) {
-        //            return data;
-        //        });
-        //}
-        //
-        ///**
-        // * Add new comment to discussion
-        // * @param {Object} comment - comment body
-        // * @param {String} claimId - claim id
-        // * @param {Array} claimRecipient - users, that will get emails notifications about comment
-        // * @param {String} claimTitle - claim title
-        // * */
-        //function addComment (comment, claimId, claimRecipient, claimTitle) {
-        //
-        //    return $http({url: '/api/addComment', method: 'POST', data: {
-        //        claimId: claimId,
-        //        comment: comment,
-        //        claimRecipient: claimRecipient,
-        //        claimTitle: claimTitle
-        //    }})
-        //        .success(function (data) {
-        //            return data;
-        //        });
-        //}
-        //
-        ///**
-        // * Get all HRs
-        // * */
-        //function getHrs () { // TODO CV move to user service
-        //
-        //    return $http({method: 'GET', url: '/api/hrs'})
-        //        .success(function (data) {
-        //            return data;
-        //        });
-        //}
+        /**
+         * Post new comment to discussion
+         * @param {Object} data - comment body
+         * */
+        function postComment (data) {
+            var deferred = $q.defer();
+
+            data.comment.author = authService.getUserInfo();
+
+            claimRepository.postComment(data)
+                .then(function (result) {
+                    if (result.success) {
+                        toastr.success('Comment has been added');
+
+                        fetchClaimsInfo({
+                            claimType: 'Discussion'
+                        });
+
+                        deferred.resolve();
+                    } else {
+                        toastr.error(result.message);
+                        deferred.reject(result);
+                    }
+                })
+                .catch(function (errors) {
+                    if (!errors) {
+                        errors = {};
+                    }
+                    if (!errors.message) {
+                        errors.message = 'Something went wrong';
+                    }
+                    toastr.error(errors.message);
+                    deferred.reject(errors);
+                });
+
+            return deferred.promise;
+        }
 
         /**
          * Make two calls - for opened and for other claims
-         * @param {String} claimType - type of claim
+         * @param {Object} params - type of claim
          * */
-        function fetchClaimsInfo (claimType) {
-            getClaims(claimType, ['open'], function (claims) {
+        function fetchClaimsInfo (params) {
+            if (typeof params.fetchClosed === 'undefined' && params.claimType !== 'Discussion') {
+                params.fetchClosed = true;
+            }
+
+            getClaims(params.claimType, ['open'], function (claims) {
                 processOpenedClaims(claims);
             }).then(function () {
-                getClaims(claimType, ['accepted', 'declined', 'resolved'], function (claims) {
-                    claimsInfo.closed = claims;
+                if (params.fetchClosed) {
+                    getClaims(params.claimType, ['accepted', 'declined', 'resolved'], function (claims) {
+                        claimsInfo.closed = claims;
 
-                });
+                    });
+                }
             });
         }
 
@@ -215,15 +233,12 @@
         }
 
         return {
-            getClaims: getClaims,
             addClaim: addClaim,
             resolveClaim: resolveClaim,
+            postComment: postComment,
 
             fetchClaimsInfo: fetchClaimsInfo,
             getClaimsInfo: getClaimsInfo
-            //sendOneClaim: sendOneClaim,
-            //addComment: addComment,
-            //getHrs: getHrs
         };
     }
 

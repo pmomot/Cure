@@ -32,28 +32,18 @@
                 controller: 'ChangePassController',
                 controllerAs: 'vm'
             })
-            .when('/purchases', {
-                templateUrl: 'js/routes/purchases/purchasesView.html',
-                controller: 'PurchasesController',
-                controllerAs: 'vm'
-            })
-            .when('/propositions', {
-                templateUrl: 'js/routes/propositions/propositionsView.html',
-                controller: 'PurchasesController', // TODO change
-                controllerAs: 'vm'
-            })
-            .when('/stuff', {
-                templateUrl: 'js/routes/stuff/stuffView.html',
-                controller: 'PurchasesController', // TODO change
+            .when('/claims/:claimType', {
+                templateUrl: 'js/routes/claims/claimsView.html',
+                controller: 'ClaimsController',
                 controllerAs: 'vm'
             })
             .when('/discussions', {
                 templateUrl: 'js/routes/discussions/discussionsView.html',
-                controller: 'PurchasesController', // TODO change
+                controller: 'DiscussionsController',
                 controllerAs: 'vm'
             })
             .otherwise({
-                redirectTo: '/purchases'
+                redirectTo: '/claims/purchases'
             });
     }
 })();

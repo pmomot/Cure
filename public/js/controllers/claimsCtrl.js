@@ -1,6 +1,5 @@
 'use strict';
 
-// TODO CV change alerts to normal popups
 
 angular.module('ClaimPortal').controller('ClaimsController', [
     '$scope', '$rootScope', '$state', '$window', 'authService', 'ClaimService', 'hrs', '$timeout', '$stateParams', '$location',
@@ -43,7 +42,6 @@ angular.module('ClaimPortal').controller('ClaimsController', [
         function getClaimsByType () {
 
             ClaimService.getClaimsByType(vm.currentClaimType).success(function (data) {
-                // TODO CV refactor this!!!
                 vm.tagsAvailability = {};
                 vm.claimList = data;
                 vm.claimList.clean = true;
@@ -123,7 +121,6 @@ angular.module('ClaimPortal').controller('ClaimsController', [
                                 anonymous: false
                             };
 
-                            // TODO CV think about this, maybe use no-transition class
                             vm.classRemoved = true;
                             $timeout(function () {
                                 vm.classRemoved = false;
@@ -157,7 +154,6 @@ angular.module('ClaimPortal').controller('ClaimsController', [
                 if (data.status === 'success') {
                     getClaimsByType();
                 } else {
-                    // TODO CV handle errors properly
                     // console.log(data);
                 }
             });

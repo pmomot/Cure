@@ -25,8 +25,13 @@
          * Link function
          * */
         function link ($scope) {
+            var path = $location.path().substr(1);
+
+            if (path.indexOf('claims') === 0) { // all except discussions
+                path = path.substr(7);
+            }
             $scope.userInfo = authService.getUserInfo();
-            $scope.path = $location.path().substr(1);
+            $scope.path = path;
 
             $scope.logout = function () {
                 authService.logout();

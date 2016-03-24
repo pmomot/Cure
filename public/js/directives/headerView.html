@@ -4,15 +4,15 @@
     </div>
     <div class="col col-9">
         <div class="col col-2 text-center nav-div">
-            <a href="#/purchases" class="nav-a" ng-class="{'active-nav': path === 'purchases'}">Purchases</a>
+            <a href="#/claims/purchases" class="nav-a" ng-class="{'active-nav': path === 'purchases'}">Purchases</a>
         </div>
         <div class="col col-2 text-center nav-div">
-            <a href="#/propositions" class="nav-a" ng-class="{'active-nav': path === 'propositions'}">Propositions</a>
+            <a href="#/claims/propositions" class="nav-a" ng-class="{'active-nav': path === 'propositions'}">Propositions</a>
         </div>
         <div class="col col-4 text-center nav-div">
             <div class="hr-nav-items" ng-if="userInfo.userGroup == 'HR'">
                 <div class="col col-5 text-center nav-div">
-                    <a href="#/stuff" class="nav-a" ng-class="{'active-nav': path === 'stuff'}">Stuff</a>
+                    <a href="#/claims/stuff" class="nav-a" ng-class="{'active-nav': path === 'stuff'}">Stuff</a>
                 </div>
                 <div class="col col-5 text-center nav-div">
                     <a href="#/discussions" class="nav-a" ng-class="{'active-nav': path === 'discussions'}">Discussions</a>

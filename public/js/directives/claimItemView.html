@@ -4,8 +4,8 @@
             <span ng-if="!c.anonymous">{{c.fullName}}</span>
             <span ng-if="c.anonymous">Anonymous</span>
         </div>
-        <div class="author-in" ng-if="showTag">&nbsp;in&nbsp;</div>
-        <div class="claim-tag rounded" ng-if="showTag">{{c.claimTag}}</div>
+        <div class="author-in" ng-if="c.claimTag">in</div>
+        <div class="claim-tag rounded" ng-if="c.claimTag">{{c.claimTag}}</div>
         <div class="claim-add-comment smaller">
             <div ng-if="opened">
                 <div id="acceptClaimModal" ng-click="openModal(c, 'accepted')"></div>

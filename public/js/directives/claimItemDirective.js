@@ -17,7 +17,6 @@
             templateUrl: 'js/directives/claimItemView.html',
             scope: {
                 c: '=',
-                showTag: '=',
                 modalClaim: '=',
                 modalAction: '=',
                 modalShow: '=',
@@ -26,6 +25,7 @@
             },
             replace: true,
             link: function (scope) {
+                // TODO CV make hover on css only
                 scope.showTooltip = showTooltip;
                 scope.hideTooltip = hideTooltip;
                 scope.openModal = openModal;

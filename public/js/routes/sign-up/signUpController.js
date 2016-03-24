@@ -21,7 +21,7 @@
         vm.data = {};
         vm.sendRequest = sendRequest;
 
-        if ($window.localStorage.getItem('token') === '') { // sign up page can be opened only when not authorized
+        if ($window.localStorage.getItem('token')) { // sign up page can be opened only when not authorized
             $location.path('/');
         }
 

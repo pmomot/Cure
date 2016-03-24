@@ -12,7 +12,8 @@
      * */
     function authService ($http, $q, $window) {
 
-        var userInfo = {};
+        var userInfo = {},
+            hrs = [];
 
         if (!$window.localStorage.getItem('token')) {
             $window.localStorage.setItem('token', '');
@@ -82,6 +83,17 @@
                 });
         }
 
+        /**
+        * Get all HRs from server
+        * */
+        function fetchHrs () {
+
+            return $http({method: 'GET', url: '/api/hrs'})
+                .success(function (data) {
+                    hrs = data;
+                });
+        }
+
         // service calls
         /**
          * Get current account info
@@ -97,6 +109,13 @@
             return Object.keys(userInfo).length > 0;
         }
 
+        /**
+         * Get hrs list
+         * */
+        function getHrs () {
+            return hrs;
+        }
+
         return {
             // api calls
             login: login,
@@ -104,6 +123,9 @@
             signUp: signUp,
             loadUserInfo: loadUserInfo,
             changePass: changePass,
+            fetchHrs: fetchHrs,
+
+            getHrs: getHrs,
 
             // service calls
             getUserInfo: getUserInfo,

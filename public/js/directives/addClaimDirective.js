@@ -8,12 +8,12 @@
         .module('ClaimPortal.Directives')
         .directive('clAddClaim', addClaim);
 
-    addClaim.$inject = ['claimService'];
+    addClaim.$inject = ['claimService', 'authService'];
 
     /**
      * Add Claim Directive
      * */
-    function addClaim (claimService) {
+    function addClaim (claimService, authService) {
         return {
             restrict: 'E',
             templateUrl: 'js/directives/addClaimView.html',
@@ -24,7 +24,14 @@
             replace: true,
             link: function (scope) {
                 scope.sendRequest = sendRequest;
+                scope.hrs = authService.getHrs;
+
                 resetClaim();
+
+                // TODO CV add multiple select support
+                if (scope.claimType === 'Discussion') {
+                    authService.fetchHrs();
+                }
 
                 /**
                  * Create new claim
@@ -33,6 +40,9 @@
                     claimService.addClaim(scope.claim)
                         .then(function () {
                             resetClaim();
+                            scope.$broadcast('clearMulti');
+                            scope.multiRefreshed = false;
+
                         });
                 }
 
@@ -40,15 +50,24 @@
                  * Reset claim to base state
                  * */
                 function resetClaim () {
+                    //var hrs;
+
                     scope.claim = {
                         claimTitle: '',
                         claimType: scope.claimType,
                         claimTag: scope.tags[0],
-                        claimRecipient: {}, // TODO CV should be provided only for discussions
-                        // claimRecipient: vm.hrs ? vm.hrs[0] : vm.hrs,
                         claimComment: '',
                         anonymous: false
                     };
+                    //
+                    //if (scope.claimType === 'Discussion') {
+                    //    hrs = scope.hrs();
+                    //
+                    //    if (hrs.length > 0) {
+                    //        scope.claim.claimRecipient = hrs[0];
+                    //    }
+                    //
+                    //}
                 }
             }
         };
@@ -56,19 +75,6 @@
         //    ClaimService.addClaim(addClaimParams)
         //        .success(function (data) {
         //            if (data.status === 'success') {
-        //                if (sendmail) {
-        //                    ClaimService.sendOneClaim(vm.currentClaim, vm.$parent.user).success(function (d) {
-        //                        if (d.status === 'success') {
-        //                            getClaimsByType();
-        //                        }
-        //                    });
-        //                }
-        //
-        //                // TODO CV think about this, maybe use no-transition class
-        //                vm.classRemoved = true;
-        //                $timeout(function () {
-        //                    vm.classRemoved = false;
-        //                }, 1000);
         //
         //                $scope.$broadcast('clearMulti');
         //            } else {

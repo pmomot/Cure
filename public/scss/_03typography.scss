@@ -30,6 +30,9 @@ select {
     box-shadow:none;
   }
 }
+textarea {
+  resize: none;
+}
 
 input[type='submit'] {
   font-size: 14px;

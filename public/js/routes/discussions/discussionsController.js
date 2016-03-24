@@ -1,5 +1,5 @@
 /**
- * Created by petermomot on 3/21/16.
+ * Created by petermomot on 3/24/16.
  */
 'use strict';
 
@@ -7,30 +7,33 @@
 
     angular
         .module('ClaimPortal')
-        .controller('PurchasesController', PurchasesController);
+        .controller('DiscussionsController', DiscussionsController);
 
-    PurchasesController.$inject = ['claimService', 'authService'];
+    DiscussionsController.$inject = ['claimService', 'authService'];
 
     /**
-     * Purchases Controller
+     * Discussions Controller
      * */
-    function PurchasesController (claimService, authService) {
+    function DiscussionsController (claimService, authService) {
         var vm = this;
 
-        vm.tags = ['Products', 'Bakery', 'Officeware'];
-        vm.activeTag = 'All';
-        vm.claimType = 'Purchase';
+        vm.config = {
+            tags: [],
+            claimType: 'Discussion',
+            title: 'Discussions',
+            hint: ''
+        };
         vm.hrs = []; // TODO CV find out if needed
-        vm.modalShow = false;
-        vm.modalClaim = {};
-        vm.modalAction = '';
 
         vm.user = authService.getUserInfo;
         vm.claimsInfo = claimService.getClaimsInfo;
 
         vm.isHr = isHr;
 
-        claimService.fetchClaimsInfo(vm.claimType);
+        claimService.fetchClaimsInfo({
+            claimType: vm.config.claimType,
+            fetchClosed: false
+        });
 
 
         /**

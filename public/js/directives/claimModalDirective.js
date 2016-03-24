@@ -20,8 +20,7 @@
             scope: {
                 show: '=',
                 c: '=modalClaim',
-                modalAction: '=',
-                showTag: '='
+                modalAction: '='
             },
             replace: true,
             link: function (scope) {

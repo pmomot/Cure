@@ -22,7 +22,8 @@
                 maxOpened: 5,
                 newestOnTop: true,
                 preventDuplicates: false,
-                preventOpenDuplicates: false,
+                preventOpenDuplicates: true,
+                allowHtml: true,
                 timeOut: 3000
             });
         })

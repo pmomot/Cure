@@ -1,0 +1,36 @@
+<div class="col-10 no-padding-left no-padding-right text-left">
+    <div class="js-class">
+        <div class="claim-comments-wrapper rounded" ng-if="opened.length === 0">
+            There are no open discussions.
+        </div>
+        <div id="{{c._id}}" class="claim-comments-wrapper rounded" ng-repeat="c in opened">
+            <div class="claim-title">{{c.claimTitle}}
+                <div class="claim-receivers">assigned to:
+                    <span ng-repeat="r in c.claimRecipient">{{r.firstName}} {{r.lastName}} | </span>
+                </div>
+            </div>
+            <div class="claim-note">{{c.claimComment}}</div>
+            <div class="claim-comments-list" ng-if="c.claimComments.length > 0">
+                <div class="claim-comments-heading">Comments:</div>
+                <div class="claim-comments-container">
+                    <div class="claim-comment" ng-repeat="com in c.claimComments">
+                        <div class="claim-comment-author">
+                            <span class="claim-author">{{com.author.firstName + " " + com.author.lastName}}</span>
+                            <span> said:</span>
+                        </div>
+                        <div class="claim-comment-content">{{com.content}}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="claim-add-comment">
+                <textarea class="claim-comment-input"></textarea>
+                <input class="rounded claim-add-new-comment-button" type="submit" value="ADD NEW COMMENT"
+                       ng-click="comment(c)" data-id="{{c._id}}"/>
+                <div class="clr"></div>
+                <input class="rounded claim-resolve" type="submit" value="RESOLVE & REMOVE"
+                       ng-click="resolve(c)"/>
+                <div class="clr"></div>
+            </div>
+        </div>
+    </div>
+</div>

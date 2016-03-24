@@ -1,12 +1,12 @@
 <cl-header></cl-header>
 <div id="claim" class="rounded text-center">
     <div class="main-head">
-        <h1 class="text-left">Purchases</h1>
-        <div class="tooltip-sign"></div>
-        <div class="tooltip-content rounded">Something, you need to be bought.</div>
+        <h1 class="text-left">{{ vm.config.title }}</h1>
+        <div class="tooltip-sign" ng-if="vm.config.hint"></div>
+        <div class="tooltip-content rounded">{{ vm.config.hint }}</div>
     </div>
     <section>
-        <cl-add-claim claim-type="vm.claimType" tags="vm.tags"></cl-add-claim>
+        <cl-add-claim claim-type="vm.config.claimType" tags="vm.config.tags"></cl-add-claim>
 
         <div class="line"></div>
         <div class="col-5 no-padding-left text-left">
@@ -21,7 +21,7 @@
                      ng-repeat="c in vm.claimsInfo().opened"
                      ng-class="{'last': $first}"
                      ng-show="c.claimTag === vm.activeTag || vm.activeTag === 'All'">
-                    <cl-claim-item c="c" is-hr="vm.isHr" show-tag="true" opened="true"
+                    <cl-claim-item c="c" is-hr="vm.isHr" opened="true"
                                      modal-claim="vm.modalClaim" modal-action="vm.modalAction"
                                      modal-show="vm.modalShow"></cl-claim-item>
                 </div>
@@ -35,11 +35,10 @@
                 </div>
                 <div class="claim-comments-wrapper smaller"
                      ng-repeat="c in vm.claimsInfo().closed">
-                    <cl-claim-item c="c" is-hr="vm.isHr" show-tag="true" opened="false"></cl-claim-item>
+                    <cl-claim-item c="c" is-hr="vm.isHr" opened="false"></cl-claim-item>
                 </div>
             </div>
         </div>
-        <div class="clr"></div>
     </section>
 </div>
 <cl-claim-modal ng-show="vm.modalShow" show="vm.modalShow" show-tag="true"

@@ -75,10 +75,47 @@ module.exports = function () {
                 return;
             }
 
-            res.json({
-                message: 'New claim has been created',
-                createdClaim: createdClaim,
-                success: true
+            if (createdClaim.claimType !== 'Discussion') {
+                res.json({
+                    message: 'New claim has been created',
+                    createdClaim: createdClaim,
+                    success: true
+                });
+                return;
+            }
+
+            if (!createdClaim.claimComment) {
+                createdClaim.claimComment = 'None.';
+            }
+            // TODO CV test this
+            nAsync.each(createdClaim.claimRecipient, function (item, callback) {
+                sendClaimEmail({
+                    recipient: item.email,
+                    subject: 'New claim notification.',
+                    fullName: item.firstName + ' ' + item.lastName,
+                    type: 'new',
+                    textOptions: {
+                        id: claim._id,
+                        title: createdClaim.claimTitle,
+                        description: createdClaim.claimComment
+                    }
+                }, function (err1) {
+                    if (err1) {
+                        callback(err1);
+                    } else {
+                        callback();
+                    }
+                });
+            }, function (error) {
+                if (error) {
+                    // console.log(error);
+                } else {
+                    res.json({
+                        message: 'New claim has been created',
+                        createdClaim: createdClaim,
+                        success: true
+                    });
+                }
             });
         });
     }
@@ -90,6 +127,7 @@ module.exports = function () {
     * */
     function getClaims (req, res) {
         var q = req.query,
+            status = req.query.status,
             todayDate = new Date(), weekDate = new Date(), x;
 
         x = new Date(weekDate.setTime(todayDate.getTime() - (30 * 24 * 3600000)));
@@ -97,9 +135,11 @@ module.exports = function () {
         q.status = {
             $in: q.status
         };
-        q.created = {
-            $gt: x.toISOString()
-        };
+        if (status !== 'open') {
+            q.created = {
+                $gt: x.toISOString()
+            };
+        }
 
         Claim.find(q).sort({created: -1}).limit(15).exec(function (err, claims) {
             if (err) {
@@ -148,11 +188,12 @@ module.exports = function () {
                                 res.send(error);
                             } else {
                                 res.json({
-                                    message: 'Claim has been ' + claim.status,
+                                    message: 'Claim <i>' + claim.claimTitle + '</i> has been ' + claim.status,
                                     success: true
                                 });
                             }
                         });
+                        // TODO CV if discussion resolved - send email to all recipients
                     }
                 });
             } else {
@@ -162,59 +203,12 @@ module.exports = function () {
     }
 
     /**
-    * Function is triggered when a discussion is added
-    * @param {Object} req - request
-    * @param {Object} res - response
-    * */
-    function sendOneClaim (req, res) {
-        Claim.findOne({claimTitle: req.body.claim.claimTitle, claimType: 'Discussion', status: 'open'}, function (err, claim) {
-            var resArr = [];
-
-            if (err) {
-                res.json(err);
-                return;
-            }
-
-            if (!req.body.claim.claimComment) {
-                req.body.claim.claimComment = 'None.';
-            }
-
-            nAsync.each(req.body.claim.claimRecipient, function (item, callback) {
-                sendClaimEmail({
-                    recipient: item.email,
-                    subject: 'New claim notification.',
-                    fullName: item.firstName + ' ' + item.lastName,
-                    type: 'new',
-                    textOptions: {
-                        id: claim._id,
-                        title: req.body.claim.claimTitle,
-                        description: req.body.claim.claimComment
-                    }
-                }, function (err1) {
-                    if (err1) {
-                        resArr.push(err1);
-                        callback(err1);
-                    } else {
-                        resArr.push({message: 'Successfully sent a claim to ' + item.firstName + ' ' + item.lastName, status: 'success'});
-                        callback();
-                    }
-                });
-            }, function (error) {
-                if (error) {
-                    // console.log(error);
-                } else {
-                    res.json({response: resArr, status: 'success'});
-                }
-            });
-        });
-    }
-
-    /**
     * Add new comment to discussion
     * @param {Object} req - request
     * @param {Object} res - response
     * */
-    function addComment (req, res) {
+    function postComment (req, res) {
+        // TODO CV look into this
         Claim.findByIdAndUpdate(req.body.claimId, {$push: {claimComments: req.body.comment}}, {safe: true, upsert: true}, function (err) {
             var resArr = [], fullName;
 
@@ -241,14 +235,19 @@ module.exports = function () {
                                 resArr.push(err1);
                                 callback(err1);
                             } else {
-                                resArr.push({message: 'Successfully sent a message to ' + fullName, status: 'success'});
+                                resArr.push({message: 'Successfully sent a message to ' + fullName, success: true});
                                 callback();
                             }
                         });
                     }
                 }, function (error) {
-                    if (!error) {
-                        res.json({response: resArr, status: 'success'});
+                    if (error) {
+                        res.json({
+                            message: 'Something went wrong',
+                            success: false
+                        });
+                    } else {
+                        res.json({response: resArr, success: true});
                     }
                 });
             }
@@ -259,7 +258,6 @@ module.exports = function () {
         postClaim: postClaim,
         getClaims: getClaims,
         resolveClaim: resolveClaim,
-        sendOneClaim: sendOneClaim,
-        addComment: addComment
+        postComment: postComment
     };
 };
