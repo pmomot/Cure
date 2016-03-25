@@ -875,6 +875,8 @@ body {
     margin-right: 4px;
     cursor: pointer;
     background: url(../../img/information-icon.png) center center no-repeat; }
+    #claim .claim-info:hover + .comment-tooltip {
+      display: block; }
   #claim .comment-tooltip {
     position: absolute;
     right: -16px;

@@ -308,6 +308,10 @@
     margin-right: 4px;
     cursor: pointer;
     background: url(#{$imgPath}information-icon.png) center center no-repeat;
+
+    &:hover + .comment-tooltip {
+      display: block;
+    }
   }
 
   .comment-tooltip {

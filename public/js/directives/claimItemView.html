@@ -12,10 +12,10 @@
                 <div id="declineClaimModal" ng-click="openModal(c, 'declined')"></div>
             </div>
             <div ng-if="!opened">
+                <div class="claim-info" ng-if="c.claimComment">&nbsp;</div>
                 <div class="comment-tooltip rounded" data-id="{{c._id}}"
                      ng-if="c.claimComment">{{c.claimComment}}</div>
-                <div class="claim-info" ng-if="c.claimComment"
-                     ng-mouseover="showTooltip($event)" ng-mouseleave="hideTooltip($event)">&nbsp;</div>
+
                 <div class="claim-status">{{c.status}}</div>
             </div>
             <div class="clr"></div>

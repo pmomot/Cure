@@ -25,26 +25,7 @@
             },
             replace: true,
             link: function (scope) {
-                // TODO CV make hover on css only
-                scope.showTooltip = showTooltip;
-                scope.hideTooltip = hideTooltip;
                 scope.openModal = openModal;
-
-                /**
-                 * Show tooltip with hr comment
-                 * @param {Object} $event - angular event object
-                 * */
-                function showTooltip ($event) {
-                    angular.element($event.target).parent().children().eq(0).css('display', 'block');
-                }
-
-                /**
-                 * Hide tooltip with hr comment
-                 * @param {Object} $event - angular event object
-                 * */
-                function hideTooltip ($event) {
-                    angular.element($event.target).parent().children().eq(0).css('display', 'none');
-                }
 
                 /**
                  * Open claim resolving modal
