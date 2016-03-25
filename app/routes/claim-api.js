@@ -32,7 +32,10 @@ function sendClaimEmail (mailParams, callback) {
             break;
         case 'change':
             html += '<p>Your <span style="text-transform: lowercase">' + o.type + '</span> claim: "' + o.title;
-            html += '" has been ' + o.status + '.</p><p>Comment: ' + o.description + '</p>';
+            html += '" has been ' + o.status + '.</p>';
+            if (o.type !== 'Discussion') {
+                html += '<p>Comment: ' + o.description + '</p>';
+            }
             break;
         case 'comment':
             html += '<p>Your claim: <a href="' + serverAddress + '/#/home/discussions/' + o.id + '">"' + o.title;

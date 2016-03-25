@@ -24,7 +24,8 @@
                     tags: ['Equipment', 'Furniture', 'Other'],
                     claimType: 'Proposition',
                     title: 'Propositions / Claims',
-                    hint: 'All your wishes, comments and complaints.'
+                    hint: 'All your wishes, comments and complaints.',
+                    fetchClosed: true
                 };
                 break;
             case 'stuff':
@@ -32,7 +33,17 @@
                     tags: [],
                     claimType: 'Chemical',
                     title: 'Stuff',
-                    hint: ''
+                    hint: '',
+                    fetchClosed: true
+                };
+                break;
+            case 'discussions':
+                config = {
+                    tags: [],
+                    claimType: 'Discussion',
+                    title: 'Discussions',
+                    hint: '',
+                    fetchClosed: false
                 };
                 break;
             case 'purchases':
@@ -41,7 +52,8 @@
                     tags: ['Products', 'Bakery', 'Officeware'],
                     claimType: 'Purchase',
                     title: 'Purchases',
-                    hint: 'Something, you need to be bought.'
+                    hint: 'Something, you need to be bought.',
+                    fetchClosed: true
                 };
                 break;
         }
@@ -59,7 +71,7 @@
 
         claimService.fetchClaimsInfo({
             claimType: vm.config.claimType,
-            fetchClosed: true
+            fetchClosed: vm.config.fetchClosed
         });
 
 

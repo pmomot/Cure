@@ -1,0 +1,263 @@
+.multiSelect {
+    &.inlineBlock {
+        display: block;
+        position: relative;
+        width: 100%;
+    }
+
+    .vertical {
+        float: none;
+    }
+    .horizontal:not(.multiSelectGroup) {
+        float: left;
+    }
+    .line {
+        padding:  2px 0 4px 0;
+        max-height: 30px;
+        overflow: hidden;
+        box-sizing: content-box;
+        height: auto;
+        margin: auto;
+        background: none;
+    }
+
+    .acol {
+        display: inline-block;
+        min-width: 12px;
+    }
+
+
+    & > button {
+        border-radius: 3px;
+        padding: 5px 10px;
+        background: #f9f9f9;
+        width: 100%;
+        text-align: left;
+
+        &:hover {
+            background: #f9f9f9;
+        }
+        &:focus {
+            border: 1px solid #e6e6e6;
+            outline: none;
+        }
+        &:disabled {
+            border: 1px solid #ddd;
+            color: #999;
+        }
+    }
+
+    .caret {
+        float: right;
+        margin: 4px 0px 1px 12px  !important;
+        position: absolute;
+        right: 10px;
+    }
+
+    .checkboxLayer {
+        width: calc(100% - 16px);
+        min-width: 218px;
+    }
+
+    .helperContainer {
+        border-bottom: 1px solid #ddd;
+        padding: 8px 8px 0px 8px;
+        display: none;
+    }
+
+    .helperButton {
+        display: inline;
+        text-align: center;
+        cursor: pointer;
+        border: 1px solid #ccc;
+        height: 26px;
+        font-size: 13px;
+        border-radius: 3px;
+        color: #666;
+        background-color: #f1f1f1;
+        line-height: 1.6;
+        margin: 0px 0px 8px 0px;
+
+        &:last-child {
+            margin-right: 0!important;
+        }
+        &.reset{
+            float: right;
+        }
+        &:not( .reset ) {
+            margin-right: 4px;
+        }
+        &:disabled {
+            color: #ccc;
+            border: 1px solid #ddd;
+        }
+        &:focus {
+            border: 1px solid #66AFE9 !important;
+            outline: 0;
+            -webkit-box-shadow: inset 0 0 1px rgba(0,0,0,.065), 0 0 5px rgba(102, 175, 233, .6) !important;
+            box-shadow: inset 0 0 1px rgba(0,0,0,.065), 0 0 5px rgba(102, 175, 233, .6) !important;
+        }
+        &:hover {
+            border: 1px solid #ccc;
+            color: #999;
+            background-color: #f4f4f4 !important;
+        }
+    }
+
+    .clearButton {
+        position: absolute;
+        display: inline;
+        text-align: center;
+        cursor: pointer;
+        border: 1px solid #ccc;
+        height: 22px;
+        width: 22px;
+        font-size: 13px;
+        border-radius: 3px;
+        color: #666;
+        background-color: #f1f1f1;
+        line-height: 1.4;
+        right : 2px;
+        top: 4px;
+
+        &:hover {
+            border: 1px solid #ccc;
+            color: #999;
+            background-color: #f4f4f4;
+        }
+
+        &:focus {
+            border: 1px solid #66AFE9 !important;
+            outline: 0;
+            -webkit-box-shadow: inset 0 0 1px rgba(0,0,0,.065), 0 0 5px rgba(102, 175, 233, .6) !important;
+            box-shadow: inset 0 0 1px rgba(0,0,0,.065), 0 0 5px rgba(102, 175, 233, .6) !important;
+        }
+    }
+
+    .inputFilter {
+        border-radius: 3px;
+        border: 1px solid #ccc;
+        height: 26px;
+        font-size: 14px;
+        width:100%;
+        padding-left:7px;
+        -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+        -moz-box-sizing: border-box;    /* Firefox, other Gecko */
+        box-sizing: border-box;         /* Opera/IE 8+ */
+        color: #888;
+        margin: 0px 0px 8px 0px;
+        -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+        box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+
+        &:focus {
+            border: 1px solid #66AFE9 !important;
+            outline: 0;
+            -webkit-box-shadow: inset 0 0 1px rgba(0,0,0,.065), 0 0 5px rgba(102, 175, 233, .6) !important;
+            box-shadow: inset 0 0 1px rgba(0,0,0,.065), 0 0 5px rgba(102, 175, 233, .6) !important;
+        }
+    }
+
+    /* container of multi select items */
+    .checkBoxContainer {
+        display: block;
+        padding: 8px;
+        overflow: hidden;
+    }
+
+    /* ! to show / hide the checkbox layer above */
+    .show {
+        display: block !important;
+    }
+
+    /* item labels */
+    .multiSelectItem {
+        color: #262626;
+        padding: 5px;
+        line-height: 14px;
+        min-width: 188px;
+        min-height: 26px;
+
+        &:not(.multiSelectGroup).selected {
+            background: rgba(243,249,253,1) !important;
+            color: #262626;
+        }
+
+        &:hover {
+            background: rgba(243,249,253,1) !important;
+            color: #262626 !important;
+            cursor: pointer;
+            border: 1px solid #e6e6e6;
+        }
+
+        .acol label {
+            display: inline-block;
+            padding-right: 30px;
+            margin: 0px!important;
+            font-weight: normal;
+            line-height: normal;
+        }
+
+        span:hover {
+            cursor: pointer;
+        }
+    }
+
+    /* item labels focus using keyboard */
+    .multiSelectFocus {
+        background: rgba(243,249,253,1);
+        background-image: linear-gradient( #f3f9fd, #f3f9fd ) !important;
+        color: #262626 !important;
+        cursor: pointer;
+        border: 1px solid #e6e6e6;
+    }
+
+    /* ! group labels */
+    .multiSelectGroup {
+        display: block;
+        clear: both;
+
+        &:hover {
+            background: rgba(243,249,253,1);
+            color: #262626 !important;
+            cursor: pointer;
+            border: 1px solid #e6e6e6;
+        }
+
+        span:hover {
+            cursor: pointer;
+        }
+    }
+
+    /* right-align the tick mark (&#10004;) */
+    .tickMark {
+        display:inline-block;
+        position: absolute;
+        right: 10px;
+        top: 7px;
+        font-size: 10px;
+    }
+
+    /* hide the original HTML checkbox away */
+    .checkbox {
+        color: #ddd !important;
+        position: absolute;
+        left: -9999px;
+        cursor: pointer;
+    }
+
+    /* checkboxes currently disabled */
+    .disabled,
+    .disabled:hover,
+    .disabled label input:hover ~ span {
+        color: #c4c4c4 !important;
+        cursor: not-allowed !important;
+    }
+
+    /* If you use images in button / checkbox label, you might want to change the image style here. */
+    .img {
+        vertical-align: middle;
+        margin-bottom:0px;
+        max-height: 22px;
+        max-width:22px;
+    }
+}

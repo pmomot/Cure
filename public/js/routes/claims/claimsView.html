@@ -7,9 +7,9 @@
     </div>
     <section>
         <cl-add-claim claim-type="vm.config.claimType" tags="vm.config.tags"></cl-add-claim>
-
         <div class="line"></div>
-        <div class="col-5 no-padding-left text-left">
+
+        <div class="col-5 no-padding-left text-left" ng-if="vm.config.claimType !== 'Discussion'">
             <cl-tag-filter ng-if="vm.claimsInfo().opened.length > 0 && vm.claimsInfo().availableTags.length > 1"
                            tags="vm.claimsInfo().availableTags" active-tag="vm.activeTag"></cl-tag-filter>
             <h2>Pending:</h2>
@@ -27,7 +27,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-5 no-padding-right text-left">
+        <div class="col-5 no-padding-right text-left" ng-if="vm.config.claimType !== 'Discussion'">
             <h2>Archive:</h2>
             <div class="claim-comments-container smaller rounded">
                 <div class="claim-comments-wrapper smaller" ng-if="vm.claimsInfo().closed.length === 0">
@@ -39,7 +39,10 @@
                 </div>
             </div>
         </div>
+        <cl-discussions-list opened="vm.claimsInfo().opened"
+                             ng-if="vm.config.claimType === 'Discussion'"></cl-discussions-list>
     </section>
 </div>
 <cl-claim-modal ng-show="vm.modalShow" show="vm.modalShow" show-tag="true"
+                ng-if="vm.config.claimType !== 'Discussion'"
                 modal-claim="vm.modalClaim" modal-action="vm.modalAction"></cl-claim-modal>

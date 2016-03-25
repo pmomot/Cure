@@ -8,12 +8,12 @@
         .module('ClaimPortal.Directives')
         .directive('clAddClaim', addClaim);
 
-    addClaim.$inject = ['claimService', 'authService'];
+    addClaim.$inject = ['$timeout', 'claimService', 'authService'];
 
     /**
      * Add Claim Directive
      * */
-    function addClaim (claimService, authService) {
+    function addClaim ($timeout, claimService, authService) {
         return {
             restrict: 'E',
             templateUrl: 'js/directives/addClaimView.html',
@@ -28,7 +28,6 @@
 
                 resetClaim();
 
-                // TODO CV add multiple select support
                 if (scope.claimType === 'Discussion') {
                     authService.fetchHrs();
                 }
@@ -40,9 +39,9 @@
                     claimService.addClaim(scope.claim)
                         .then(function () {
                             resetClaim();
-                            scope.$broadcast('clearMulti');
-                            scope.multiRefreshed = false;
-
+                            $timeout(function () { // hack for clearing multi-select plugin
+                                angular.element(document.querySelector('.helperButton')).triggerHandler('click');
+                            }, 0, false);
                         });
                 }
 
@@ -50,8 +49,6 @@
                  * Reset claim to base state
                  * */
                 function resetClaim () {
-                    //var hrs;
-
                     scope.claim = {
                         claimTitle: '',
                         claimType: scope.claimType,
@@ -59,30 +56,9 @@
                         claimComment: '',
                         anonymous: false
                     };
-                    //
-                    //if (scope.claimType === 'Discussion') {
-                    //    hrs = scope.hrs();
-                    //
-                    //    if (hrs.length > 0) {
-                    //        scope.claim.claimRecipient = hrs[0];
-                    //    }
-                    //
-                    //}
                 }
             }
         };
-
-        //    ClaimService.addClaim(addClaimParams)
-        //        .success(function (data) {
-        //            if (data.status === 'success') {
-        //
-        //                $scope.$broadcast('clearMulti');
-        //            } else {
-        //                $scope.$broadcast('clearMulti');
-        //                vm.multiRefreshed = true;
-        //            }
-        //        }
-        //    );
 
     }
 })();

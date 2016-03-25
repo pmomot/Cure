@@ -359,8 +359,7 @@ body {
     padding: 5px 10px;
     background: #f9f9f9;
     width: 100%;
-    text-align: left;
-    min-height: 26px !important; }
+    text-align: left; }
     .multiSelect > button:hover {
       background: #f9f9f9; }
     .multiSelect > button:focus {
@@ -369,27 +368,18 @@ body {
     .multiSelect > button:disabled {
       border: 1px solid #ddd;
       color: #999; }
-  .multiSelect .buttonLabel {
-    display: block;
-    padding: 0;
-    width: 100%; }
   .multiSelect .caret {
-    display: inline-block;
     float: right;
-    width: 0;
-    height: 0;
     margin: 4px 0px 1px 12px  !important;
-    vertical-align: middle;
-    border-top: 4px solid #333;
-    border-right: 4px solid transparent;
-    border-left: 4px solid transparent;
-    border-bottom: 0 dotted; }
+    position: absolute;
+    right: 10px; }
   .multiSelect .checkboxLayer {
     width: calc(100% - 16px);
-    min-width: 208px; }
+    min-width: 218px; }
   .multiSelect .helperContainer {
     border-bottom: 1px solid #ddd;
-    padding: 8px 8px 0px 8px; }
+    padding: 8px 8px 0px 8px;
+    display: none; }
   .multiSelect .helperButton {
     display: inline;
     text-align: center;
@@ -476,7 +466,8 @@ body {
     color: #262626;
     padding: 5px;
     line-height: 14px;
-    min-width: 188px; }
+    min-width: 188px;
+    min-height: 26px; }
     .multiSelect .multiSelectItem:not(.multiSelectGroup).selected {
       background: #f3f9fd !important;
       color: #262626; }
@@ -495,6 +486,7 @@ body {
       cursor: pointer; }
   .multiSelect .multiSelectFocus {
     background: #f3f9fd;
+    background-image: linear-gradient(#f3f9fd, #f3f9fd) !important;
     color: #262626 !important;
     cursor: pointer;
     border: 1px solid #e6e6e6; }

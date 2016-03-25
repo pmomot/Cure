@@ -37,11 +37,6 @@
                 controller: 'ClaimsController',
                 controllerAs: 'vm'
             })
-            .when('/discussions', {
-                templateUrl: 'js/routes/discussions/discussionsView.html',
-                controller: 'DiscussionsController',
-                controllerAs: 'vm'
-            })
             .otherwise({
                 redirectTo: '/claims/purchases'
             });
