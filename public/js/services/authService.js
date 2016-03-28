@@ -1,4 +1,5 @@
 'use strict';
+// TODO CV move ajax calls to repository
 
 (function () {
     angular
@@ -30,7 +31,10 @@
             })
                 .success(function (data) {
                     $window.localStorage.setItem('token', data.token);
-                    data.user.fullName = data.user.firstName + ' ' + data.user.lastName;
+                    if (data.success) {
+                        data.user.fullName = data.user.firstName + ' ' + data.user.lastName;
+                    }
+
                     userInfo = data.user;
 
                     return data;
@@ -88,7 +92,7 @@
         * */
         function fetchHrs () {
 
-            return $http({method: 'GET', url: '/api/hrs'})
+            return $http({method: 'GET', url: '/api/users', params: {userGroup: 'HR'}})
                 .success(function (data) {
                     hrs = data;
                 });

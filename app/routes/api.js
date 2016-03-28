@@ -57,7 +57,7 @@ module.exports = function (app, express) {
 
     api.get('/user', userApiCalls.getUser);
     api.post('/user/change-pass', userApiCalls.changePassword);
-    api.get('/hrs', userApiCalls.getHRs);
+    api.get('/users', userApiCalls.getUsers);
 
 
     // Claim section

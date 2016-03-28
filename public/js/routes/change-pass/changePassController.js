@@ -46,7 +46,7 @@
                                 toastr.success(data.message);
                                 $window.history.back();
                             } else {
-                                toastr.error('Error', data.message);
+                                toastr.error(data.message);
                             }
                         });
                 }

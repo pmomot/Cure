@@ -90,6 +90,7 @@
 
                         deferred.resolve();
                     } else {
+                        toastr.error(result.message);
                         deferred.reject(result);
                     }
                 })
@@ -161,7 +162,7 @@
             claimRepository.postComment(data)
                 .then(function (result) {
                     if (result.success) {
-                        toastr.success('Comment has been added');
+                        toastr.success(result.message);
 
                         fetchClaimsInfo({
                             claimType: 'Discussion'

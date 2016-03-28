@@ -6,19 +6,18 @@
 'use strict';
 
 var Claim = require('../models/claim'),
-    nAsync = require('async'),
     config = require('../../config'),
     mailConfig = config.mail,
     serverAddress = 'http://' + config.ip + ':' + config.port,
     nodemailer = require('nodemailer'),
-    smtpTransport = require('nodemailer-smtp-transport');
+    smtpTransport = require('nodemailer-smtp-transport'),
+    Promise = require('promise');
 
 /**
  * Helper for sending claim related email
  * @param {Object} mailParams - email properties
- * @param {Function} callback - will be called after sending email
  * */
-function sendClaimEmail (mailParams, callback) {
+function sendClaimEmail (mailParams) {
     // TODO CV save ip and port to globals
 
     var transporter = nodemailer.createTransport(smtpTransport(mailConfig)),
@@ -43,12 +42,12 @@ function sendClaimEmail (mailParams, callback) {
             break;
     }
 
-    transporter.sendMail({
+    return transporter.sendMail({
         from: 'CoreValue HRs',
         to: mailParams.recipient,
         subject: mailParams.subject,
         html: html
-    }, callback);
+    }, function () {});
 }
 
 module.exports = function () {
@@ -72,55 +71,41 @@ module.exports = function () {
             status: 'open'
         });
 
-        claim.save(function (err, createdClaim) {
-            if (err) {
-                res.send(err);
-                return;
-            }
+        claim
+            .save()
+            .then(function (createdClaim) {
 
-            if (createdClaim.claimType !== 'Discussion') {
-                res.json({
+                if (createdClaim.claimType === 'Discussion') {
+                    if (!createdClaim.claimComment) {
+                        createdClaim.claimComment = 'None.';
+                    }
+                    return Promise.all(createdClaim.claimRecipient.map(function (item) {
+                        sendClaimEmail({
+                            recipient: item.email,
+                            subject: 'New claim notification.',
+                            fullName: item.firstName + ' ' + item.lastName,
+                            type: 'new',
+                            textOptions: {
+                                id: claim._id,
+                                title: createdClaim.claimTitle,
+                                description: createdClaim.claimComment
+                            }
+                        });
+                    }));
+                }
+            })
+            .then(function () {
+                res.send({
                     message: 'New claim has been created',
-                    createdClaim: createdClaim,
                     success: true
                 });
-                return;
-            }
-
-            if (!createdClaim.claimComment) {
-                createdClaim.claimComment = 'None.';
-            }
-            // TODO CV test this
-            nAsync.each(createdClaim.claimRecipient, function (item, callback) {
-                sendClaimEmail({
-                    recipient: item.email,
-                    subject: 'New claim notification.',
-                    fullName: item.firstName + ' ' + item.lastName,
-                    type: 'new',
-                    textOptions: {
-                        id: claim._id,
-                        title: createdClaim.claimTitle,
-                        description: createdClaim.claimComment
-                    }
-                }, function (err1) {
-                    if (err1) {
-                        callback(err1);
-                    } else {
-                        callback();
-                    }
+            })
+            .catch(function (err) {
+                res.send({
+                    message: err.message,
+                    success: false
                 });
-            }, function (error) {
-                if (error) {
-                    // console.log(error);
-                } else {
-                    res.json({
-                        message: 'New claim has been created',
-                        createdClaim: createdClaim,
-                        success: true
-                    });
-                }
             });
-        });
     }
 
     /**
@@ -144,13 +129,14 @@ module.exports = function () {
             };
         }
 
-        Claim.find(q).sort({created: -1}).limit(15).exec(function (err, claims) {
-            if (err) {
-                res.send(err);
-                return;
-            }
-            res.json(claims);
-        });
+        Claim.find(q).sort({created: -1}).limit(15)
+            .exec()
+            .then(function (claims) {
+                res.json(claims);
+            })
+            .catch(function (error) {
+                res.send(error);
+            });
     }
 
     /**
@@ -159,50 +145,54 @@ module.exports = function () {
     * @param {Object} res - response
     * */
     function resolveClaim (req, res) {
-        Claim.findOne({
-            _id: req.body._id
-        }).exec(function (err, claim) {
-            if (err) {
-                throw err;
-            }
-            if (claim) {
+        var savedClaim;
+
+        Claim
+            .findOne({
+                _id: req.body._id
+            })
+            .exec()
+            .then(function (claim) {
+                if (!claim) {
+                    throw new Error('Claim does not exist');
+                }
                 claim.status = req.body.status;
                 claim.claimComment = req.body.claimComment;
-                claim.save(function (error) {
-                    if (error) {
-                        res.send(error);
-                    } else {
-                        if (!claim.claimComment) {
-                            claim.claimComment = 'None.';
-                        }
-                        sendClaimEmail({
-                            recipient: claim.authorEmail,
-                            subject: 'Your claim has been ' + claim.status,
-                            fullName: claim.fullName,
-                            type: 'change',
-                            textOptions: {
-                                type: claim.claimType,
-                                title: claim.claimTitle,
-                                status: claim.status,
-                                description: claim.claimComment
-                            }
-                        }, function (sendError) {
-                            if (sendError) {
-                                res.send(error);
-                            } else {
-                                res.json({
-                                    message: 'Claim <i>' + claim.claimTitle + '</i> has been ' + claim.status,
-                                    success: true
-                                });
-                            }
-                        });
-                        // TODO CV if discussion resolved - send email to all recipients
+
+                return claim.save();
+            })
+            .then(function (claim) {
+                if (!claim.claimComment) {
+                    claim.claimComment = 'None.';
+                }
+
+                savedClaim = claim;
+
+                return sendClaimEmail({
+                    recipient: claim.authorEmail,
+                    subject: 'Your claim has been ' + claim.status,
+                    fullName: claim.fullName,
+                    type: 'change',
+                    textOptions: {
+                        type: claim.claimType,
+                        title: claim.claimTitle,
+                        status: claim.status,
+                        description: claim.claimComment
                     }
                 });
-            } else {
-                res.send({message: 'Claim does not exist', success: false});
-            }
-        });
+            })
+            .then(function () {
+                res.send({
+                    message: 'Claim <i>' + savedClaim.claimTitle + '</i> has been ' + savedClaim.status,
+                    success: true
+                });
+            })
+            .catch(function (err) {
+                res.send({
+                    message: err.message,
+                    success: false
+                });
+            });
     }
 
     /**
@@ -211,15 +201,20 @@ module.exports = function () {
     * @param {Object} res - response
     * */
     function postComment (req, res) {
-        // TODO CV look into this
-        Claim.findByIdAndUpdate(req.body.claimId, {$push: {claimComments: req.body.comment}}, {safe: true, upsert: true}, function (err) {
-            var resArr = [], fullName;
+        var q = {
+                $push: {
+                    claimComments: req.body.comment
+                }
+            },
+            options = {safe: true, upsert: true};
 
-            if (!err) {
-                nAsync.each(req.body.claimRecipient, function (item, callback) {
-                    if (item.email === req.body.comment.author.email) {
-                        callback();
-                    } else {
+        Claim
+            .findByIdAndUpdate(req.body.claimId, q, options)
+            .then(function (claim) {
+                var fullName;
+
+                return Promise.all(claim.claimRecipient.map(function (item) {
+                    if (item.email !== req.body.comment.author.email) {
                         fullName = item.firstName + ' ' + item.lastName;
 
                         sendClaimEmail({
@@ -233,28 +228,22 @@ module.exports = function () {
                                 description: req.body.comment.content,
                                 from: req.body.comment.author.firstName + ' ' + req.body.comment.author.lastName
                             }
-                        }, function (err1) {
-                            if (err1) {
-                                resArr.push(err1);
-                                callback(err1);
-                            } else {
-                                resArr.push({message: 'Successfully sent a message to ' + fullName, success: true});
-                                callback();
-                            }
                         });
                     }
-                }, function (error) {
-                    if (error) {
-                        res.json({
-                            message: 'Something went wrong',
-                            success: false
-                        });
-                    } else {
-                        res.json({response: resArr, success: true});
-                    }
+                }));
+            })
+            .then(function () {
+                res.send({
+                    message: 'Comment has been added',
+                    success: true
                 });
-            }
-        });
+            })
+            .catch(function (err) {
+                res.send({
+                    message: err.message,
+                    success: false
+                });
+            });
     }
 
     return {

@@ -39,15 +39,28 @@ module.exports = function () {
             email: req.body.email
         });
 
-        // TODO CV add email check!
-
-        user.save(function (err) {
-            if (err) {
-                res.send(err);
-                return;
-            }
-            res.json({message: 'User has been created!', success: true});
-        });
+        User.findOne({
+            email: user.email
+        })
+            .then(function (u) {
+                if (u) {
+                    throw new Error('User with this email already exists');
+                } else {
+                    return user.save();
+                }
+            })
+            .then(function () {
+                res.send({
+                    message: 'User has been created!',
+                    success: true
+                });
+            })
+            .catch(function (error) {
+                res.send({
+                    message: error.message,
+                    success: false
+                });
+            });
     }
 
     /**
@@ -56,37 +69,46 @@ module.exports = function () {
      * @param {Object} res - response
      * */
     function logIn (req, res) {
+        var token;
+
         User.findOne({
             email: req.body.email
-        }).select('password').exec(function (err, user) {
-            var token, validPassword;
+        })
+            .select('password').exec()
+            .then(function (user) {
+                var validPassword;
 
-            if (err) {
-                throw err;
-            }
-            if (!user) {
-                res.send({message: 'User does not exist'});
-            } else if (user) {
-                validPassword = user.comparePassword(req.body.password);
+                if (user) {
+                    validPassword = user.comparePassword(req.body.password);
 
-                if (validPassword) {
-                    token = createToken(user);
-                    User.findOne({
-                        email: req.body.email
-                    }).lean().exec(function (er, u) {
-                        res.json({
-                            success: true,
-                            message: 'Successfully logged in',
-                            token: token,
-                            user: u
-                        });
-                    });
+                    if (validPassword) {
+                        token = createToken(user);
 
+                        return User.findOne({
+                            email: req.body.email
+                        }).lean().exec();
+
+                    } else {
+                        throw new Error('Invalid Password');
+                    }
                 } else {
-                    res.send({message: 'Invalid Password'});
+                    throw new Error('User does not exist');
                 }
-            }
-        });
+            })
+            .then(function (u) {
+                res.send({
+                    message: 'Successfully logged in',
+                    success: true,
+                    token: token,
+                    user: u
+                });
+            })
+            .catch(function (error) {
+                res.send({
+                    message: error.message,
+                    success: false
+                });
+            });
     }
 
     /**
@@ -95,42 +117,44 @@ module.exports = function () {
      * @param {Object} res - response
      * */
     function changePassword (req, res) {
+        var token;
+
         User.findOne({
             email: req.body.email
-        }).select('password').exec(function (err, user) {
-            var token, validPassword;
+        })
+            .select('password').exec()
+            .then(function (user) {
+                var validPassword;
 
-            if (err) {
-                throw err;
-            }
-            if (!user) {
-                res.send({message: 'User does not exist'});
-            } else if (user) {
-                token = createToken(user);
-                validPassword = user.comparePassword(req.body.currentPass);
+                if (user) {
+                    token = createToken(user);
+                    validPassword = user.comparePassword(req.body.currentPass);
 
-                if (validPassword) {
-                    user.password = req.body.newPass;
-                    user.save(function (error) {
-                        if (error) {
-                            res.send(error);
-                            return;
-                        }
-                        res.json({
-                            success: true,
-                            message: 'Password has been changed.',
-                            token: token
-                        });
-                    });
+                    if (validPassword) {
+                        user.password = req.body.newPass;
+
+                        return user.save();
+                    } else {
+                        throw new Error('Invalid current password');
+                    }
                 } else {
-                    res.send({
-                        success: false,
-                        message: 'Invalid current password',
-                        token: token
-                    });
+                    throw new Error('User does not exist');
                 }
-            }
-        });
+            })
+            .then(function () {
+                res.send({
+                    message: 'Password has been changed.',
+                    success: true,
+                    token: token
+                });
+            })
+            .catch(function (error) {
+                res.send({
+                    message: error.message,
+                    success: false,
+                    token: token || ''
+                });
+            });
     }
 
     /**
@@ -141,28 +165,35 @@ module.exports = function () {
     function getUser (req, res) { // TODO CV rewrite this
         User.findOne({
             _id: req.decoded.id
-        }, function (err, user) {
-            if (err) {
-                res.send(err);
-                return;
-            }
-            res.json(user);
-        });
+        })
+            .then(function (user) {
+                res.send(user);
+            })
+            .catch(function (error) {
+                res.send({
+                    message: error.message,
+                    success: false
+                });
+            });
     }
 
     /**
-     * Get HRs list
+     * Get Users list by query
      * @param {Object} req - request
      * @param {Object} res - response
      * */
-    function getHRs (req, res) {
-        User.find({userGroup: 'HR'}, function (err, users) {
-            if (err) {
-                res.send(err);
-                return;
-            }
-            res.json(users);
-        });
+    function getUsers (req, res) {
+        User
+            .find(req.query)
+            .then(function (users) {
+                res.send(users);
+            })
+            .catch(function (error) {
+                res.send({
+                    message: error.message,
+                    success: false
+                });
+            });
     }
 
     return {
@@ -170,6 +201,6 @@ module.exports = function () {
         getUser: getUser,
         logIn: logIn,
         changePassword: changePassword,
-        getHRs: getHRs
+        getUsers: getUsers
     };
 };

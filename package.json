@@ -21,7 +21,6 @@
   },
   "homepage": "https://github.com/vyokhna/Cure#readme",
   "dependencies": {
-    "async": "^1.5.0",
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.13.3",
     "express": "^4.13.3",
@@ -30,6 +29,7 @@
     "morgan": "^1.6.1",
     "nodemailer": "^1.8.0",
     "nodemailer-smtp-transport": "^1.0.3",
+    "promise": "^7.1.1",
     "underscore": "^1.8.3"
   },
   "devDependencies": {

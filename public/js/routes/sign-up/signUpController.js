@@ -62,7 +62,7 @@
                             if (!data.message) {
                                 data.message = '';
                             }
-                            toastr.error('Error', data.message);
+                            toastr.error(data.message);
                         }
                     }
                 );
