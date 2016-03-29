@@ -8,12 +8,12 @@
         .module('ClaimPortal.Directives')
         .directive('clHeader', headerDirective);
 
-    headerDirective.$inject = ['$location', 'authService'];
+    headerDirective.$inject = ['$location', 'accountService'];
 
     /**
      * Header Directive
      * */
-    function headerDirective ($location, authService) {
+    function headerDirective ($location, accountService) {
         return {
             restrict: 'E',
             templateUrl: 'js/directives/headerView.html',
@@ -25,18 +25,18 @@
          * Link function
          * */
         function link ($scope) {
-            $scope.userInfo = authService.getUserInfo();
+            $scope.userInfo = accountService.getUserInfo();
             $scope.path = $location.path().substr(8);
 
             $scope.logout = function () {
-                authService.logout();
+                accountService.logout();
                 $location.path('/user/log-in');
             };
 
             if (Object.keys($scope.userInfo).length === 0) {
-                authService.loadUserInfo()
+                accountService.loadUserInfo()
                     .then(function () {
-                        $scope.userInfo = authService.getUserInfo();
+                        $scope.userInfo = accountService.getUserInfo();
                     });
             }
 

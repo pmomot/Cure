@@ -5,12 +5,12 @@
         .module('ClaimPortal.Services')
         .factory('claimService', claimService);
 
-    claimService.$inject = ['$q', 'claimRepository', 'toastr', 'authService'];
+    claimService.$inject = ['$q', 'claimRepository', 'toastr', 'accountService'];
 
     /**
      * Claim Service
      * */
-    function claimService ($q, claimRepository, toastr, authService) {
+    function claimService ($q, claimRepository, toastr, accountService) {
 
         var claimsInfo = {
             opened: [],
@@ -73,7 +73,7 @@
                 return deferred.promise;
             }
 
-            user = authService.getUserInfo();
+            user = accountService.getUserInfo();
             data = angular.extend(newClaim, {
                 fullName: user.fullName,
                 authorEmail: user.email
@@ -157,7 +157,7 @@
         function postComment (data) {
             var deferred = $q.defer();
 
-            data.comment.author = authService.getUserInfo();
+            data.comment.author = accountService.getUserInfo();
 
             claimRepository.postComment(data)
                 .then(function (result) {
@@ -193,18 +193,22 @@
          * @param {Object} params - type of claim
          * */
         function fetchClaimsInfo (params) {
+            var openedClaims;
+
             if (typeof params.fetchClosed === 'undefined' && params.claimType !== 'Discussion') {
                 params.fetchClosed = true;
             }
 
             getClaims(params.claimType, ['open'], function (claims) {
-                processOpenedClaims(claims);
+                openedClaims = claims;
             }).then(function () {
                 if (params.fetchClosed) {
                     getClaims(params.claimType, ['accepted', 'declined', 'resolved'], function (claims) {
+                        processOpenedClaims(openedClaims);
                         claimsInfo.closed = claims;
-
                     });
+                } else {
+                    processOpenedClaims(openedClaims);
                 }
             });
         }

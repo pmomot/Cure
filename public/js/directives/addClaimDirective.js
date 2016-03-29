@@ -8,12 +8,12 @@
         .module('ClaimPortal.Directives')
         .directive('clAddClaim', addClaim);
 
-    addClaim.$inject = ['$timeout', 'claimService', 'authService'];
+    addClaim.$inject = ['$timeout', 'claimService', 'accountService'];
 
     /**
      * Add Claim Directive
      * */
-    function addClaim ($timeout, claimService, authService) {
+    function addClaim ($timeout, claimService, accountService) {
         return {
             restrict: 'E',
             templateUrl: 'js/directives/addClaimView.html',
@@ -24,12 +24,12 @@
             replace: true,
             link: function (scope) {
                 scope.sendRequest = sendRequest;
-                scope.hrs = authService.getHrs;
+                scope.hrs = accountService.getHrs;
 
                 resetClaim();
 
                 if (scope.claimType === 'Discussion') {
-                    authService.fetchHrs();
+                    accountService.fetchHrs();
                 }
 
                 /**

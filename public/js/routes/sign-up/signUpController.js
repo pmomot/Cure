@@ -9,12 +9,12 @@
         .module('ClaimPortal')
         .controller('SignUpController', SignUpController);
 
-    SignUpController.$inject = ['$location', '$window', 'toastr', 'REGEX', 'authService'];
+    SignUpController.$inject = ['$location', '$window', 'REGEX', 'accountService'];
 
     /**
      * User Sign Up Controller
      * */
-    function SignUpController ($location, $window, toastr, REGEX, authService) {
+    function SignUpController ($location, $window, REGEX, accountService) {
         var vm = this;
 
         vm.errors = [];
@@ -51,18 +51,12 @@
             if (vm.errors.length === 0) {
                 vm.data.userGroup = 'users';
 
-                authService.signUp(vm.data)
-                    .success(function (data) {
+                accountService.signUp(vm.data)
+                    .then(function (data) {
                         vm.errors = [];
 
                         if (data.success) {
-                            toastr.success('New user created! Now log in.');
                             $location.path('/user/log-in');
-                        } else {
-                            if (!data.message) {
-                                data.message = '';
-                            }
-                            toastr.error(data.message);
                         }
                     }
                 );

@@ -162,7 +162,7 @@ module.exports = function () {
      * @param {Object} req - request
      * @param {Object} res - response
      * */
-    function getUser (req, res) { // TODO CV rewrite this
+    function getUser (req, res) {
         User.findOne({
             _id: req.decoded.id
         })

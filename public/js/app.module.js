@@ -27,7 +27,7 @@
                 timeOut: 3000
             });
         })
-        .run(['$rootScope', '$location', '$window', 'authService', function ($rootScope, $location, $window, authService) {
+        .run(['$rootScope', '$location', '$window', 'accountService', function ($rootScope, $location, $window, accountService) {
             // prevent loading any session required page without necessary token
             $rootScope.$on('$routeChangeStart', function (event, next) {
                 if ($window.localStorage.getItem('token') === '') {
@@ -36,8 +36,8 @@
 
                         $location.path('/user/log-in');
                     }
-                } else if (!authService.hasUserInfo()) {
-                    authService.loadUserInfo();
+                } else if (!accountService.hasUserInfo()) {
+                    accountService.loadUserInfo();
                 }
 
             });

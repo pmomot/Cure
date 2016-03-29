@@ -9,12 +9,12 @@
         .module('ClaimPortal')
         .controller('ChangePassController', ChangePassController);
 
-    ChangePassController.$inject = ['$window', 'toastr', 'REGEX', 'authService'];
+    ChangePassController.$inject = ['$window', 'REGEX', 'accountService'];
 
     /**
      * Change User Password Controller
      * */
-    function ChangePassController ($window, toastr, REGEX, authService) {
+    function ChangePassController ($window, REGEX, accountService) {
         var vm = this;
 
         vm.errors = [];
@@ -35,18 +35,15 @@
                 if (!REGEX.PASS.test(vm.data.newPass) || !REGEX.PASS.test(vm.data.newPassRepeat)) {
                     vm.errors.push('New password must be at least 4 characters long and not contain spaces.');
                 } else {
-                    authService.changePass({
+                    accountService.changePass({
                         currentPass: vm.data.currentPass,
                         newPass: vm.data.newPass
                     })
-                        .success(function (data) {
+                        .then(function (data) {
                             vm.errors = [];
 
                             if (data.success) {
-                                toastr.success(data.message);
                                 $window.history.back();
-                            } else {
-                                toastr.error(data.message);
                             }
                         });
                 }

@@ -1,5 +1,3 @@
-// TODO CV add proper error handlers
-// TODO CV add email sending timeout handler
 /**
  * Created by petermomot on 3/11/16.
  */

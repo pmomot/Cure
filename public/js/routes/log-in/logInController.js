@@ -9,12 +9,12 @@
         .module('ClaimPortal')
         .controller('LogInController', LogInController);
 
-    LogInController.$inject = ['$location', 'toastr', 'authService'];
+    LogInController.$inject = ['$location', 'accountService'];
 
     /**
      * User Log In Controller
      * */
-    function LogInController ($location, toastr, authService) {
+    function LogInController ($location, accountService) {
         var vm = this;
 
         vm.errors = [];
@@ -27,18 +27,12 @@
         function sendRequest () {
             vm.errors = [];
 
-            authService.login(vm.data.email, vm.data.password)
-                .success(function (data) {
+            accountService.login(vm.data.email, vm.data.password)
+                .then(function (data) {
                     vm.errors = [];
 
                     if (data.success) {
-                        toastr.success(data.message);
                         $location.path('/');
-                    } else {
-                        if (!data.message) {
-                            data.message = '';
-                        }
-                        toastr.error(data.message);
                     }
                 }
             );

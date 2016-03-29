@@ -9,12 +9,12 @@
         .module('ClaimPortal')
         .controller('ClaimsController', ClaimsController);
 
-    ClaimsController.$inject = ['$routeParams', 'claimService', 'authService'];
+    ClaimsController.$inject = ['$routeParams', 'claimService', 'accountService'];
 
     /**
      * Claims Controller
      * */
-    function ClaimsController ($routeParams, claimService, authService) {
+    function ClaimsController ($routeParams, claimService, accountService) {
         var vm = this,
             config = {};
 
@@ -64,7 +64,7 @@
         vm.modalClaim = {};
         vm.modalAction = '';
 
-        vm.user = authService.getUserInfo;
+        vm.user = accountService.getUserInfo;
         vm.claimsInfo = claimService.getClaimsInfo;
 
         vm.isHr = isHr;
@@ -74,6 +74,7 @@
             fetchClosed: vm.config.fetchClosed
         });
 
+        // TODO CV make filter to show only one discussion, when discussion/:id
 
         /**
          * Get if user belongs to HR group

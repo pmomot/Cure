@@ -1,6 +1,4 @@
 'use strict';
-// TODO CV decide where we need send email
-// TODO CV move methods to models
 
 var User = require('../models/user'),
     config = require('../../config'),
