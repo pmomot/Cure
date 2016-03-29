@@ -14,9 +14,12 @@
             'ClaimPortal.Directives',
             'ClaimPortal.Constants'
         ])
-        .config(['$httpProvider', function ($httpProvider) {
+        .config(function ($httpProvider) {
             $httpProvider.interceptors.push('httpInterceptor');
-        }])
+        })
+        .config(function ($anchorScrollProvider) {
+            $anchorScrollProvider.disableAutoScrolling();
+        })
         .config(function (toastrConfig) {
             angular.extend(toastrConfig, {
                 maxOpened: 5,

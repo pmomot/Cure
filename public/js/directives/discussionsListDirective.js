@@ -67,7 +67,7 @@
                  * Scroll to and add 'active' class to desired discussion
                  * */
                 function goToActiveItem () {
-                    if (prevLength === scope.opened.length || $location.hash().length <= 1) {
+                    if (prevLength === scope.opened.length || $location.hash().length === 0) {
                         return;
                     } else {
                         prevLength = scope.opened.length;
@@ -83,7 +83,7 @@
                             el.removeClass('active');
 
                             $timeout(function () {
-                                $location.hash('_');
+                                $location.hash('');
                             }, 300);
 
                         }, 300);
