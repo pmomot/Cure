@@ -27,9 +27,12 @@
                 timeOut: 3000
             });
         })
-        .run(['$rootScope', '$location', '$window', 'accountService', function ($rootScope, $location, $window, accountService) {
+        .run(['$rootScope', '$location', '$window', 'accountService', '$anchorScroll', function ($rootScope, $location, $window, accountService, $anchorScroll) {
+
             // prevent loading any session required page without necessary token
             $rootScope.$on('$routeChangeStart', function (event, next) {
+                var url = $location.url();
+
                 if ($window.localStorage.getItem('token') === '') {
                     if (next.templateUrl !== 'js/routes/log-in/logInView.html' &&
                         next.templateUrl !== 'js/routes/sign-up/signUpView.html') {
@@ -40,7 +43,16 @@
                     accountService.loadUserInfo();
                 }
 
+                if (url.indexOf('?discussion-id=') !== -1) {
+                    if ($window.localStorage.getItem('token') !== '') { // user logged in
+                        $location.url(url.split('?discussion-id=')[0]);
+                        $location.hash(url.split('?discussion-id=')[1]);
+                    }
+                }
+
             });
+
+            $anchorScroll.yOffset = 40;
         }]);
 
     angular.module('ClaimPortal.Services', []);

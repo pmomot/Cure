@@ -26,7 +26,7 @@
          * */
         function link ($scope) {
             $scope.userInfo = accountService.getUserInfo();
-            $scope.path = $location.path().substr(8);
+            $scope.path = $location.path().substr(8).split('#')[0];
 
             $scope.logout = function () {
                 accountService.logout();

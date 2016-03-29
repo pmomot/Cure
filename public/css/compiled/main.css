@@ -693,7 +693,7 @@ body {
     display: block;
     content: '';
     clear: both; }
-  #claim .tagFilter {
+  #claim .button {
     font-size: 14px;
     line-height: 14px;
     display: inline-block;
@@ -704,8 +704,8 @@ body {
     text-align: center;
     color: #ffffff;
     background: #0a85d7; }
-    #claim .tagFilter.active {
-      background: #25c018 !important; }
+  #claim .active {
+    background: #25c018 !important; }
   #claim .main-head {
     position: relative;
     margin-bottom: 10px;

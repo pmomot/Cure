@@ -16,15 +16,13 @@ var Claim = require('../models/claim'),
  * @param {Object} mailParams - email properties
  * */
 function sendClaimEmail (mailParams) {
-    // TODO CV save ip and port to globals
-
     var transporter = nodemailer.createTransport(smtpTransport(mailConfig)),
         html = '<h3>Hello, ' + mailParams.fullName + '.</h3>',
         o = mailParams.textOptions;
 
     switch (mailParams.type) {
         case 'new':
-            html += '<p>Discussion: <a href="' + serverAddress + '/#/home/discussions/' + o.id + '">"' + o.title;
+            html += '<p>Discussion: <a href="' + serverAddress + '/#/claims/discussions?discussion-id=' + o.id + '">"' + o.title;
             html += '"</a> has been added.</p><p>Description: ' + o.description + '</p>';
             break;
         case 'change':
@@ -35,7 +33,7 @@ function sendClaimEmail (mailParams) {
             }
             break;
         case 'comment':
-            html += '<p>Your claim: <a href="' + serverAddress + '/#/home/discussions/' + o.id + '">"' + o.title;
+            html += '<p>Your claim: <a href="' + serverAddress + '/#/claims/discussions?discussion-id=' + o.id + '">"' + o.title;
             html += '"</a> has a new comment: ' + o.description + '</p><p>From: ' + o.from + '.</p>';
             break;
     }

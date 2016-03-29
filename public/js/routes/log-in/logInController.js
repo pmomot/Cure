@@ -32,7 +32,11 @@
                     vm.errors = [];
 
                     if (data.success) {
-                        $location.path('/');
+                        if ($location.url().indexOf('?discussion-id=') === -1) {
+                            $location.path('/');
+                        } else {
+                            $location.path('/claims/discussions');
+                        }
                     }
                 }
             );

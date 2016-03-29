@@ -8,12 +8,12 @@
         .module('ClaimPortal.Directives')
         .directive('clDiscussionsList', discussionsList);
 
-    discussionsList.$inject = ['claimService'];
+    discussionsList.$inject = ['$location', '$anchorScroll', '$timeout', 'claimService'];
 
     /**
      * Discussions List Directive
      * */
-    function discussionsList (claimService) {
+    function discussionsList ($location, $anchorScroll, $timeout, claimService) {
         return {
             restrict: 'E',
             templateUrl: 'js/directives/discussionsListView.html',
@@ -22,8 +22,12 @@
             },
             replace: true,
             link: function (scope) {
+                var prevLength = 0;
+
                 scope.comment = comment;
                 scope.resolve = resolve;
+
+                scope.$watch('opened', goToActiveItem);
 
                 /**
                  * Add comment to discussion
@@ -57,6 +61,35 @@
                 function resolve (claim) {
                     claim.status = 'resolved';
                     claimService.resolveClaim(claim);
+                }
+
+                /**
+                 * Scroll to and add 'active' class to desired discussion
+                 * */
+                function goToActiveItem () {
+                    if (prevLength === scope.opened.length || $location.hash().length <= 1) {
+                        return;
+                    } else {
+                        prevLength = scope.opened.length;
+                    }
+
+                    $timeout(function () {
+                        var el = angular.element(document.getElementById($location.hash()));
+
+                        $anchorScroll();
+                        el.addClass('active');
+
+                        $timeout(function () {
+                            el.removeClass('active');
+
+                            $timeout(function () {
+                                $location.hash('_');
+                            }, 300);
+
+                        }, 300);
+
+                    }, 0);
+
                 }
             }
         };

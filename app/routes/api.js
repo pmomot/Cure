@@ -45,7 +45,6 @@ function verifyToken (req, res, next) {
 
 module.exports = function (app, express) {
     var api = new express.Router();
-    // TODO CV make more RESTful
 
     // User section
     api.post('/user', userApiCalls.signUp);
@@ -59,7 +58,6 @@ module.exports = function (app, express) {
 
 
     // Claim section
-    // TODO CV change routes names
     api.route('/claims')
         .post(claimApiCalls.postClaim)
         .get(claimApiCalls.getClaims);

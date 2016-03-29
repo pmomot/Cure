@@ -11,8 +11,6 @@
 
     routeHandler.$inject = ['$routeProvider'];
 
-    // TODO CV add discussions/someId routes support
-
     /**
      * All app routes
      * */

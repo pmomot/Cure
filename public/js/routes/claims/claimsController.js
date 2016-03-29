@@ -74,8 +74,6 @@
             fetchClosed: vm.config.fetchClosed
         });
 
-        // TODO CV make filter to show only one discussion, when discussion/:id
-
         /**
          * Get if user belongs to HR group
          * */
