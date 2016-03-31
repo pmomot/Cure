@@ -604,9 +604,11 @@ body {
 
 /*login styles*/
 #logUp {
-  position: relative;
+  position: absolute;
+  top: 50%;
+  left: 50%;
   width: 450px;
-  margin: 250px auto 0;
+  margin: -225px;
   padding: 20px;
   border: 1px solid #e6e6e6;
   background: #ffffff; }
